@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:mdjnm="http://mojarra.dev.java.net/mojarra_ext">
+    <f:view contentType="text/html">
+        <h:head>
+            <title>ASSEMBLEIA</title>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/default.css"/>
+            <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/Resources/img/icone.png"/>
+        </h:head>
+        <h:body id="body" style="background:url('Resources/img/1px.png') repeat-x"  >
+            <p:growl id="growl" showDetail="true" life="3000" />  
+            <h:form id="form">
+                <div align="center" style="margin-top: 15em">
+                    <p:panel header="Assembleia de Deus Missão" 
+                             style="width: 25em ; border-style: groove !important; ">
+                        <h:panelGrid columns="2" cellspacing="10" cellpadding="10">
+                            <h:outputLabel value="Usuário"/>
+                            <h:panelGroup>
+                                <p:inputText id="login" value="#{loginControle.login}" style="width: 15em"/>
+                                <mdjnm:focus for="form:login"/>
+                            </h:panelGroup>
+                            <h:outputLabel value="Senha"/>
+                            <p:password value="#{loginControle.senha}" style="width: 15em"/>
+                        </h:panelGrid>
+                        <p:commandButton value="Entrar" action="#{loginControle.logar()}" style="alignment-baseline: "  ajax="false" icon="ui-icon-key" />
+                    </p:panel> 
+                </div>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>

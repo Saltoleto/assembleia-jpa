@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+    <f:metadata>
+        <f:viewParam name="rel" value="#{relatorioControle.str}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/>  
+        <p:panel >
+            <f:facet name="header">
+                <h:outputText value="Ficha Cadastral de Membro" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+            <h:form >
+
+                <h:panelGrid columns="1" cellspacing="15">              
+                    <h:commandButton value="Imprimir" onclick="PrimeFaces.monitorDownload(start, stop)"  styleClass="botaoImprimirPatrimonio" style="float: left;">
+                        <p:fileDownload value="#{relatorioControle.fichaCadastralMembro()}"  />  
+                    </h:commandButton> 
+                    <p:graphicImage id="fotoMembro"  cache="true" value="#{relatorioControle.imagemFicha}"  style="border: 1px solid #E1E1E1; border-radius: 4px" height="800" width="800" /><br/>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+
+        <p:dialog appendTo="@(body)" header="Aguarde...gerando o relatório..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
+            <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
+        </p:dialog> 
+    </ui:define>
+</ui:composition> 

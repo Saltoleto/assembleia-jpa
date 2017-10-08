@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="rel" value="#{acervoControle.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">            
+
+        <p:panel>
+
+            <f:facet name="header">
+                <h:outputText value="#{acervoControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+
+            <h:form id="cadastro">
+
+                <h:panelGrid columns="2" cellspacing="15">
+                    <h:outputLabel value="Tipo" style="float: right"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="estadoCivil" value="#{acervoControle.acervo.tipo}" style="width: 320px" required="true" requiredMessage="Selecione o Timpo do Item!">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{acervoControle.listaTipoAcervo}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>    
+
+                    <h:outputLabel  value="Nome" style="float: right" />
+                    <p:inputText value="#{acervoControle.acervo.nome}" size="60"  required="true" requiredMessage="Informe o Nome!"  /> 
+
+                    <h:outputLabel  value="Autor" style="float: right" />
+                    <p:inputText value="#{acervoControle.acervo.autor}" size="60" required="true" requiredMessage="Informe o Autor!"  />
+
+                    <h:outputLabel  value="Descrição" style="float: right" />                           
+                    <p:inputTextarea value="#{acervoControle.acervo.descricao}"  style="width: 454px" />
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{acervoControle.salvar()}"  ajax="false"  icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+            </h:form>
+
+            <h:form>     
+                <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                    <p:commandButton value="Sim" action="#{acervoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>  
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

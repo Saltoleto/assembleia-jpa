@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AniversariantesMes" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="343"/>
+	<property name="ireport.y" value="227"/>
+	<parameter name="nomeIgrena" class="java.lang.String"/>
+	<parameter name="endereco" class="java.lang.String"/>
+	<parameter name="telefone" class="java.lang.String"/>
+	<parameter name="cidade" class="java.lang.String"/>
+	<parameter name="email" class="java.lang.String"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="uf" class="java.lang.String"/>
+	<parameter name="cnpj" class="java.lang.String"/>
+	<parameter name="bairro" class="java.lang.String"/>
+	<parameter name="totalReceitas" class="java.lang.String"/>
+	<parameter name="mesExtenso" class="java.lang.String"/>
+	<parameter name="ano" class="java.lang.Integer"/>
+	<parameter name="imagemCarteirinha" class="java.io.InputStream"/>
+	<parameter name="cep" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="rg" class="java.lang.String">
+		<fieldDescription><![CDATA[rg]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="naturalidade" class="java.lang.String">
+		<fieldDescription><![CDATA[naturalidade]]></fieldDescription>
+	</field>
+	<field name="nacionalidade" class="java.lang.String">
+		<fieldDescription><![CDATA[nacionalidade]]></fieldDescription>
+	</field>
+	<field name="nomeMae" class="java.lang.String">
+		<fieldDescription><![CDATA[nomeMae]]></fieldDescription>
+	</field>
+	<field name="nomePai" class="java.lang.String">
+		<fieldDescription><![CDATA[nomePai]]></fieldDescription>
+	</field>
+	<field name="is" class="java.io.InputStream">
+		<fieldDescription><![CDATA[is]]></fieldDescription>
+	</field>
+	<field name="estado" class="br.assembleia.enuns.EnumEstado">
+		<fieldDescription><![CDATA[estado]]></fieldDescription>
+	</field>
+	<field name="dataNascimento" class="java.util.Date">
+		<fieldDescription><![CDATA[dataNascimento]]></fieldDescription>
+	</field>
+	<field name="cpf" class="java.lang.String">
+		<fieldDescription><![CDATA[cpf]]></fieldDescription>
+	</field>
+	<field name="dataBatismo" class="java.util.Date">
+		<fieldDescription><![CDATA[dataBatismo]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<fieldDescription><![CDATA[cidade]]></fieldDescription>
+	</field>
+	<field name="estadoCivil" class="br.assembleia.enuns.EnumEstadoCivil">
+		<fieldDescription><![CDATA[estadoCivil]]></fieldDescription>
+	</field>
+	<field name="cargo" class="br.assembleia.entidades.Cargo">
+		<fieldDescription><![CDATA[cargo]]></fieldDescription>
+	</field>
+	<title>
+		<band height="101">
+			<textField>
+				<reportElement x="0" y="20" width="752" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cidade}+"-"+$P{uf}+" "+$P{endereco}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" isUsingCache="true">
+				<reportElement x="88" y="0" width="60" height="60"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="50" width="752" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cnpj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="70" width="751" height="23" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["CREDENCIAL DE OBREIRO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="35" width="752" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{email}+" "+$P{telefone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="753" height="20" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nomeIgrena}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="218" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="377" y="0" width="340" height="214" forecolor="#000000"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineColor="#565353"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="385" y="9" width="324" height="197"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="385" y="9" width="324" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="385" y="39" width="324" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="385" y="69" width="324" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="385" y="99" width="324" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="385" y="129" width="324" height="30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="385" y="159" width="324" height="47"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="388" y="12" width="321" height="13"/>
+				<textElement/>
+				<text><![CDATA[Pai]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="388" y="24" width="321" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomePai}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="388" y="42" width="321" height="13"/>
+				<textElement/>
+				<text><![CDATA[Mãe]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="388" y="54" width="321" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomeMae}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="493" y="69" width="1" height="90"/>
+			</line>
+			<line>
+				<reportElement x="602" y="69" width="1" height="90"/>
+			</line>
+			<staticText>
+				<reportElement x="388" y="72" width="105" height="13"/>
+				<textElement/>
+				<text><![CDATA[Natural]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="388" y="84" width="105" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{naturalidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="498" y="72" width="104" height="13"/>
+				<textElement/>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="498" y="84" width="104" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{estado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="606" y="72" width="103" height="13"/>
+				<textElement/>
+				<text><![CDATA[Nacionalidade]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="606" y="84" width="103" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nacionalidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="388" y="102" width="105" height="13"/>
+				<textElement/>
+				<text><![CDATA[Nascido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="102" width="105" height="13"/>
+				<textElement/>
+				<text><![CDATA[RG]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="498" y="114" width="104" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rg}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="606" y="102" width="105" height="13"/>
+				<textElement/>
+				<text><![CDATA[CPF]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="606" y="114" width="103" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="388" y="132" width="105" height="13"/>
+				<textElement/>
+				<text><![CDATA[Batismo]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="388" y="144" width="106" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataBatismo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="498" y="132" width="105" height="13"/>
+				<textElement/>
+				<text><![CDATA[Local]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="498" y="144" width="104" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cidade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="606" y="132" width="103" height="13"/>
+				<textElement/>
+				<text><![CDATA[Estado Civil]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="606" y="144" width="103" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{estadoCivil}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="547" y="159" width="1" height="47"/>
+			</line>
+			<staticText>
+				<reportElement x="390" y="162" width="157" height="13"/>
+				<textElement/>
+				<text><![CDATA[Secretário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="552" y="162" width="157" height="13"/>
+				<textElement/>
+				<text><![CDATA[Presidente]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" isUsingCache="true">
+				<reportElement x="33" y="0" width="340" height="214"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{imagemCarteirinha}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="46" y="78" width="294" height="20" forecolor="#3F4D75"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" "+$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="152" width="197" height="20" forecolor="#3F4D75"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cidade}+"-"+$F{estado}.getUf()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="46" y="102" width="80" height="100"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{is}]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="151" y="188" width="84" height="20" forecolor="#3F4D75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="117" width="151" height="20" forecolor="#3F4D75"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cargo}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" isUsingCache="true">
+				<reportElement x="49" y="10" width="45" height="45"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="88" y="5" width="285" height="20" forecolor="#3F4D75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nomeIgrena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="88" y="22" width="285" height="10" forecolor="#304A95"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{endereco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="88" y="32" width="285" height="10" forecolor="#304A95"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cidade}+" - "+"CEP "+$P{cep}+"-"+$P{uf}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="88" y="43" width="285" height="10" forecolor="#304A95"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fone/Fax:"+$P{telefone}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="388" y="114" width="105" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataNascimento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="13">
+			<textField>
+				<reportElement mode="Opaque" x="539" y="0" width="173" height="13" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="712" y="0" width="40" height="13" backcolor="#FFFFFF"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

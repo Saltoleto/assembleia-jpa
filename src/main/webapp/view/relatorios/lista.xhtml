@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <ui:define name="conteudo">
+        <p:panel>
+
+            <f:facet name="header">
+                <h:outputText value="Relatórios" style="font-size: 30px!important; color: white;"/>
+
+            </f:facet>
+            <h:form id="form">
+                <h:head>
+                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/>  
+                </h:head>
+                <h2 style="font-size: 25px!important;margin-top: 15px;margin-right: 880px;font-family: 'Open Sans Condensed';color: #444;">Relatórios e Gráficos</h2>
+                <hr style="width: 69em;"/>  
+                <p:dataTable   rowStyleClass="linhaSemBordaRelatorios"  id="tblSecretaria" styleClass="custom2"   
+                                style=" width: 70em;border: none; border-color: white; margin-top: 40px;" widgetVar="tabela" rows="20"                                 
+                               value="#{relatorioControle.relatorios}"  var="rela"  > 
+
+                    <f:facet name="header" >                                                 
+                        <h:outputText value="Secretaria" style="font-family: 'Open Sans Condensed', sans-serif; color: #444;font-size: 22px !important; float: left; " /> 
+                        <br/><br/>     
+                        <p:growl id="growl2" sticky="false" life="3000"/>                         
+                    </f:facet> 
+
+                    <p:column  filterStyle="display: none;" style=" border: none;background: white; width: 40%" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Nome" style="font-size: 15px !important; float: left;" />  
+                        </f:facet> 
+                        <h:outputLink value="#{rela.linkRelatorio}" style="text-decoration: none;color: #C44D58;font-size: 14px!important;">
+                            #{rela.descricaoLink}
+                        </h:outputLink>
+                    </p:column>                             
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white; width: 60%" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Descrição" style="font-size: 15px !important; float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{rela.descricaoRelatorio}" style="color: #444; border: none!important;"/>  
+                    </p:column>  
+                </p:dataTable>
+                
+                 <p:dataTable   rowStyleClass="linhaSemBordaRelatorios"  id="tblaFinanceir" styleClass="custom2"   
+                               style=" width: 70em;border: none; border-color: white; margin-top: 40px;" widgetVar="tabela" rows="20"                                 
+                               value="#{relatorioControle.relatoriosFiananceiro}"  var="rela"  > 
+
+                    <f:facet name="header" >                                                 
+                        <h:outputText value="Financeiro" style="font-family: 'Open Sans Condensed', sans-serif; color: #444;font-size: 22px !important; float: left; " /> 
+                        <br/><br/>     
+                        <p:growl id="growl2" sticky="false" life="3000"/>                        
+                    </f:facet> 
+
+                    <p:column  filterStyle="display: none;" style=" border: none;background: white; width: 40%" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Nome" style="font-size: 15px !important; float: left;" />  
+                        </f:facet> 
+                        <h:outputLink value="#{rela.linkRelatorio}" style="text-decoration: none;color: #C44D58;font-size: 14px!important;">
+                            #{rela.descricaoLink}
+                        </h:outputLink>
+                    </p:column>                             
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white; width: 60%" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Descrição" style="font-size: 15px !important; float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{rela.descricaoRelatorio}" style="color: #444; border: none!important;"/>  
+                    </p:column>  
+                </p:dataTable>
+
+            </h:form>
+
+        </p:panel>
+
+
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <ui:define name="conteudo">
+        <p:panel>
+
+            <f:facet name="header">
+                <h:outputText value="Relatório de Patrimônio" style="font-size: 30px!important; color: white;"/>
+
+            </f:facet>
+            <h:form id="form">
+                <h:head>
+                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/>  
+                </h:head>
+                <p:dataTable   rowStyleClass="linhaSemBordaFluxoReceita"  id="tblReceitas" styleClass="custom2"   
+                               style=" width: 70em;border: none; border-color: white; margin-top: 5px;" widgetVar="tabela" rows="20"                                 
+                               value="#{patrimonioControle.patrimonios}"  var="patrimonio" emptyMessage="Não há patrimônio..."> 
+
+                    <f:facet name="header" >                                                
+                        <h:commandButton value="Imprimir" onclick="PrimeFaces.monitorDownload(start, stop)" styleClass="botaoImprimirPatrimonio" style="margin-bottom: 20px; float: left;">
+                            <p:fileDownload value="#{relatorioControle.patrimonio()}"  />    
+                        </h:commandButton>                                                                                                               
+                    </f:facet> 
+
+                    <p:column  filterStyle="display: none;" style=" border: none;background: white; " >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Codigo" style="font-size: 17px !important; float: left;" />  
+                        </f:facet> 
+                        <h:outputText value="#{patrimonio.codigo}" style=" border-left: none!important;"/>  
+                    </p:column>                             
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white; " >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Nome" style="font-size: 17px !important; float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{patrimonio.nome}" style=" border: none!important;"/>  
+                    </p:column>  
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white;" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Situação" style="font-size: 17px !important; float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{patrimonio.situacaoPatrimonio}" style="border: none!important;"/>  
+                    </p:column>  
+
+
+
+                    <p:column styleClass="coluna" filterStyle="display: none;" style="border: none;background: white;"  >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Valor Unitário" style="font-size: 17px !important;float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="R$ #{patrimonio.valorUnitarioFormatado}"  />  
+                    </p:column> 
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white;" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Quantidade" style="font-size: 17px !important;float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{patrimonio.quantidade}" style=" border: none!important;margin-left: 40px">
+                            <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
+                        </h:outputText>  
+                    </p:column> 
+
+
+                    <p:column filterStyle="display: none;" style="border: none;background: white;" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Data de Aquisição" style="font-size: 17px !important;float: left;  " />  
+                        </f:facet> 
+                        <h:outputText value="#{patrimonio.dataAquisicao}" style="" >
+                            <f:convertDateTime pattern="dd/MM/yyyy"  /> 
+                        </h:outputText>  
+                    </p:column>   
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white;" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Valor Total" style="font-size: 17px !important; float: right; " />  
+                        </f:facet> 
+                        <h:outputText value="#{patrimonio.valorTotal}" style="float: right;border: none!important;"/>  
+                    </p:column>  
+
+
+                </p:dataTable>
+            </h:form>
+            <p:dialog appendTo="@(body)" header="Aguarde...gerando o relatório..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
+                <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
+            </p:dialog> 
+
+        </p:panel>
+
+
+    </ui:define>
+</ui:composition>
+

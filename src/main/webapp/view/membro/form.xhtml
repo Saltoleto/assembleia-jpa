@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="rel" value="#{membroControle.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">    
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/> 
+        <p:panel>
+            <f:facet name="header">
+                <h:outputText value="#{membroControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet> 
+            <h:form  id="membroCadastro" enctype="multipart/form-data">                               
+                <script src="../Resources/js/calendarPT_BR.js" type="text/javascript"></script>
+                <p:wizard style="width: 1000px; border: none;" flowListener="#{membroControle.onFlowProcess}" nextLabel="Próximo" backLabel="Voltar" id="tabView"> 
+                    <p:tab title="Dados Pessoais" id="tabDadosPessoais">
+                        <p:growl id="growl" showDetail="false" sticky="false" life="3000"/>
+                        <h:panelGrid columns="2" cellspacing="15">                           
+                            <h:outputLabel  value="" style="float: right;font-size: 18px; vertical-align: inherit; " />
+                            <p:graphicImage id="fotoMembro"  cache="false" value="#{membroControle.fotoBanco}"  style="border: 1px solid #E1E1E1; border-radius: 4px" height="154" width="200" /><br/>
+                            <p:fileUpload label="Selecionar Foto" style="border: none!important;"
+                                          fileUploadListener="#{membroControle.fileUploadAction}"  
+                                          update=":membroCadastro:fotoMembro" oncomplete="window.location.reload();"  auto="true"  sizeLimit="99000" invalidSizeMessage="O tamanho da imagem deve ser menor ou igual a 99 KB." fileLimitMessage="Imagem muito grande!"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>                             
+                            <h:outputLabel  value="Nome" style="float: right"/>
+                            <p:inputText value="#{membroControle.membro.nome}" size="60"  required="true" requiredMessage="Informe o Nome!"  /> 
+                            <h:outputLabel value="Data de Nascimento" style="float: right"/>                           
+                            <p:calendar id="calendarDataNascimento"  yearRange="c-70:c" value="#{membroControle.membro.dataNascimento}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                        showButtonPanel="true" navigator="true" style="height: 4px;">
+                            </p:calendar>
+                            <h:outputLabel  value="CPF" style="float: right" />
+                            <p:inputMask value="#{membroControle.membro.cpf}" size="15" mask="999.999.999-99" /> 
+                            <h:outputLabel  value="RG" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.rg}" size="15" /> 
+                            <h:outputLabel value="Estado Civil" style="float: right"/>
+                            <h:panelGroup>
+                                <p:selectOneMenu id="estadoCivil" value="#{membroControle.membro.estadoCivil}" style="width: 110px">
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.listaEstadoCivil}" />
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <h:outputLabel value="Sexo" style="float: right"/>
+                            <h:panelGroup>
+                                <p:selectOneMenu id="sexo" value="#{membroControle.membro.sexo}" style="width: 110px" required="true" requiredMessage="Selecione o Sexo!">
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.listaSexo}" />
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <h:outputLabel  value="Cônjuge" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.nomeConjuge}" size="60" />
+                            <h:outputLabel  value="Quantidade de Filhos" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.quantidadeFilhos}" size="11" />
+                            <h:outputLabel  value="Pai" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.nomePai}" size="60" />
+                            <h:outputLabel  value="Mãe" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.nomeMae}" size="60" />
+                            <h:outputLabel  value="Nacionalidade" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.nacionalidade}" size="40"/>
+                            <h:outputLabel  value="Naturalidade" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.naturalidade}" size="40"/>
+                            <h:outputLabel value="Estado" style="float: right"/>
+                            <h:panelGroup>
+                                <p:selectOneMenu id="estado" value="#{membroControle.membro.estado}"  style="width: 311px">
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.listaEstado}" />
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <h:outputLabel  value="Cidade" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.cidade}" size="40"/>
+                            <h:outputLabel  value="Bairro" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.bairro}" size="60"/>
+                            <h:outputLabel  value="Endereço" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.endereco}" size="60" /> 
+                            <h:outputLabel  value="CEP" style="float: right" />
+                            <p:inputMask value="#{membroControle.membro.cep}" mask="99999-999" size="14"/>
+                            <h:outputLabel  value="Telefone Residencial" style="float: right" />
+                            <p:inputMask value="#{membroControle.membro.telefone}" mask="(99) 99999-9999"  size="15"/>
+                            <h:outputLabel  value="Celular" style="float: right" />
+                            <p:inputMask value="#{membroControle.membro.celular}" mask="(99) 99999-9999"  size="15"/>
+                            <h:outputLabel  value="Email" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.email}" size="60"/>   
+                            <h:outputLabel  value="Observação" style="float: right" />                           
+                            <p:inputTextarea value="#{membroControle.membro.observacao}"  style="width: 470px" />                       
+                        </h:panelGrid>  
+ 
+                    </p:tab>
+
+                    <p:tab title="Dados Eclesiáticos" id="tabDadosEclesiaticos"> 
+                        <h:panelGrid columns="2" cellspacing="15" style="margin-right: 26%">  
+                            <h:outputLabel  value="Código" style="float: right"  />  
+                            <h:panelGroup>
+                                <p:inputText  value="#{membroControle.membro.codigoMembro}" size="6"  /> 
+                            <h:outputLabel  value="(deixe em branco para preencher automaticamente)" style="float: right;margin-top: 4px;"  /> 
+                            </h:panelGroup>
+                            <h:outputLabel  value="Procedência" style="float: right" />
+                            <p:inputText value="#{membroControle.membro.procedencia}" size="60" />
+                            <h:outputText value="Dizimista ?" style="float: right;" />
+                            <p:selectBooleanCheckbox value="#{membroControle.membro.dizimista}" />
+                            <h:outputLabel value="Membro Desde" style="float: right"/>
+                            <p:calendar id="membroDesde"  yearRange="c-70:c" value="#{membroControle.membro.membroDesde}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                        showButtonPanel="true" navigator="true" style="height: 4px;">
+                            </p:calendar>
+                            <h:outputLabel value="Data de Batismo" style="float: right"/>
+                            <p:calendar id="dataBatismo"  yearRange="c-70:c" value="#{membroControle.membro.dataBatismo}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                        showButtonPanel="true" navigator="true" style="height: 4px;">
+                            </p:calendar>
+                            <h:outputLabel value="Data Batismo Espírito Santo" style="float: right"/>
+                            <p:calendar id="dataBatismoEspiritoSanto"  yearRange="c-70:c" value="#{membroControle.membro.dataBatismoEspiritoSanto}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                        showButtonPanel="true" navigator="true" style="height: 4px;">
+                            </p:calendar>
+                            <h:outputLabel value="Cargo" style="float: right"/>
+                            <h:panelGroup id="panelCargo">
+                                <p:selectOneMenu id="cargo" value="#{membroControle.membro.cargo}" required="true" requiredMessage="Selecione o Cargo!" style="width: 311px" converter="#{cargoConverter}">
+                                    <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.cargos}" var="cargo" itemLabel="#{cargo.descricao}" itemValue="#{cargo}" />                                    
+                                </p:selectOneMenu>
+                                <p:commandButton style="margin-left: 4px; height: 30px" action="#{membroControle.novoCargo()}" process="@this"  onclick="PF('dialogCargo').show();" icon="ui-icon-circle-plus"/>
+                            </h:panelGroup>
+                            <h:outputLabel value="Data da Consagração" style="float: right"/>
+                            <p:calendar id="dataConsagracao"  yearRange="c-70:c" value="#{membroControle.membro.dataConsagracao}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                        showButtonPanel="true" navigator="true" style="height: 4px;">
+                            </p:calendar>
+                            <h:outputLabel value="Situação" style="float: right"/>
+                            <h:panelGroup> 
+                                <p:selectOneMenu id="situacao" value="#{membroControle.membro.situacao}" style="width: 311px" required="true" requiredMessage="Selecione a Situação">
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.listaSituacao}" />
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <h:outputLabel value="Líder" style="float: right"/>
+                            <h:panelGroup>
+                                <p:selectOneMenu id="lider" value="#{membroControle.membro.lider}" style="width: 311px" converter="#{liderConverter}">
+                                    <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.listaLider}" var="membro" itemLabel="#{membro.nome}" itemValue="#{membro}"/>
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" cellspacing="5">
+                            <p:commandButton value="Salvar"  action="#{membroControle.salvar()}" ajax="false"  icon="ui-icon-circle-check"/>
+                            <p:commandButton value="Cancelar" onclick="confirmacao.show()" immediate="true"   icon="ui-icon-circle-arrow-w"/>
+                        </h:panelGrid>                                                   
+                    </p:tab>       
+                </p:wizard>
+
+            </h:form>
+
+            <p:dialog id="dialogConvidado" header="Cadastrar Cargo" appendTo="@(body)" widgetVar="dialogCargo" modal="true" showEffect="slider"  height="170" resizable="false" >
+                <h:form>                    
+                    <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >
+
+                        <h:outputLabel id="nomeCarg"  value="Cargo" style="float: left" />
+                        <p:inputText id="nomeCargo" value="#{membroControle.cargo.descricao}"  size="50"  />                         
+                    </h:panelGrid> 
+
+                    <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                        <p:commandButton value="Cancelar" onclick="dialogCargo.hide()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                        <p:commandButton value="Salvar" actionListener="#{membroControle.salvarCargo()}"  
+                                         ajax="true" oncomplete="handleLoginRequest(xhr, status, args)"  icon="ui-icon-circle-check" update=":membroCadastro:cargo"/>                        
+                    </h:panelGrid>
+                </h:form>       
+            </p:dialog> 
+
+            <h:form>     
+                <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                    <p:commandButton value="Sim" action="#{membroControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>  
+            </h:form>
+        </p:panel>
+
+
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (!args.loggedIn) {
+                    PF('dialogCargo').jq.effect("shake", {times: 10}, 100);
+                }
+                else {
+                    PF('dialogCargo').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script>
+    </ui:define>
+</ui:composition>

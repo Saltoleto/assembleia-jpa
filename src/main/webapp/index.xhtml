@@ -1,18 +1,172 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	template="/WEB-INF/templates/template.xhtml"
-	xmlns:p="http://primefaces.org/ui">
-	
-	<ui:define name="content">
-		
-		<p:dataTable var="user" value="#{userController.users}">
-			<p:column headerText="Users"> 
-				<h:outputText value="#{user.userId}" /> - <h:outputText value="#{user.userName}" />
-			</p:column>
-		</p:dataTable>
-	
-	</ui:define>
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    
+    <ui:define name="conteudo">
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/>              
+
+        <h:form id="form" style="margin-top: 10px; "  >  
+            
+            <div id="bloco"  >       
+                <h1 style="margin-bottom: 10px;margin-right: 1175px; margin-top: 60px;font-family: sans-serif!important; font-size: 25px!important;">Visão Geral</h1>
+                <hr  style="border: 0;
+                     border-top: 1px solid #eee; width:  1318px"/>                 
+                <h:panelGrid columns="2" cellspacing="10" style=" border: none!important;" >
+
+                    <p:dataTable id="tabelaMembro" style="border-radius: 8px!important;" emptyMessage="Nenhum resultado encontrado" rowStyleClass="fundaPrimeiraTab" value="#{membroControle.listaTotalMembros}"  rows="5" var="membroTotal" styleClass="tabMembros" >
+                        <p:column style="border-right: none;">
+                            <f:facet name="header">                               
+                                <h:outputText  value="Membros" styleClass="tituloMembros"/>                                                      
+                            </f:facet>                            
+                            <p:row>
+                                <h:outputText value="#{membroTotal.nome}" style="color: #444; font-family: 'Open Sans', sans-serif; font-size: 14px!important;"/>  
+                            </p:row>
+                        </p:column>
+                        <p:column style="border-left: none!important;">
+                            <f:facet name="header" >           
+                                <h:commandButton action="#{membroControle.novoVisaoGeral()}" value="Novo Membro"  styleClass="botaoMembro"/>
+                            </f:facet>                           
+                            <h:outputText value="#{membroTotal.qnt}" style="font-size: 14px!important;float: right;margin-right: 35px ;color: #444; font-family: 'Open Sans', sans-serif;"/>
+                        </p:column>
+                    </p:dataTable>                
+
+
+                    <p:dataTable id="tabelaResumoFinanceiro" emptyMessage="Nenhum resultado encontrado" rowStyleClass="fundaPrimeiraTab" value="#{despesaControle.listaResumoFinanceiro}"  rows="4" var="resumo" styleClass="tabResumoFinaneiro" >
+                        <p:column style="border-right: none;">
+                            <f:facet name="header">                               
+                                <h:outputText  value="Resumo Financeiro de #{eventoControle.mesExtenso}"  styleClass="tituloResumoFinanceiro"/>                                                      
+                            </f:facet>                            
+                            <h:outputText value="#{resumo.descricao}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        <p:column style="border-left: none!important;">
+                            <f:facet name="header" >           
+                                <h:commandButton action="#{despesaControle.fluxoCaixa()}" value="Fluxo de Caixa"  styleClass="botaoResumoFinanceiro"/>
+                            </f:facet>                           
+                            <h:outputText value="R$ #{resumo.valorFormatado}" style="float: right;margin-right: 35px ;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellspacing="10" style="border: none!important;">
+ 
+                    <p:dataTable id="tabelaUltimasReceitas" emptyMessage="Nenhum resultado encontrado" rowStyleClass="fundaPrimeiraTab" value="#{receitaControle.ultimasReceitasVisaoGeral}"  rows="5" var="receita" styleClass="tabUltimasReceitas" >
+                        
+                        <p:column style="border-right: none!important;width: 50% ">
+                            <f:facet name="header">                               
+                                <h:outputText  value="Últimas Receitas" styleClass="tituloUltimasReceitas"/>                                                      
+                            </f:facet>                            
+                            <h:outputText value="#{receita.descricao}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        
+                        <p:column style="border-left: none; border-right: none; width: 30%;">                                 
+                            <h:outputText value="#{receita.categoria.descricao}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        
+                        <p:column style="border-left: none; border-right: none;width: 30%; ">                            
+                            <h:outputText value="R$ #{receita.valor}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        
+                        <p:column style=" border-left: none;">
+                            <f:facet name="header" >           
+                                <h:commandButton action="#{receitaControle.novoVisaoGeral()}" value="Nova Receita"  styleClass="botaoUltimasReceitas"/>
+                            </f:facet>                           
+                            <h:outputText value="#{receita.data}" style=" margin-right: 10px; float: right;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                        </h:outputText>  
+                        </p:column>
+                        
+                    </p:dataTable>
+
+                    <p:dataTable id="tabelaDespesas" emptyMessage="Nenhum resultado encontrado" rowStyleClass="fundaPrimeiraTab" value="#{despesaControle.despesaPagarVisaoGeral}"  rows="5" var="despesa" styleClass="tabDespesas" >
+                         <p:column style="border-right: none!important; width: 50%; ">
+                            <f:facet name="header">                               
+                                <h:outputText  value="Despesas a Pagar" styleClass="tituloDespesas"/>                                                      
+                            </f:facet>                            
+                             <h:outputText value="#{despesa.descricao}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        
+                        <p:column style="border-left: none; border-right: none; width: 30%;">                                 
+                            <h:outputText value="#{despesa.categoria.descricao}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        
+                        <p:column style="border-left: none; border-right: none;width: 30%; ">                            
+                            <h:outputText value="R$ #{despesa.valor}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+                        
+                        <p:column style=" border-left: none;">
+                            <f:facet name="header" >           
+                                <h:commandButton action="#{despesaControle.novoVisaoGeral()}" value="Nova Despesa"  styleClass="botaoDespesas"/>
+                            </f:facet>                           
+                            <h:outputText value="#{despesa.data}" style=" margin-right: 10px; float: right;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                        </h:outputText>  
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+  
+                <h:panelGrid columns="2" cellspacing="10" style="  border: none!important;">
+ 
+
+                    <p:dataTable  id="tabelaAniversariantes" emptyMessage="Nenhum resultado encontrado" rowStyleClass="fundaPrimeiraTab" value="#{membroControle.listaAniversariantes}"  rows="5" var="membro" styleClass="tabAniversariantes" >
+
+                        <p:column style="border-right: none;">
+                            <f:facet name="header">                               
+                                <h:outputText  value="Aniversariantes de #{eventoControle.mesExtenso}"  styleClass="tituloMembros"/>                                                      
+                            </f:facet>                            
+                            <h:outputText value="#{membro.nome}" style="color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>
+                        </p:column>
+
+                        <p:column style="border-left: none!important;border-right: none;"> 
+                            <h:outputText value="#{membro.celular}" style="width: 200px;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>                                                    
+                        </p:column>           
+                        <p:column style="border-left: none!important;">
+                            <f:facet name="header" >           
+                                <h:commandButton action="#{relatorioControle.chamdaTelaVisao()}" value="Veja Mais"  styleClass="botaoMembro"/>
+                            </f:facet>   
+                            <h:outputText value="#{membro.dataNascimento}" style=" float: right;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;" >
+                                <f:convertDateTime pattern="dd/MM" /> 
+                            </h:outputText>                                
+                        </p:column>                                                                  
+
+                    </p:dataTable>
+
+
+                    <p:dataTable  id="tabelaEventos" rowStyleClass="fundaPrimeiraTab" emptyMessage="Nenhum resultado encontrado" value="#{eventoControle.eventosVisaoGeral}"  rows="5" var="evento" styleClass="tabEventos" >
+                        <p:column style="border-right: none; ">
+                            <f:facet name="header">                               
+                                <h:outputText  value="Eventos de #{eventoControle.mesExtenso}" styleClass="tituloMembros"/>                                                      
+                            </f:facet>                            
+                            <h:outputText value="#{evento.nome}" style="width: 350px!important;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;"/>                                                      
+                        </p:column>
+
+                        <p:column style="border-left: none!important;border-right: none;"> 
+                            <h:outputText value="#{evento.dataInicio.time}" style="width: 150px;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;" >
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-3" /> 
+                            </h:outputText>                            
+                        </p:column>
+
+                        <p:column style="border-left: none!important;">
+                            <f:facet name="header" >           
+                                <h:commandButton action="#{eventoControle.novoVisao()}" value="Veja Mais"  styleClass="botaoMembro"/>
+                            </f:facet>                           
+                            <h:outputText value="#{evento.dataEncerramento.time}" style=" width: 120px;float: right;color: #444; font-family: 'Open Sans', sans-serif;font-size: 14px!important;" >
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-3" /> 
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+
+
+
+                </h:panelGrid>        
+
+            </div>
+
+        </h:form>  
+    </ui:define>
+
+
 </ui:composition>

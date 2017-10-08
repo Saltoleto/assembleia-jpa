@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form">
+            <h:head>
+                <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                <link href="../../Resources/css/imputText.css" rel="stylesheet" type="text/css"/>
+            </h:head>
+            <p:dataTable id="tbl" widgetVar="tabela" rows="20" style="font-size: 50px !important;"  filterEvent="enter" selectionMode="single" rowKey="#{acervo.id}" 
+                         selection="#{acervoControle.acervo}" value="#{acervoControle.acervos}" emptyMessage="Não há acervos cadastrados"
+                         paginator="true" var="acervo" filteredValue="#{acervoControle.acervosFiltrados}" paginatorPosition="top"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20" currentPageReportTemplate="(Página {currentPage} de {totalPages})"> 
+                <p:ajax event="rowDblselect" onstart="acao(),statusDialog.show()" global="true" />
+                <f:facet name="header" >
+                    <p  style="text-align: left; font-weight: bold; font-size: 30px!important; color: white; ">Acervo
+                        <p:inputText id="globalFilter" type="search"  placeholder="Pesquisar item do acervo"   onkeyup="tabela.filter()" style="width:108px ; float: right;"/>  </p>                    
+                    <p:commandButton value="Adicionar"  action="#{acervoControle.novo()}" icon="ui-icon-circle-plus"/>
+                    <p:commandButton value="Alterar"  action="#{acervoControle.carregarCadastro()}" onstart="statusDialog.show()" icon="ui-icon-pencil" />
+                    <p:commandButton value="Excluir"   action="#{acervoControle.chamarExclusao()}" update="growl" icon="ui-icon-trash"/> 
+                    <p:growl id="growl" sticky="false" life="3000"/>
+                </f:facet>
+                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains" sortBy="#{acervo.nome}"  filterBy="#{acervo.nome}">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Tipo" style="font-size: 17px !important" />  
+                    </f:facet> 
+                    <h:outputText value="#{acervo.tipo.descricao}" />  
+                </p:column> 
+                
+                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Nome" style="font-size: 17px !important" />  
+                    </f:facet> 
+                    <h:outputText value="#{acervo.nome}" />  
+                </p:column>
+                
+                  <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Autor" style="font-size: 17px !important" />  
+                    </f:facet> 
+                      <h:outputText value="#{acervo.autor}" />  
+                </p:column>
+                  <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Situação" style="font-size: 17px !important" />  
+                    </f:facet> 
+                      <h:outputText value="#{acervo.status.descricao}" />  
+                </p:column>
+                
+                
+                <f:facet name="footer">
+                    Em um total de #{fn:length(acervoControle.acervos)} itens cadastrados.
+                </f:facet>
+            </p:dataTable>
+            <p:remoteCommand name="acao" action="#{acervoControle.carregarCadastro()}"/>
+
+        </h:form>
+        <h:form>
+            <p:confirmDialog message="Deseja Excluir o Item do Acervo?" widgetVar="confirmacaoMe" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim" action="#{acervoControle.deletar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" action="#{acervoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+        <p:dialog appendTo="@(body)" header="Carregando...aguarde..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
+            <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
+        </p:dialog> 
+    </ui:define>
+</ui:composition>
+

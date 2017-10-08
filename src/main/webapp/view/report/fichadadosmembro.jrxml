@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AniversariantesMes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<parameter name="nomeIgrena" class="java.lang.String"/>
+	<parameter name="endereco" class="java.lang.String"/>
+	<parameter name="telefone" class="java.lang.String"/>
+	<parameter name="cidade" class="java.lang.String"/>
+	<parameter name="email" class="java.lang.String"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="uf" class="java.lang.String"/>
+	<parameter name="cnpj" class="java.lang.String"/>
+	<parameter name="bairro" class="java.lang.String"/>
+	<parameter name="mesExtenso" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="bairro" class="java.lang.String">
+		<fieldDescription><![CDATA[bairro]]></fieldDescription>
+	</field>
+	<field name="cargo" class="br.assembleia.entidades.Cargo">
+		<fieldDescription><![CDATA[cargo]]></fieldDescription>
+	</field>
+	<field name="celular" class="java.lang.String">
+		<fieldDescription><![CDATA[celular]]></fieldDescription>
+	</field>
+	<field name="cep" class="java.lang.String">
+		<fieldDescription><![CDATA[cep]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<fieldDescription><![CDATA[cidade]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="cpf" class="java.lang.String">
+		<fieldDescription><![CDATA[cpf]]></fieldDescription>
+	</field>
+	<field name="dataBatismo" class="java.util.Date">
+		<fieldDescription><![CDATA[dataBatismo]]></fieldDescription>
+	</field>
+	<field name="dataBatismoEspiritoSanto" class="java.util.Date">
+		<fieldDescription><![CDATA[dataBatismoEspiritoSanto]]></fieldDescription>
+	</field>
+	<field name="dataConsagracao" class="java.util.Date">
+		<fieldDescription><![CDATA[dataConsagracao]]></fieldDescription>
+	</field>
+	<field name="dataNascimento" class="java.util.Date">
+		<fieldDescription><![CDATA[dataNascimento]]></fieldDescription>
+	</field>
+	<field name="dizimista" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[dizimista]]></fieldDescription>
+	</field>
+	<field name="dizimistaFormatado" class="java.lang.String">
+		<fieldDescription><![CDATA[dizimistaFormatado]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
+	</field>
+	<field name="endereco" class="java.lang.String">
+		<fieldDescription><![CDATA[endereco]]></fieldDescription>
+	</field>
+	<field name="estado" class="br.assembleia.enuns.EnumEstado">
+		<fieldDescription><![CDATA[estado]]></fieldDescription>
+	</field>
+	<field name="estadoCivil" class="br.assembleia.enuns.EnumEstadoCivil">
+		<fieldDescription><![CDATA[estadoCivil]]></fieldDescription>
+	</field>
+	<field name="foto" class="java.lang.Object">
+		<fieldDescription><![CDATA[foto]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="is" class="java.io.InputStream">
+		<fieldDescription><![CDATA[is]]></fieldDescription>
+	</field>
+	<field name="lider" class="br.assembleia.entidades.Membro">
+		<fieldDescription><![CDATA[lider]]></fieldDescription>
+	</field>
+	<field name="membroDesde" class="java.util.Date">
+		<fieldDescription><![CDATA[membroDesde]]></fieldDescription>
+	</field>
+	<field name="nacionalidade" class="java.lang.String">
+		<fieldDescription><![CDATA[nacionalidade]]></fieldDescription>
+	</field>
+	<field name="naturalidade" class="java.lang.String">
+		<fieldDescription><![CDATA[naturalidade]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="nomeConjuge" class="java.lang.String">
+		<fieldDescription><![CDATA[nomeConjuge]]></fieldDescription>
+	</field>
+	<field name="nomeMae" class="java.lang.String">
+		<fieldDescription><![CDATA[nomeMae]]></fieldDescription>
+	</field>
+	<field name="nomePai" class="java.lang.String">
+		<fieldDescription><![CDATA[nomePai]]></fieldDescription>
+	</field>
+	<field name="observacao" class="java.lang.String">
+		<fieldDescription><![CDATA[observacao]]></fieldDescription>
+	</field>
+	<field name="quantidadeFilhos" class="java.lang.Integer">
+		<fieldDescription><![CDATA[quantidadeFilhos]]></fieldDescription>
+	</field>
+	<field name="rg" class="java.lang.String">
+		<fieldDescription><![CDATA[rg]]></fieldDescription>
+	</field>
+	<field name="sexo" class="br.assembleia.enuns.EnumSexo">
+		<fieldDescription><![CDATA[sexo]]></fieldDescription>
+	</field>
+	<field name="situacao" class="br.assembleia.enuns.EnumSituacao">
+		<fieldDescription><![CDATA[situacao]]></fieldDescription>
+	</field>
+	<field name="telefone" class="java.lang.String">
+		<fieldDescription><![CDATA[telefone]]></fieldDescription>
+	</field>
+	<field name="procedencia" class="java.lang.String">
+		<fieldDescription><![CDATA[procedencia]]></fieldDescription>
+	</field>
+	<title>
+		<band height="126">
+			<textField>
+				<reportElement x="1" y="20" width="554" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cidade}+"-"+$P{uf}+" "+$P{endereco}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" isUsingCache="true">
+				<reportElement x="54" y="0" width="60" height="60"/>
+				<imageExpression class="java.io.InputStream"><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1" y="50" width="554" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cnpj}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="35" width="554" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{email}+" "+$P{telefone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="0" width="555" height="20" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nomeIgrena}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="90" width="554" height="23" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FICHA DE MEMBRO"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="477" splitType="Stretch">
+			<image scaleImage="FillFrame">
+				<reportElement x="475" y="12" width="80" height="100"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<pen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<topPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<leftPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<bottomPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<rightPen lineWidth="0.25" lineColor="#6C6A6A"/>
+				</box>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{is}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="1" y="12" width="474" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Nome:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="32" width="474" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Data de Nascimento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="52" width="474" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ CPF:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="72" width="474" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid" lineColor="#6C6A6A"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#6C6A6A"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#6C6A6A"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#6C6A6A"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#6C6A6A"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ RG:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="92" width="474" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<topPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<leftPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<bottomPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<rightPen lineWidth="0.25" lineColor="#6C6A6A"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Estado Civil:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="112" width="283" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Cônjuge:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="112" width="271" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<topPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<leftPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<bottomPen lineWidth="0.25" lineColor="#6C6A6A"/>
+					<rightPen lineWidth="0.25" lineColor="#6C6A6A"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Quantidade de Filhos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="132" width="283" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Pai:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="132" width="271" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Mãe:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="152" width="283" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Nacionalidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="152" width="271" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Naturalidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="172" width="283" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Estado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="172" width="271" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Cidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="192" width="283" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Bairro:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="192" width="271" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ CEP:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="212" width="554" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Endereço:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="232" width="283" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Telefone Residencial: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="284" y="232" width="271" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Telefone Celular:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="252" width="554" height="20" forecolor="#3E3E3E"/>
+				<box rightPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Email:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="272" width="554" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Observação:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="100" height="12" forecolor="#3E3E3E"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dados Pessoais]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="316" width="100" height="12" forecolor="#3E3E3E"/>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dados Eclesiáticos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="348" width="315" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Dizimista:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="368" width="315" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Situação: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="328" width="239" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Data de Batismo no Esp. Santo:
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="348" width="239" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Membro Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="368" width="239" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Data de Batismo:
+ ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="37" y="12" width="437" height="20" forecolor="#6C6A6A"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="104" y="32" width="369" height="20" forecolor="#6C6A6A"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataNascimento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="28" y="52" width="447" height="20" forecolor="#6C6A6A"/>
+				<box>
+					<pen lineColor="#6C6A6A"/>
+					<topPen lineColor="#6C6A6A"/>
+					<leftPen lineColor="#6C6A6A"/>
+					<bottomPen lineColor="#6C6A6A"/>
+					<rightPen lineColor="#6C6A6A"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="24" y="72" width="449" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="66" y="92" width="409" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{estadoCivil}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="50" y="112" width="230" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomeConjuge}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="403" y="112" width="153" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{quantidadeFilhos}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="24" y="132" width="256" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomePai}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="313" y="132" width="242" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nomeMae}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="77" y="152" width="207" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nacionalidade}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="353" y="152" width="202" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{naturalidade}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="41" y="172" width="243" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{estado}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="325" y="172" width="230" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cidade}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="39" y="192" width="245" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{bairro}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="313" y="192" width="242" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cep}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="58" y="212" width="497" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{endereco}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="111" y="232" width="173" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="374" y="232" width="181" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="37" y="252" width="518" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="72" y="272" width="483" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="53" y="348" width="263" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dizimistaFormatado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="397" y="348" width="158" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{membroDesde}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="51" y="368" width="265" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{situacao}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="403" y="368" width="153" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataBatismo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="475" y="329" width="81" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataBatismoEspiritoSanto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="328" width="315" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Procedência:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="66" y="328" width="250" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{procedencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="388" width="315" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Cargo:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="37" y="388" width="279" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cargo}.getDescricao()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="316" y="388" width="239" height="20" forecolor="#3E3E3E"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Data de Consagração:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="431" y="388" width="124" height="20" forecolor="#6C6A6A"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{dataConsagracao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15">
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="0" width="40" height="13" forecolor="#3E3E3E" backcolor="#FFFFFF"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="342" y="0" width="173" height="13" forecolor="#3E3E3E" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Data de Emissão:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="77" y="0" width="53" height="15" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="81">
+			<staticText>
+				<reportElement x="77" y="61" width="100" height="20" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Pastor]]></text>
+			</staticText>
+			<line>
+				<reportElement x="28" y="59" width="211" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="362" y="61" width="100" height="20" forecolor="#3E3E3E"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tesoureiro]]></text>
+			</staticText>
+			<line>
+				<reportElement x="313" y="59" width="211" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

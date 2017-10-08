@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="form">
+            <h:head>
+                <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                <link href="../../Resources/css/imputText.css" rel="stylesheet" type="text/css"/>
+            </h:head>
+            <p:dataTable id="tbl" widgetVar="tabela" rows="20" style="font-size: 50px !important;"  filterEvent="enter" selectionMode="single" rowKey="#{emprestimo.id}" 
+                         selection="#{emprestimoControle.emprestimo}" value="#{emprestimoControle.emprestimos}" emptyMessage="Não há empréstimos cadastrados"
+                         paginator="true" var="emprestimo" filteredValue="#{emprestimoControle.emprestimosFiltrados}" paginatorPosition="top"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20" currentPageReportTemplate="(Página {currentPage} de {totalPages})">              
+                <f:facet name="header" >
+                    <p  style="text-align: left; font-weight: bold; font-size: 30px!important; color: white; ">Empréstimos
+                        <p:inputText id="globalFilter" type="search"  placeholder="Pesquisar por empréstimo"   onkeyup="tabela.filter()" style="width:108px ; float: right;"/>  </p>                    
+                    <p:commandButton value="Novo"  action="#{emprestimoControle.novo()}" icon="ui-icon-circle-plus"/>
+                    <!--<p:commandButton value="Alterar"  action="#{emprestimoControle.carregarCadastro()}" onstart="statusDialog.show()" icon="ui-icon-pencil" />-->
+                    <p:commandButton value="Devolver"   action="#{emprestimoControle.chamarDevolucao()}" update="growl" icon="ui-icon-trash"/> 
+                    <p:growl id="growl" sticky="false" life="3000"/>
+                </f:facet>
+                <p:column styleClass="coluna" filterStyle="display: none;">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Tipo" style="font-size: 17px !important" />  
+                    </f:facet> 
+                    <h:outputText value="#{emprestimo.acervo.tipo}" />  
+                </p:column> 
+                
+                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Nome" style="font-size: 17px !important" />  
+                    </f:facet> 
+                    <h:outputText value="#{emprestimo.acervo.nome}" />  
+                </p:column>
+                
+                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains" sortBy="#{emprestimo.acervo.nome}"  filterBy="#{emprestimo.acervo.nome}">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Membro" style="font-size: 17px !important" />  
+                    </f:facet> 
+                    <h:outputText value="#{emprestimo.membro.nome}" />  
+                </p:column>
+                
+                  <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Autor" style="font-size: 17px !important" />  
+                    </f:facet> 
+                      <h:outputText value="#{emprestimo.acervo.autor}" />  
+                </p:column>
+                
+                  <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Data de Empréstimo" style="font-size: 17px !important"/>                                                     
+                    </f:facet> 
+                      <h:outputText value="#{emprestimo.dataEmprestimo}">
+                      <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                      </h:outputText>  
+                </p:column>
+                
+                  <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Data de Devolução" style="font-size: 17px !important"/>                                                     
+                    </f:facet> 
+                      <h:outputText value="#{emprestimo.dataDevolucao}">
+                      <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                      </h:outputText>  
+                </p:column>
+                
+                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains">  
+                    <f:facet name="header" >  
+                        <h:outputText value="Devolvido ?" style="font-size: 17px !important" />  
+                    </f:facet> 
+                    <h:outputText value="#{emprestimo.statuEmprestimo}" />  
+                </p:column>
+                
+                
+                <f:facet name="footer">
+                    Em um total de #{fn:length(emprestimoControle.emprestimos)} empréstimos realizados.
+                </f:facet>
+            </p:dataTable>
+            <p:remoteCommand name="acao" action="#{emprestimoControle.carregarCadastro()}"/>
+
+        </h:form>
+        <h:form>
+            <p:confirmDialog message="Deseja Devolver o item?" widgetVar="confirmacaoMe" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim" action="#{emprestimoControle.devolver()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" action="#{emprestimoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+        <p:dialog appendTo="@(body)" header="Carregando...aguarde..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
+            <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
+        </p:dialog> 
+    </ui:define>
+</ui:composition>
+

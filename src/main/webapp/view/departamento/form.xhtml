@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+
+    <ui:define name="conteudo">  
+
+        <p:panel>
+            <f:facet name="header">
+                <h:outputText value="#{departamentoControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+            <h:form  id="cadastro">
+
+                <h:head>
+                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                </h:head>
+
+                <h:panelGrid columns="2" cellspacing="15">
+                    <h:outputLabel  value="Nome" style="float: right" />
+                    <p:inputText value="#{departamentoControle.departamento.nome}" size="60"  required="true" requiredMessage="Informe o nome do Departamento !"/>  
+
+                    <h:outputLabel  value="Descrição" style="float: right" />
+                    <p:inputTextarea value="#{departamentoControle.departamento.descricao}" style="width: 454px"/>  
+                </h:panelGrid>  
+
+                <p:tabView style="border: none;width: 70em; " id="tabView" styleClass="custom" activeIndex="#{departamentoControle.tab}" >
+
+                    <p:tab title="Funções" >
+
+                        <p:dataTable id="tbl" styleClass="tabela" emptyMessage="Não há funções cadastradas" 
+                                     style="border: none ; margin-top: 5px;" widgetVar="tabela" rows="20"                                 
+                                     value="#{departamentoControle.departamento.funcoes}"  selection="#{departamentoControle.funcaoFinal}" var="funcao" > 
+
+                            <f:facet name="header" >
+                                <p:commandButton value="Incluir Função" onclick="dialogFuncao.show()" icon="ui-icon-circle-plus" style="float: right;"/>
+                                <p:growl id="growl" sticky="false" life="3000"/>
+                            </f:facet> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Função" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{funcao.funcao}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Membro" style="font-size: 14px !important; float: left;  " />  
+                                </f:facet> 
+                                <p:column filterStyle="display: none;" style="border-left: none; border-right: none;
+                                          border-top: none;border-bottom: none ;background: white;width: 2%;" > 
+                                    <h:outputText value="#{funcao.membro.nome}" />
+                                </p:column> 
+                            </p:column> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%; " > 
+
+                                <p:commandButton process="@this tbl"  onclick="confirmacaoFuncao.show()" icon="ui-icon-trash" style="float: right;">      
+                                    <f:setPropertyActionListener value="#{funcao}" target="#{departamentoControle.funcaoFinal}" />                                    
+                                </p:commandButton>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </p:tab>  
+
+                    <p:tab title="Integrantes" >
+                        <p:dataTable id="tbl2" styleClass="tabela" emptyMessage="Não há integrantes cadastrados" 
+                                     style="border: none ; margin-top: 5px;" widgetVar="tabela" rows="20"                            
+                                     value="#{departamentoControle.departamento.integrantes}"  selection="#{departamentoControle.membroFinal}" var="membro" > 
+
+                            <f:facet name="header" >
+                                <p:commandButton value="Incluir Integrante" onclick="dialogIntegrante.show()" icon="ui-icon-circle-plus" style="float: right;"/>
+                                <p:growl id="growl" sticky="false" life="3000"/>
+                            </f:facet> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Membro" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{membro.nome}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%; " > 
+
+                                <p:commandButton process="@this tbl2"  onclick="confirmacaoIntegrante.show()" icon="ui-icon-trash" style="float: right;">      
+                                    <f:setPropertyActionListener value="#{membro}" target="#{departamentoControle.membroFinal}" />                                    
+                                </p:commandButton>
+                            </p:column> 
+
+
+
+                        </p:dataTable>
+                    </p:tab>                                                     
+
+                </p:tabView>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{departamentoControle.salvar()}"  ajax="false"  icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+
+            </h:form>
+        </p:panel>
+        <p:dialog id="dialogFuncao" header="Incluir Funções" appendTo="@(body)" widgetVar="dialogFuncao" modal="true" width="465" showEffect="slider"  height="250" resizable="false" >
+            <h:form>
+                <p:growl id="msgFuncao"/>
+                <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >
+                    <h:outputLabel  value="Função" style="float: left" />
+                    <p:inputText value="#{departamentoControle.funcaoTransiente.funcao}" size="50"   />  
+                    <h:outputLabel value="Membro" style="float: left"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="funcao" value="#{departamentoControle.membroTransiente}" converter="#{membroConverter}" style="width: 380px" >
+                            <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                            <f:selectItems value="#{departamentoControle.membros}" var="membroFuncao" itemLabel="#{membroFuncao.nome}" itemValue="#{membroFuncao}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup> 
+                </h:panelGrid>  
+
+                <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                    <p:commandButton value="Fechar" onclick="dialogFuncao.hide()" immediate="true"  icon="ui-icon-close"/>
+                    <p:commandButton value="Incluir" actionListener="#{departamentoControle.adicionarFuncoes()}" oncomplete="handleLoginRequest2(xhr, status, args)"  update=":cadastro:tabView:tbl" ajax="true" 
+                                      icon="ui-icon-circle-check"/>                        
+                </h:panelGrid>
+            </h:form>       
+        </p:dialog>
+        
+        <script type="text/javascript">
+            function handleLoginRequest2(xhr, status, args) {
+                if (!args.loggedIn) {
+                    PF('dialogFuncao').jq.effect("shake", {times: 5}, 100);
+                }else {
+                    PF('dialogFuncao').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script> 
+
+        <p:dialog header="Incluir Integrantes" widgetVar="dialogIntegrante"  showEffect="slider" height="170" width="465" resizable="false" >
+            <h:form>
+                <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >               
+                    <h:outputLabel value="Membro" style="float: left"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="integrante" value="#{departamentoControle.membroTransiente}" style="width: 380px" converter="#{membroConverter}">
+                            <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                            <f:selectItems value="#{departamentoControle.membros}" var="membro" itemLabel="#{membro.nome}" itemValue="#{membro}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup> 
+                </h:panelGrid> 
+
+                <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                    <p:commandButton value="Fechar" onclick="dialogIntegrante.hide()" immediate="true"  icon="ui-icon-close"/>
+                    <p:commandButton value="Incluir" actionListener="#{departamentoControle.adicionarIntegrantes()}"  oncomplete="handleLoginRequest(xhr, status, args)"  update=":cadastro:tabView:tbl2" ajax="true"  icon="ui-icon-circle-check"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (!args.loggedIn) {
+                    PF('dialogIntegrante').jq.effect("shake", {times: 5}, 100);
+                }else {
+                    PF('dialogIntegrante').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script> 
+
+
+        <h:form>     
+            <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                <p:commandButton value="Sim" action="#{departamentoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+            </p:confirmDialog>  
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog message="Excluir a função?" widgetVar="confirmacaoFuncao" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim" actionListener="#{departamentoControle.retirarFuncaoLista()}" process="@this" update=":cadastro:tabView:tbl" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacaoMe.hide()"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+ 
+        <h:form>
+            <p:confirmDialog message="Excluir o integrante?" widgetVar="confirmacaoIntegrante" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim"  actionListener="#{departamentoControle.retirarIntegranteLista()}"  process="@this" update=":cadastro:tabView:tbl2" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacaoIntegrante.hide()"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+
+
+
+    </ui:define>
+</ui:composition>

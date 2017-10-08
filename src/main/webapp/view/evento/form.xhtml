@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+
+    <ui:define name="conteudo">  
+
+        <p:panel>
+            <f:facet name="header">
+                <h:outputText value="#{eventoControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+            <h:form id="cadastro">
+
+                <h:head>
+                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                    <script src="../Resources/js/calendarPT_BR.js" type="text/javascript"></script>
+                </h:head>
+
+                <h:panelGrid columns="2" cellspacing="15">
+                    <h:outputLabel  value="Nome*" style="float: right" />
+                    <p:inputText value="#{eventoControle.evento.nome}" size="62"  required="true" requiredMessage="Informe o nome do Evento !"/>  
+
+                    <h:outputLabel  value="Descrição" style="float: right" />
+                    <p:inputTextarea value="#{eventoControle.evento.descricao}" style="width: 470px"/> 
+
+                    <h:outputLabel for="dataInicio" value="Data de Início*" style="float: right" />
+                    <p:calendar id="dataInicio" value="#{eventoControle.evento.dataInicio}" pattern="dd/MM/yyyy HH:mm"/>
+
+
+                    <p:outputLabel for="dataEncerramento" value="Data de Encerramento*" style="float: right"/>
+                    <p:calendar id="dataEncerramento" value="#{eventoControle.evento.dataEncerramento}" pattern="dd/MM/yyyy HH:mm"/>
+
+
+                    <h:outputLabel  value="Local" style="float: right" />
+                    <p:inputText value="#{eventoControle.evento.localEvento}" size="60"/> 
+
+                    <h:outputLabel  value="Telefone do Responsável" style="float: right" />
+                    <p:inputMask value="#{eventoControle.evento.telefone}" mask="(99)99999-9999"  size="15"/>
+                </h:panelGrid>  
+
+                <p:tabView  id="tabView" style="border: none;width: 70em; " styleClass="custom" activeIndex="#{eventoControle.tab}" >
+
+                    <p:tab title="Convidados" >
+
+                        <p:dataTable id="tbl" styleClass="tabela" emptyMessage="Não há convidados cadastrados" 
+                                     style="border: none ; margin-top: 5px;" widgetVar="tabela" rows="20"                                 
+                                     value="#{eventoControle.evento.convidados}"  selection="#{eventoControle.convidado}" var="convidado" > 
+
+                            <f:facet name="header" >
+                                <p:commandButton value="Incluir Convidado"  process="@this"  onclick="PF('dialogConvidado').show();" icon="ui-icon-circle-plus" style="float: right;"/>
+
+                                <p:growl id="growl" sticky="false" life="3000"/>
+                            </f:facet> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header">  
+                                    <h:outputText value="Convidado" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{convidado.nome}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Função" style="font-size: 14px !important; float: left;  " />  
+                                </f:facet> 
+                                <p:column filterStyle="display: none;" style="border-left: none; border-right: none;
+                                          border-top: none;border-bottom: none ;background: white;width: 2%;" > 
+                                    <h:outputText value="#{convidado.funcao}" />
+                                </p:column> 
+                            </p:column> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%; " > 
+
+                                <p:commandButton process="@this tbl"  onclick="confirmacaoConvidado.show()" icon="ui-icon-trash" style="float: right;">      
+                                    <f:setPropertyActionListener value="#{convidado}" target="#{eventoControle.convidado}" />                                    
+                                </p:commandButton>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </p:tab>  
+
+                    <p:tab title="Participantes" id="tabParticipantes" >
+                        <p:dataTable id="tblParticipantes" styleClass="tabela" emptyMessage="Não há participantes cadastrados" 
+                                     style="border: none ; margin-top: 5px;" widgetVar="tabela" rows="20"                            
+                                     value="#{eventoControle.evento.participantes}"  selection="#{eventoControle.participante}" var="participante" > 
+
+                            <f:facet name="header" >
+                                <p:commandButton value="Incluir Participante" onclick="dialogParticipante.show()" icon="ui-icon-circle-plus" style="float: right;"/>
+                                <p:growl id="growl" sticky="false" life="3000"/>
+                            </f:facet> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Membro" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{participante.nome}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%; " > 
+
+                                <p:commandButton process="@this tblParticipantes"  onclick="confirmacaoIntegrante.show()" icon="ui-icon-trash" style="float: right;">      
+                                    <f:setPropertyActionListener value="#{participante}" target="#{eventoControle.participante}" />                                    
+                                </p:commandButton>
+                            </p:column> 
+
+
+
+                        </p:dataTable>
+                    </p:tab>                                                     
+
+                </p:tabView>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{eventoControle.salvar()}"  ajax="false"  icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+
+            </h:form> 
+        </p:panel>
+        <p:dialog id="dialogConvidado" header="Incluir Convidado" appendTo="@(body)" widgetVar="dialogConvidado" modal="true" showEffect="slider"  height="255" width="460" resizable="false" >
+            <h:form>
+                <p:growl id="msgFuncao"/>
+                <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >
+
+                    <h:outputLabel id="nomeCon" for="nomeConvidade"  value="Convidado" style="float: left" />
+                    <p:inputText id="nomeConvidade" value="#{eventoControle.convidado.nome}" label="nomeCon" size="50"  />  
+
+                    <h:outputLabel id="funcaoCon" for="funcaoConvidado" value="Função" style="float: left"/>
+                    <p:inputText id="funcaoConvidado" value="#{eventoControle.convidado.funcao}" label="funcaoCon" size="50"  />
+
+                </h:panelGrid> 
+
+                <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                    <p:commandButton value="Fechar" onclick="dialogConvidado.hide()" immediate="true"  icon="ui-icon-close"/>
+                    <p:commandButton value="Incluir" actionListener="#{eventoControle.adicionarConvidados()}" oncomplete="handleLoginRequest2(xhr, status, args)"  
+                                     update=":cadastro:tabView:tbl"   ajax="true"  icon="ui-icon-circle-check"/>                        
+                </h:panelGrid>
+            </h:form>        
+        </p:dialog>
+
+        <p:dialog header="Incluir Participantes" widgetVar="dialogParticipante"  showEffect="slider" height="170" width="475" resizable="false" >
+            <h:form>
+                <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >               
+                    <h:outputLabel value="Membro" style="float: left"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="integrante" value="#{eventoControle.participante}"  style="width: 380px" converter="#{membroConverter}">
+                            <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                            <f:selectItems value="#{eventoControle.membros}" var="participante" itemLabel="#{participante.nome}" itemValue="#{participante}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup> 
+                </h:panelGrid>  
+
+                <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                    <p:commandButton value="Fechar" onclick="dialogParticipante.hide()" immediate="true"  icon="ui-icon-close"/>
+                    <p:commandButton value="Incluir" actionListener="#{eventoControle.adicionarParticipantes()}" oncomplete="handleLoginRequest(xhr, status, args)"  update=":cadastro:tabView:tblParticipantes" ajax="true"  icon="ui-icon-circle-check"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <script type="text/javascript">
+            function handleLoginRequest(xhr, status, args) {
+                if (!args.loggedIn) {
+                    PF('dialogParticipante').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('dialogParticipante').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script> 
+
+        <script type="text/javascript">
+            function handleLoginRequest2(xhr, status, args) {
+                if (!args.loggedIn) {
+                    PF('dialogConvidado').jq.effect("shake", {times: 5}, 100);
+                }else {
+                    PF('dialogConvidado').hide();
+                    $('#loginLink').fadeOut();
+                }
+            }
+        </script>
+
+
+
+        <h:form>     
+            <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                <p:commandButton value="Sim" action="#{eventoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+            </p:confirmDialog>  
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog message="Excluir o Convidado?" widgetVar="confirmacaoConvidado" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim" actionListener="#{eventoControle.retirarConvidadoLista()}" update=":cadastro:tabView:tbl"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacaoConvidado.hide()"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog message="Excluir o Participante?" widgetVar="confirmacaoIntegrante" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim"  actionListener="#{eventoControle.retirarParticipanteLista()}" update=":cadastro:tabView:tblParticipantes"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacaoIntegrante.hide()"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

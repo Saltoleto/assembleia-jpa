@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+    <f:metadata>
+        <f:viewParam name="rel" value="#{relatoriosGerenciaisControle.str}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">
+
+        <p:panel >
+
+            <f:facet name="header">
+                <h:outputText value="Relatório de Aniversariantes" style="font-size: 30px!important; color: white;"/>
+
+            </f:facet>
+            <h:form id="form">
+                <h:head>
+                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/>  
+                </h:head>
+                <p:dataTable   rowStyleClass="linhaSemBordaFluxoReceita"  id="tblReceitas" styleClass="custom2"   
+                               style=" width: 70em;border: none; border-color: white; margin-top: 5px;" widgetVar="tabela" rows="20"                                 
+                               value="#{relatorioControle.membros}"  var="membro" emptyMessage="Não há aniversariantes neste mês..."> 
+
+                    <f:facet name="header" >                        
+                        <br/>
+                        <h:panelGroup>
+                            <p:selectOneMenu id="estado" value="#{relatorioControle.mes}"  style="width: 150px;float: left">                                  
+                                <f:selectItems value="#{relatorioControle.listaMes}" var="mes" itemValue="#{mes}" itemLabel="#{mes.descricao}"/>
+                            </p:selectOneMenu>
+                        </h:panelGroup>   
+
+
+                        <h:commandButton value="Listar" styleClass="botaoListar" style="float: left;margin-left: 5px;" action="#{relatorioControle.buscarAniversariantes()}"/>
+
+                        <h:commandButton value="Imprimir" onclick="PrimeFaces.monitorDownload(start, stop)"  styleClass="botaoImprimirPatrimonio" style="float: left; margin-left: 5px;">
+                            <p:fileDownload value="#{relatorioControle.aniversariantes()}"  />  
+                        </h:commandButton> 
+
+
+                        <br/><br/><br/>                          
+                        <br/><br/>     
+                        <p:growl id="growl2" sticky="false" life="3000"/>
+                    </f:facet> 
+
+                    <p:column  filterStyle="display: none;" style=" border: none;background: white; " >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Nome" style="font-size: 17px !important; float: left;" />  
+                        </f:facet> 
+                        <h:outputText value="#{membro.nome}" style=" border-left: none!important;"/>  
+                    </p:column>                             
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white; " >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Celular" style="font-size: 17px !important; float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{membro.celular}" style=" border: none!important;"/>  
+                    </p:column>  
+
+                    <p:column  filterStyle="display: none;" style="border: none;background: white;" >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Email" style="font-size: 17px !important; float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{membro.email}" style="border: none!important;"/>  
+                    </p:column>  
+
+
+
+                    <p:column styleClass="coluna" filterStyle="display: none;" style="border: none;background: white;"  >  
+                        <f:facet name="header" >  
+                            <h:outputText value="Data Aniversário" style="font-size: 17px !important;float: left; " />  
+                        </f:facet> 
+                        <h:outputText value="#{membro.dataNascimento}">
+                            <f:convertDateTime pattern="dd/MM"/>
+                        </h:outputText>  
+                    </p:column>    
+
+                </p:dataTable>
+            </h:form>
+            <p:dialog appendTo="@(body)" header="Aguarde...gerando o relatório..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
+                <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
+            </p:dialog> 
+
+        </p:panel>
+    </ui:define>
+</ui:composition>

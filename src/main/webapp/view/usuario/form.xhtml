@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+    
+     <f:metadata>
+        <f:viewParam name="rel" value="#{usuarioControle.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">
+        <p:panel >
+            <f:facet name="header">
+                <h:outputText value="#{usuarioControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+            <h:form id="cadastro">
+                <h:panelGrid columns="2" cellspacing="15">
+                    <h:outputLabel value="Login:"/>
+                    <p:inputText id="nome" value="#{usuarioControle.usuario.login}" size="29" required="true" requiredMessage="Informe o login !" />
+                    <h:outputLabel value="E-mail:"/>
+                    <p:inputText id="email" value="#{usuarioControle.usuario.email}" size="29" required="true" requiredMessage="Informe o e-mail !" validatorMessage="E-mail incorreto !" >
+                        <f:validateRegex
+                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <h:outputLabel value="Senha:"/>
+                    <p:password value="#{usuarioControle.usuario.senha}" size="29" required="true" requiredMessage="Informe a senha !" />
+                    <h:outputLabel value="Autorização:"/>
+                    <p:selectOneMenu value="#{usuarioControle.usuario.autorizacao}" style="width: 200px;">
+                        <f:selectItem itemValue="USUARIO" itemLabel="Usuario"/>
+                        <f:selectItem itemValue="ADMIN" itemLabel="Administrador"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{usuarioControle.salvar()}" ajax="false" icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true" icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+            </h:form>
+            <h:form>     
+                <p:confirmDialog message="Deseja voltar para a listagem e cancelar o cadastro?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                    <p:commandButton value="Sim" action="#{usuarioControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>  
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

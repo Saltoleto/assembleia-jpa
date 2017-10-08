@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+
+    <ui:define name="conteudo">  
+
+        <p:panel>
+            <f:facet name="header">
+                <h:outputText value="#{cursoControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+            <h:form prependId="false" id="cadastro">
+
+                <h:head>
+                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
+                    <script src="../Resources/js/calendarPT_BR.js" type="text/javascript"></script>
+                </h:head>
+
+                <h:panelGrid columns="2" cellspacing="15">
+                    <h:outputLabel  value="Curso*" style="float: right" />
+                    <p:inputText value="#{cursoControle.curso.nome}" size="60"  required="true" requiredMessage="Informe o nome do cargo !"/> 
+
+                    <h:outputLabel  value="Turma" style="float: right" />
+                    <p:inputText value="#{cursoControle.curso.turma}" size="60"/> 
+
+                    <h:outputLabel  value="Descrição" style="float: right" />
+                    <p:inputTextarea value="#{cursoControle.curso.descricao}" style="width: 454px"/> 
+
+                    <h:outputLabel value=" Data de Inicio*" style="float: right"/>                           
+                    <p:calendar id="calendarDataInicio"  yearRange="c-70:c" value="#{cursoControle.curso.dataInicio}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                showButtonPanel="true" navigator="true" style="height: 4px;">
+                    </p:calendar>
+
+                    <h:outputLabel value="Data de Encerramento" style="float: right"/>                           
+                    <p:calendar id="calendarDataEncerramento"  yearRange="c-70:c" value="#{cursoControle.curso.dataEncerramento}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                showButtonPanel="true" navigator="true" style="height: 4px;"/>
+                </h:panelGrid>  
+
+                <p:tabView style="border: none;width: 70em; " styleClass="custom" activeIndex="#{cursoControle.tab}" >
+
+                    <p:tab title="Alunos" >
+
+                        <p:dataTable id="tbl" styleClass="tabela" emptyMessage="Não há alunos cadastrados" 
+                                     style="border: none ; margin-top: 5px;" widgetVar="tabela" rows="20"                                 
+                                     value="#{cursoControle.curso.alunos}"  selection="#{cursoControle.aluno}" var="aluno" > 
+
+                            <f:facet name="header" >
+                                <p:commandButton value="Incluir Aluno" onclick="dialogAluno.show()" icon="ui-icon-circle-plus" style="float: right;"/>
+                                <p:growl id="growl" sticky="false" life="3000"/>
+                            </f:facet> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 10%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Nome" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{aluno.nome}" style="border: none!important;"/>  
+                            </p:column>      
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Telefone" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{aluno.telefone}" style="border: none!important;"/>  
+                            </p:column> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Celular" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{aluno.celular}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Email" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{aluno.email}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%; " > 
+
+                                <p:commandButton process="@this tbl"  onclick="confirmacaoFuncaoAluno.show()" icon="ui-icon-trash" style="float: right;">      
+                                    <f:setPropertyActionListener value="#{aluno}" target="#{cursoControle.aluno}" />                                    
+                                </p:commandButton>
+                            </p:column> 
+
+
+                        </p:dataTable>
+                    </p:tab>  
+
+                    <p:tab title="Professores" >
+                        <p:dataTable id="tbl2" styleClass="tabela" emptyMessage="Não há professores cadastrados" 
+                                     style="border: none ; margin-top: 5px;" widgetVar="tabela" rows="20"                            
+                                     value="#{cursoControle.curso.professores}"  selection="#{cursoControle.professor}" var="professor" > 
+
+                            <f:facet name="header" >
+                                <p:commandButton value="Incluir Professor" onclick="dialogProfessor.show()" icon="ui-icon-circle-plus" style="float: right;"/>
+                                <p:growl id="growl" sticky="false" life="3000"/>
+                            </f:facet> 
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 10%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Nome" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{professor.nome}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Telefone" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{professor.telefone}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Celular" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{professor.celular}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white;width: 2%;" >  
+                                <f:facet name="header" >  
+                                    <h:outputText value="Email" style="font-size: 14px !important; float: left; " />  
+                                </f:facet> 
+                                <h:outputText value="#{professor.email}" style="border: none!important;"/>  
+                            </p:column>  
+
+                            <p:column  filterStyle="display: none;" style="border-left: none; border-right: none;
+                                       border-top: none;border-bottom: none ;background: white; width: 2%; " > 
+
+                                <p:commandButton process="@this tbl2"  onclick="confirmacaoProfessor.show()" icon="ui-icon-trash" style="float: right;">      
+                                    <f:setPropertyActionListener value="#{professor}" target="#{cursoControle.professor}" />                                    
+                                </p:commandButton>
+                            </p:column> 
+
+
+
+                        </p:dataTable>
+                    </p:tab>                                                     
+
+                </p:tabView>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{cursoControle.salvar()}"  ajax="false"  icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+
+            </h:form>
+        </p:panel>
+        <p:dialog header="Incluir Professores" widgetVar="dialogProfessor" showEffect="slider"  style="width: 500px;" height="170" resizable="false" >
+            <h:form>                
+                <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >          
+                    <h:outputLabel value="Professor" style="float: left"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="professor" value="#{cursoControle.professor}" converter="#{professorConverter}" style="width: 380px" >
+                            <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                            <f:selectItems value="#{cursoControle.professores}" var="professor" itemLabel="#{professor.nome}" itemValue="#{professor}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup> 
+                </h:panelGrid> 
+
+                <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                    <p:commandButton value="Cancelar" onclick="dialogFuncao.hide()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                    <p:commandButton value="Incluir" action="#{cursoControle.adicionarProfessores()}"  ajax="false"  icon="ui-icon-circle-check"/>                        
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Incluir Alunos" widgetVar="dialogAluno"  showEffect="slider" height="170" style="width: 500px;" resizable="false" >
+            <h:form>
+                <h:panelGrid columns="1" cellspacing="12" style="margin-top:" >               
+                    <h:outputLabel value="Aluno" style="float: left"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="integrante" value="#{cursoControle.aluno}" style="width: 380px" converter="#{alunoConverter}">
+                            <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                            <f:selectItems value="#{cursoControle.alunos}" var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup> 
+                </h:panelGrid> 
+
+                <h:panelGrid columns="2" cellspacing="5" style="float: right; margin-top: 40px;">
+                    <p:commandButton value="Fechar" onclick="dialogIntegrante.hide()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                    <p:commandButton value="Incluir" action="#{cursoControle.adicionarAlunos()}" ajax="false"  icon="ui-icon-circle-check"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+        <h:form>     
+            <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                <p:commandButton value="Sim" action="#{cursoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+            </p:confirmDialog>  
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog message="Excluir o Aluno" widgetVar="confirmacaoFuncaoAluno" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim" action="#{cursoControle.retirarAlunoLista()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacaoMe.hide()"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog message="Excluir o Professor?" widgetVar="confirmacaoProfessor" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
+                <p:commandButton value="Sim"  action="#{cursoControle.retirarProfessorLista()}"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                <p:commandButton value="Não" onclick="confirmacaoIntegrante.hide()"  process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
+            </p:confirmDialog>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

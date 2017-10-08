@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="rel" value="#{patrimonioControle.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">            
+
+        <p:panel>  
+
+            <f:facet name="header">
+                <h:outputText value="#{patrimonioControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+
+            <h:form id="cadastro">
+                <script src="../Resources/js/mascara.js"/>
+                <script src="../Resources/js/calendarPT_BR.js" type="text/javascript"></script>
+                <h:panelGrid columns="2" cellspacing="15">
+
+                    <h:outputLabel  value="Código*" style="font-size: 18px;float: right" />
+                    <p:inputText value="#{patrimonioControle.patrimonio.codigo}" size="60"  required="true" requiredMessage="Informe o código !"/> 
+
+                    <h:outputLabel  value="Nome*" style="font-size: 18px;float: right" />
+                    <p:inputText value="#{patrimonioControle.patrimonio.nome}" size="83"  required="true" requiredMessage="Informe o nome !"/>
+
+                    <h:outputLabel  value="Descrição" style="float: right" />                           
+                    <p:inputTextarea value="#{patrimonioControle.patrimonio.descricao}"  style="width: 640px" />
+
+                    <h:outputLabel value="Departamento" style="float: right"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="departamento" value="#{patrimonioControle.patrimonio.departamento}" converter="#{departamentoConverter}" style="width: 311px">
+                            <f:selectItem itemLabel="" itemValue="0" noSelectionOption="true"/>
+                            <f:selectItems value="#{patrimonioControle.departamentos}" var="departamento" itemValue="#{departamento}" itemLabel="#{departamento.nome}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:outputLabel value="Data de Aquisição" style="float: right"/>                           
+                    <p:calendar id="calendarDataNascimento"  yearRange="c-70:c" value="#{patrimonioControle.patrimonio.dataAquisicao}" pattern="dd/MM/yyyy" locale="pt_BR"
+                                showButtonPanel="true" navigator="true" style="height: 4px;">
+                    </p:calendar>
+
+                    <h:outputLabel  value="Valor Unitário" style="float: right;font-size: 18px;" />
+                    <p:inputText  onkeypress="mascara(this, valor)" value="#{patrimonioControle.patrimonio.valorUnitario}"  size="30">
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />  
+                    </p:inputText>
+
+                    <h:outputLabel  value="Quantidade" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{patrimonioControle.patrimonio.quantidade}" size="30">
+                    <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
+                    </p:inputText>
+
+                    <h:outputLabel value="Situação*" style="float: right"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="situacao" value="#{patrimonioControle.patrimonio.situacaoPatrimonio}" required="true" requiredMessage="Informe a situação !" style="width: 311px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{patrimonioControle.listaSituacaoPatrimonio}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:outputLabel  value="Observação" style="float: right" />                           
+                    <p:inputTextarea value="#{patrimonioControle.patrimonio.obervacao}"  style="width: 640px" />
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{patrimonioControle.salvar()}"  ajax="false"  icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+            </h:form>
+
+            <h:form>     
+                <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                    <p:commandButton value="Sim" action="#{patrimonioControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>  
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

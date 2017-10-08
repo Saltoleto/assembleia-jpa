@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="rel" value="#{congregacaoControle.titulo}"/>
+    </f:metadata>
+
+    <ui:define name="conteudo">  
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/> 
+
+        <p:panel>
+
+            <f:facet name="header">
+                <h:outputText value="#{congregacaoControle.titulo}" style="font-size: 30px!important; color: white;"/>
+            </f:facet>
+
+            <h:form id="cadastro" enctype="multipart/form-data">
+
+                <h:panelGrid columns="2" cellspacing="15">
+                    <h:outputLabel  value="" style="float: right;font-size: 18px; vertical-align: inherit; " />
+                    <p:graphicImage id="fotoMembro"  cache="false" value="#{congregacaoControle.fotoBanco}"  style="border: 1px solid #E1E1E1; border-radius: 4px" height="130" width="170"/><br/>
+                    <p:fileUpload label="Selecionar Logo"  style="border: none!important; font-size: 12px;"
+                                  fileUploadListener="#{congregacaoControle.fileUploadAction}"  
+                                update="cadastro" oncomplete="window.location.reload();"   auto="true"/>
+                    <h:outputLabel  value="Nome" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{congregacaoControle.congregacao.nome}" size="60"  required="true" requiredMessage="Informe o Nome!"  />  
+
+                    <h:outputLabel  value="Dirigente" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{congregacaoControle.congregacao.dirigente}" size="60" />  
+
+                    <h:outputLabel  value="CNPJ" style="float: right;font-size: 18px;" />
+                    <p:inputMask mask="99.999.999/9999-99" value="#{congregacaoControle.congregacao.cnpj}" size="19" />  
+
+                    <h:outputLabel  value="Telefone" style="float: right;font-size: 18px;" />
+                    <p:inputMask mask="(99) 99999-9999" value="#{congregacaoControle.congregacao.telefone}" size="15" /> 
+
+                    <h:outputLabel  value="Email" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{congregacaoControle.congregacao.email}" size="60" /> 
+
+                    <h:outputLabel value="Estado" style="float: right"/>
+                    <h:panelGroup>
+                        <p:selectOneMenu id="estado" value="#{congregacaoControle.congregacao.estado}"  style="width: 311px">
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{congregacaoControle.listaEstado}" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+
+                    <h:outputLabel  value="Cidade" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{congregacaoControle.congregacao.cidade}" size="60" /> 
+
+                    <h:outputLabel  value="Bairro" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{congregacaoControle.congregacao.bairro}" size="60" /> 
+
+                    <h:outputLabel  value="Endereco" style="float: right;font-size: 18px;" />
+                    <p:inputText value="#{congregacaoControle.congregacao.endereco}" size="60" /> 
+
+                    <h:outputLabel  value="CEP" style="float: right;font-size: 18px;" />
+                    <p:inputMask mask="999999-999" value="#{congregacaoControle.congregacao.cep}" size="12" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellspacing="5">
+                    <p:commandButton value="Salvar" action="#{congregacaoControle.salvar()}"  ajax="false"  icon="ui-icon-circle-check"/>
+                    <p:commandButton value="Voltar" onclick="confirmacao.show()" immediate="true"  icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
+            </h:form>
+
+            <h:form>     
+                <p:confirmDialog message="Deseja voltar para a tela de listagem ?" header="Confirmação de Navegação" severity="alert" closable="false" global="true" widgetVar="confirmacao" showEffect="explode" hideEffect="explode">  
+                    <p:commandButton value="Sim" action="#{congregacaoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="Não" onclick="confirmacao.hide()" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>  
+            </h:form>
+        </p:panel>
+    </ui:define>
+</ui:composition>

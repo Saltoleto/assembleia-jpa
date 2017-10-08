@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <ui:define name="conteudo">
+
+        <h:form id="form"  >  
+          <p:panel header="Acesso Negado">
+              <h:outputText style="font-size: 20px;" value="#{loginControle.usuario.login}, seu nível de permissão no sistema impede a visualização de dados financeiros."/><br/><br/>
+              <p:commandButton value="Voltar" icon=" ui-icon-cancel" action="#{loginControle.voltar()}" immediate="true" process="@this"/>
+            </p:panel> 	
+            
+
+        </h:form>  
+    </ui:define>
+
+
+</ui:composition>
