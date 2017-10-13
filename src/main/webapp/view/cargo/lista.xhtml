@@ -1,53 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
 
-    <ui:define name="conteudo">
-        <h:form id="form">
-            <h:head>
-                <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
-                <link href="../Resources/css/imputText.css" rel="stylesheet" type="text/css"/>
-            </h:head>
-            <p:dataTable id="tbl" widgetVar="tabela" rows="20" style="font-size: 50px !important;"  filterEvent="enter" selectionMode="single" rowKey="#{cargo.id}" 
-                         selection="#{cargoControle.cargo}" value="#{cargoControle.cargos}" emptyMessage="Não há cargos cadastrados"
-                         paginator="true" var="cargo" filteredValue="#{cargoControle.cargosFiltrados}" paginatorPosition="top"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,20" currentPageReportTemplate="(Página {currentPage} de {totalPages})"> 
-                <p:ajax event="rowDblselect" onstart="acao(),statusDialog.show()" global="true" />
-                <f:facet name="header" >
-                    <p  style="text-align: left; font-weight: bold; font-size: 30px!important; color: white; ">Cargos
-                        <p:inputText id="globalFilter" type="search"  placeholder="Pesquisar por cargo"   onkeyup="tabela.filter()" style="width:108px ; float: right;"/>  </p>                    
-                    <p:commandButton value="Adicionar"  action="#{cargoControle.novo()}" icon="ui-icon-circle-plus"/>
-                    <p:commandButton value="Alterar"  action="#{cargoControle.carregarCadastro()}" onstart="statusDialog.show()" icon="ui-icon-pencil" />
-                    <p:commandButton value="Excluir"   action="#{cargoControle.chamarExclusao()}" update="growl" icon="ui-icon-trash"/> 
-                    <p:growl id="growl" sticky="false" life="3000"/>
-                </f:facet>
-                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains" sortBy="#{cargo.descricao}"  filterBy="#{cargo.descricao}" id="cargo" >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Nome" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{cargo.descricao}" />  
-                </p:column>        
-                <f:facet name="footer">
-                    Em um total de #{fn:length(cargoControle.cargos)} cargos cadastrados.
-                </f:facet>
-            </p:dataTable>
-            <p:remoteCommand name="acao" action="#{cargoControle.carregarCadastro()}"/>
-
-        </h:form>
+    <ui:define name="content">
         <h:form>
-            <p:confirmDialog message="Deseja Excluir o Cargo?" widgetVar="confirmacaoMe" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
-                <p:commandButton value="Sim" action="#{cargoControle.deletar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-                <p:commandButton value="Não" action="#{cargoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
-            </p:confirmDialog>
+            <b:messages />
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="#{msgs['titulo.cargos']}"/>
+                <b:commandButton action="#{cargoControle.novo}" tooltip="#{msgs['btn.novo.cargo']}" class="pull-right" look="info" value="#{msgs['btn.novo.cargo']}"/>
+            </b:formGroup>
+
+            <b:panel collapsible="false" look="info">
+                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{cargoControle.cargos}" var="cargo">
+                    <b:dataTableColumn style="width: 10%" value="#{cargo.id}" />
+                    <b:dataTableColumn style="width: 70%" value="#{cargo.descricao}"/>
+                    <b:dataTableColumn style="width: 9%" label="#{msgs['label.acoes']}">
+                        <b:commandButton action="#{cargoControle.deletar(cargo)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{cargoControle.editar(cargo)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                    </b:dataTableColumn>
+                </b:dataTable>
+
+            </b:panel>
         </h:form>
-         <p:dialog appendTo="@(body)" header="Carregando...aguarde..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
-            <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
-        </p:dialog> 
     </ui:define>
 </ui:composition>
-

@@ -22,7 +22,7 @@
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>               
 	
 	<bean id="transactionManager" 
 		class="org.springframework.orm.jpa.JpaTransactionManager"

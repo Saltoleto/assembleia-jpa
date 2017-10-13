@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:b="http://bootsfaces.net/ui">
+
+  <ui:remove>
+  </ui:remove>
+    <b:navBar brand="#{msgs['menu.assembleia']}"
+              brandHref="http://www.bootsfaces.net/" inverse="true"
+              fixed="top">
+        <b:container>
+            <b:navbarLinks>
+                <b:navLink />
+                <b:navLink />
+                <b:navbarLinks>
+                    <b:navLink outcome="/index" value="Home" iconAwesome="home" />
+                </b:navbarLinks>
+                <b:dropMenu value="#{msgs['menu.secretaria']}">
+                    <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
+                    <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-group" outcome="/view/departamento/lista"/>
+                    <b:navLink value="#{msgs['menu.patrimonio']}" iconAwesome="fa-archive" outcome="/view/patrimonio/lista"/>
+                </b:dropMenu>
+                <b:dropMenu value="#{msgs['menu.financeiro']}">
+                    <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
+                </b:dropMenu>
+                  <b:dropMenu value="#{msgs['menu.configuracoes']}">
+                    <b:navLink value="#{msgs['menu.congregacoes']}" iconAwesome="fa-sitemap" outcome="/view/cargo/lista"/>
+                    <b:navLink value="#{msgs['menu.sede']}" iconAwesome="fa-institution" outcome="/view/sede/lista"/>
+                </b:dropMenu>
+            </b:navbarLinks>
+
+            <b:navbarLinks pull="right">
+                <b:navLink href="http://showcase.bootsfaces.net/"  iconAwesome="fa-power-off" />
+            </b:navbarLinks>
+        </b:container>
+    </b:navBar>
+
+</ui:fragment>

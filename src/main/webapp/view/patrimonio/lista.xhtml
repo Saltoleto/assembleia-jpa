@@ -1,104 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+                template="#{pageContext.request.contextPath}/templates/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:define name="conteudo">
-        <h:form id="form">
-            <h:head>
-                <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
-                <link href="../Resources/css/imputText.css" rel="stylesheet" type="text/css"/>
-            </h:head>
-            <p:dataTable id="tbl" widgetVar="tabela" rows="20" style="font-size: 50px !important;"  filterEvent="enter" selectionMode="single" rowKey="#{patrimonio.id}" 
-                         selection="#{patrimonioControle.patrimonio}" value="#{patrimonioControle.patrimonios}" emptyMessage="Não há patrimônios cadastrados" 
-                         paginator="true" var="patrimonio" filteredValue="#{patrimonioControle.patrimoniosFiltrados}" paginatorPosition="top"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,20" currentPageReportTemplate="(Página {currentPage} de {totalPages})"> 
-                <p:ajax event="rowDblselect" onstart="acao(),statusDialog.show()" global="true" />
-                <f:facet name="header" >
-                    <p  style="text-align: left; font-weight: bold; font-size: 30px!important; color: white; ">Patrimônio                            
-                        <p:inputText id="globalFilter" type="search"  placeholder="Pesquisar por patrimônio"   onkeyup="tabela.filter()" style="width:108px ; float: right;"/>  </p>                                        
-                    <p:commandButton  value="Adicionar"  action="#{patrimonioControle.novo()}" icon="ui-icon-circle-plus"/>
-                    <p:commandButton value="Alterar"  action="#{patrimonioControle.carregarCadastro()}" onstart="statusDialog.show()" icon="ui-icon-pencil" />
-                    <p:commandButton style="margin-right: 16%" value="Excluir"   action="#{patrimonioControle.chamarExclusao()}" update="growl" icon="ui-icon-trash"/> 
-
-                    <p:growl id="growl" sticky="false" life="3000"/>
-                </f:facet>
-                <f:facet name="header">
-                    <h:outputText value="Valor Total:#{patrimonioControle.valorTotalPatrimonio}" style="color: #fbec88;float: left ; margin-right: 135px;font-size: 17px !important; margin-top: 20px" /> 
-                </f:facet>
-                <p:column styleClass="coluna" filterStyle="display: none;"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Código" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{patrimonio.codigo}" />  
-                </p:column> 
-
-                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains" sortBy="#{patrimonio.nome}"  filterBy="#{patrimonio.nome}"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Nome" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{patrimonio.nome}" />  
-                </p:column>
-
-                <p:column styleClass="coluna" filterStyle="display: none;"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Situação" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{patrimonio.situacaoPatrimonio.descricao}" />  
-                </p:column> 
-
-                <p:column styleClass="coluna" filterStyle="display: none;"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Valor Unitário" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="R$ #{patrimonio.valorUnitarioFormatado}" />  
-                </p:column> 
-
-                <p:column styleClass="coluna" filterStyle="display: none;"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Quantidade" style="font-size: 17px !important"/>                                                    
-                    </f:facet> 
-                    <h:outputText value="#{patrimonio.quantidade}">
-                    <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
-                    </h:outputText>  
-                </p:column> 
-
-                <p:column styleClass="coluna" filterStyle="display: none;"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Data da Aquisição" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{patrimonio.dataAquisicao}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" /> 
-                    </h:outputText>  
-                </p:column> 
-
-                <p:column styleClass="coluna" filterStyle="display: none;"  >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Valor Total" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="R$ #{patrimonio.valorTotal}"  />  
-                </p:column>
-
-                <f:facet name="footer">
-                    Em um total de #{fn:length(patrimonioControle.patrimonios)} patrimônios cadastrados.
-                </f:facet>
-            </p:dataTable>
-            <p:remoteCommand name="acao" action="#{patrimonioControle.carregarCadastro()}"/>
-
-        </h:form>
+    <ui:define name="content">
         <h:form>
-            <p:confirmDialog message="Deseja Excluir o Patrimônio?" widgetVar="confirmacaoMe" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
-                <p:commandButton value="Sim" action="#{patrimonioControle.deletar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-                <p:commandButton value="Não" action="#{patrimonioControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
-            </p:confirmDialog>
+            <b:messages />
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="#{msgs['titulo.patrimonios']}"/>
+                <b:commandButton action="#{patrimonioControle.novo}" tooltip="#{msgs['btn.novo.patrimonio']}" class="pull-right" look="info" value="#{msgs['btn.novo.patrimonio']}"/>
+            </b:formGroup>
+
+            <b:panel collapsible="false" look="info">
+                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{patrimonioControle.patrimonios}" var="patrimonio">
+                    <b:dataTableColumn  label="#{msgs['label.valor']}"  value="#{patrimonioControle.valorTotalPatrimonio}" />
+                    <b:dataTableColumn  value="#{patrimonio.codigo}" />
+                    <b:dataTableColumn  value="#{patrimonio.nome}" />
+                    <b:dataTableColumn  label="#{msgs['label.valor.unitario']}" value="#{patrimonio.valorUnitarioFormatado}"/>
+                    <b:dataTableColumn  label="#{msgs['label.qtd']}">
+                        <h:outputText   value="#{patrimonio.quantidade}">
+                            <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
+                        </h:outputText>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn label="bjhbjhb">
+                        <h:outputText value="#{patrimonio.dataAquisicao}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                        </h:outputText>                     
+                    </b:dataTableColumn>                                            
+                    <b:dataTableColumn  value="#{patrimonioControle.valorTotalPatrimonio}" />
+                    <b:dataTableColumn  value="#{patrimonio.valorTotal}"/>
+
+                    <b:dataTableColumn style="width: 9%" label="#{msgs['label.acoes']}">
+                        <b:commandButton action="#{patrimonioControle.deletar(patrimonio)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{patrimonioControle.editar(patrimonio)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </b:panel>
         </h:form>
-        <p:dialog appendTo="@(body)" header="Carregando...aguarde..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
-            <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
-        </p:dialog> 
     </ui:define>
 </ui:composition>
 

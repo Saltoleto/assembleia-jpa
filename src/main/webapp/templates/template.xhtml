@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>   
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputScript library="js" name="bootstrap.js" />
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <title>Assembleia de Deus Missão</title>        
+        <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/resources/img/icone.png"/>
+    </h:head>
+    <h:body  style="padding-top: 85px;padding-bottom: 85px;" addLabels="false" addMessages="false">       
+
+        <ui:insert name="nbtop">
+            <ui:include src="/templates/navbartop.xhtml"/>
+        </ui:insert>
+
+        <b:container>
+            <ui:insert name="content"/>
+        </b:container>
+
+<!--        <ui:insert name="nbtop">
+            <ui:include src="/templates/navbarbottom.xhtml"/>
+        </ui:insert>-->
+
+    </h:body>
+</html>

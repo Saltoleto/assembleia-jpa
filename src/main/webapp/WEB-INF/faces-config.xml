@@ -8,11 +8,11 @@
 	<application>
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 		<locale-config>
-		</locale-config>
-		<resource-bundle>
-			<base-name>messages</base-name>
-			<var>messages</var>
-		</resource-bundle>
+            <default-locale>pt_BR</default-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>com.assembleia.idioma.messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>
 	</application>
-	
 </faces-config>

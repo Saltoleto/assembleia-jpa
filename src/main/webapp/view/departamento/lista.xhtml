@@ -2,69 +2,30 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
+                xmlns:b="http://bootsfaces.net/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
 
-    <ui:define name="conteudo">
-        <h:form id="form">
-            <h:head>
-                <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
-                <link href="../Resources/css/imputText.css" rel="stylesheet" type="text/css"/>
-            </h:head>
-            <p:dataTable id="tbl" widgetVar="tabela" rows="20" style="font-size: 50px !important;"  filterEvent="enter" selectionMode="single" rowKey="#{departamento.id}" 
-                         selection="#{departamentoControle.departamento}" value="#{departamentoControle.departamentos}" emptyMessage="Não há departamentos cadastrados"
-                         paginator="true" var="departamento" filteredValue="#{departamentoControle.departamentos}" paginatorPosition="top"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15,20" currentPageReportTemplate="(Página {currentPage} de {totalPages})"> 
-                <p:ajax event="rowDblselect" onstart="acao(),statusDialog.show()" global="true" />
-                <f:facet name="header" >
-                    <p  style="text-align: left; font-weight: bold; font-size: 30px!important; color: white; ">Departamentos
-                        <p:inputText id="globalFilter" type="search"  placeholder="Pesquisar por departamento"   onkeyup="tabela.filter()" style="width:108px ; float: right;"/>  </p>                    
-                    <p:commandButton value="Adicionar"  action="#{departamentoControle.novo()}" icon="ui-icon-circle-plus"/>
-                    <p:commandButton value="Alterar"  action="#{departamentoControle.carregarCadastro()}" onstart="statusDialog.show()" icon="ui-icon-pencil" />
-                    <p:commandButton value="Excluir"   action="#{departamentoControle.chamarExclusao()}" update="growl" icon="ui-icon-trash"/> 
-                    <p:growl id="growl" sticky="false" life="3000"/>
-                </f:facet>
-                
-                <p:column styleClass="coluna" filterStyle="display: none;"  filterMatchMode="contains" sortBy="#{departamento.nome}"  filterBy="#{departamento.nome}" >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Nome" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{departamento.nome}" />  
-                </p:column> 
-                
-                <p:column styleClass="coluna" filterStyle="display: none;" >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Descrição" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{departamento.descricao}" />  
-                </p:column>
-                
-                <p:column styleClass="coluna" filterStyle="display: none;" >  
-                    <f:facet name="header" >  
-                        <h:outputText value="Integrantes" style="font-size: 17px !important" />  
-                    </f:facet> 
-                    <h:outputText value="#{departamento.quantidadeIntegrantes}" />  
-                </p:column>
-                
-                
-                <f:facet name="footer">
-                    Em um total de #{fn:length(departamentoControle.departamentos)} departamentos cadastrados.
-                </f:facet>
-            </p:dataTable>
-            <p:remoteCommand name="acao" action="#{departamentoControle.carregarCadastro()}"/>
+        <ui:define name="content">
+            <h:form>
+                <b:messages />
+                <b:formGroup style="border: none">
+                    <h:outputText style="font-size: 26px" value="#{msgs['titulo.departamentos']}"/>
+                    <b:commandButton action="#{departamentoControle.novo}" tooltip="#{msgs['btn.novo.departamento']}" class="pull-right" look="info" value="#{msgs['btn.novo.departamento']}"/>
+                </b:formGroup>
 
-        </h:form>
-        <h:form>
-            <p:confirmDialog message="Deseja Excluir o Departamento?" widgetVar="confirmacaoMe" header="Confirmaçao de Exclusão" severity="alert" closable="false" global="true" showEffect="explode" hideEffect="explode">
-                <p:commandButton value="Sim" action="#{departamentoControle.deletar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-                <p:commandButton value="Não" action="#{departamentoControle.voltar()}" process="@this" styleClass="ui-confirmdialog-yes" icon="ui-icon-close"/>  
-            </p:confirmDialog>
-        </h:form>
-         <p:dialog appendTo="@(body)" header="Carregando...aguarde..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
-            <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
-        </p:dialog> 
-    </ui:define>
+                <b:panel collapsible="false" look="info">
+                    <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{departamentoControle.departamentos}" var="departamento">
+                        <b:dataTableColumn style="width: 35%" value="#{departamento.nome}" />
+                        <b:dataTableColumn style="width: 35%" value="#{departamento.descricao}"/>
+                        <b:dataTableColumn style="width: 15%"  label="#{msgs['label.quantidade.integrantes']}"   value="#{departamento.quantidadeIntegrantes}"/>
+                        <b:dataTableColumn style="width: 10%" label="#{msgs['label.acoes']}">
+                            <b:commandButton action="#{departamentoControle.deletar(departamento)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                            <b:commandButton action="#{departamentoControle.carregarCadastro(departamento)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                        </b:dataTableColumn>
+                    </b:dataTable>
+
+                </b:panel>
+            </h:form>
+        </ui:define>
 </ui:composition>
 
