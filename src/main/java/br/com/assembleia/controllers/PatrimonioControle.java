@@ -1,9 +1,10 @@
 package br.com.assembleia.controllers;
 
-
+import br.com.assembleia.entities.Congregacao;
 import br.com.assembleia.entities.Departamento;
 import br.com.assembleia.entities.Patrimonio;
 import br.com.assembleia.enums.EnumSituacaoPatrimonio;
+import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.DepartamentoService;
 import br.com.assembleia.services.PatrimonioService;
 import javax.annotation.PostConstruct;
@@ -11,7 +12,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -32,17 +32,19 @@ public class PatrimonioControle {
 
     private Patrimonio patrimonio;
     private List<Patrimonio> patrimonios;
-    private List<Patrimonio> patrimoniosFiltrados;
     private String titulo;
     private List<Departamento> departamentos;
     private BigDecimal valorTotalPatrimonio;
     private static final Locale BRASIL = new Locale("pt", "BR");
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
+    private List<Congregacao> congregacoes;
 
     @Autowired
     private PatrimonioService service;
     @Autowired
     private DepartamentoService serviceDepartamento;
+    @Autowired
+    private CongregacaoService serviceCongregacao;
 
     @PostConstruct
     private void init() {
@@ -55,8 +57,9 @@ public class PatrimonioControle {
         return "form?faces-redirect=true";
     }
 
-    public String carregarCadastro() {
+    public String editar(Patrimonio patrimonio) {
         if (patrimonio != null) {
+            this.patrimonio = patrimonio;
             titulo = "Editar Patrimônio";
             return "form?faces-redirect=true";
         }
@@ -82,22 +85,14 @@ public class PatrimonioControle {
         return "lista?faces-redirect=true";
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (patrimonio == null) {
-                adicionaMensagem("Nenhum Patrimonio foi selecionado para a exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoMe.show()");
-        }
-    }
-
-    public String deletar() {
+    public String deletar(Patrimonio patrimonio) {
         try {
-            service.deletar(patrimonio);
-            patrimonios = null;
-            adicionaMensagem("Patrimônio excluído com Sucesso!", FacesMessage.SEVERITY_INFO);
-
+            if (patrimonio != null) {
+                this.patrimonio = patrimonio;
+                service.deletar(patrimonio);
+                patrimonios = null;
+                adicionaMensagem("Patrimônio excluído com Sucesso!", FacesMessage.SEVERITY_INFO);
+            }
         } catch (PersistenceException ex) {
             adicionaMensagem("O Patrimonio está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
             voltar();
@@ -144,14 +139,6 @@ public class PatrimonioControle {
         this.titulo = titulo;
     }
 
-    public List<Patrimonio> getPatrimoniosFiltrados() {
-        return patrimoniosFiltrados;
-    }
-
-    public void setPatrimoniosFiltrados(List<Patrimonio> patrimoniosFiltrados) {
-        this.patrimoniosFiltrados = patrimoniosFiltrados;
-    }
-
     public List<EnumSituacaoPatrimonio> getListaSituacaoPatrimonio() {
         return Arrays.asList(EnumSituacaoPatrimonio.values());
     }
@@ -163,13 +150,16 @@ public class PatrimonioControle {
     public String getValorTotalPatrimonio() {
         valorTotalPatrimonio = service.valorPatrimonio();
         String teste = null;
-        if (valorTotalPatrimonio!=null) {
+        if (valorTotalPatrimonio != null) {
             DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
             return teste = df.format(valorTotalPatrimonio);
         } else {
             return teste;
         }
+    }
 
+    public List<Congregacao> getCongregacoes() {
+        return serviceCongregacao.listarTodos();
     }
 
 }

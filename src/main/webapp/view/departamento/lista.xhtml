@@ -20,7 +20,7 @@
                         <b:dataTableColumn style="width: 15%"  label="#{msgs['label.quantidade.integrantes']}"   value="#{departamento.quantidadeIntegrantes}"/>
                         <b:dataTableColumn style="width: 10%" label="#{msgs['label.acoes']}">
                             <b:commandButton action="#{departamentoControle.deletar(departamento)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
-                            <b:commandButton action="#{departamentoControle.carregarCadastro(departamento)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                            <b:commandButton action="#{departamentoControle.editar(departamento)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
                         </b:dataTableColumn>
                     </b:dataTable>
 

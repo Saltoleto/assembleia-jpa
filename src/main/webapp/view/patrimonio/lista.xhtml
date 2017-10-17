@@ -15,8 +15,7 @@
             </b:formGroup>
 
             <b:panel collapsible="false" look="info">
-                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{patrimonioControle.patrimonios}" var="patrimonio">
-                    <b:dataTableColumn  label="#{msgs['label.valor']}"  value="#{patrimonioControle.valorTotalPatrimonio}" />
+                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{patrimonioControle.patrimonios}" var="patrimonio">                    
                     <b:dataTableColumn  value="#{patrimonio.codigo}" />
                     <b:dataTableColumn  value="#{patrimonio.nome}" />
                     <b:dataTableColumn  label="#{msgs['label.valor.unitario']}" value="#{patrimonio.valorUnitarioFormatado}"/>
@@ -25,15 +24,14 @@
                             <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
                         </h:outputText>
                     </b:dataTableColumn>
-                    <b:dataTableColumn label="bjhbjhb">
+                    <b:dataTableColumn label="#{msgs['label.dt.aquisicao']}">
                         <h:outputText value="#{patrimonio.dataAquisicao}">
                             <f:convertDateTime pattern="dd/MM/yyyy" /> 
                         </h:outputText>                     
-                    </b:dataTableColumn>                                            
-                    <b:dataTableColumn  value="#{patrimonioControle.valorTotalPatrimonio}" />
-                    <b:dataTableColumn  value="#{patrimonio.valorTotal}"/>
+                    </b:dataTableColumn>                                                                
+                    <b:dataTableColumn label="#{msgs['label.valor.total']}" value="#{patrimonio.valorTotal}"/>
 
-                    <b:dataTableColumn style="width: 9%" label="#{msgs['label.acoes']}">
+                    <b:dataTableColumn label="#{msgs['label.acoes']}">
                         <b:commandButton action="#{patrimonioControle.deletar(patrimonio)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
                         <b:commandButton action="#{patrimonioControle.editar(patrimonio)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
                     </b:dataTableColumn>

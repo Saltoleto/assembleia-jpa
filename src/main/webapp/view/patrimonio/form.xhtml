@@ -11,39 +11,40 @@
 
     <ui:define name="content">     
 
-        <h:form id="cadastro">
-
+        <h:form id="cadastro">  
+           
             <b:messages/>        
             <b:panel title="#{patrimonioControle.titulo}" collapsible="false" look="info">
 
                 <b:panelGrid columns="2">      
 
                     <b:inputText value="#{patrimonioControle.patrimonio.codigo}" label="#{msgs['label.codigo']}" 
-                                mask="integer" required="true" required-message="#{msgs['label.informe.codigo']}"/>
+                                 mask="integer" required="true" required-message="#{msgs['label.informe.codigo']}"/>
 
                     <b:inputText value="#{patrimonioControle.patrimonio.nome}" label="#{msgs['label.nome']}" 
                                  required="true" required-message="#{msgs['label.informe.nome']}"/>
 
                     <b:inputText value="#{patrimonioControle.patrimonio.descricao}" label="#{msgs['label.descricao']}" 
                                  required="true" required-message="#{msgs['label.informe.descricao']}"/>
-                    
+
                     <b:selectOneMenu  id="congregacao" label="#{msgs['label.congregacao']}" value="#{patrimonioControle.patrimonio.congregacao}">
-                        <f:selectItem itemLabel="Selecione a CongregaÃ§Ã£o" itemValue="" noSelectionOption="true"/>                        
+                        <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue="" noSelectionOption="true"/>                        
                         <f:selectItems value="#{patrimonioControle.congregacoes}" var="congregacao" itemValue="#{congregacao}" itemLabel="#{congregacao.nome}" />
                     </b:selectOneMenu>
 
 
                     <b:selectOneMenu id="departamento" label="#{msgs['label.departamento']}" value="#{patrimonioControle.patrimonio.departamento}">
-                        <f:selectItem itemLabel="Selecione o Departamento" itemValue="" noSelectionOption="true"/>
-                        <f:converter converterId="departamentoConverter" />
+                        <f:selectItem itemLabel="Selecione o Departamento" itemValue="" noSelectionOption="true"/>                        
                         <f:selectItems value="#{patrimonioControle.departamentos}" var="departamento" itemValue="#{departamento}" itemLabel="#{departamento.nome}" />
                     </b:selectOneMenu>
 
-                    <b:dateTimePicker value="#{patrimonioControle.patrimonio.dataAquisicao}" label="#{msgs['label.data.aquisicao']}" 
-                                      required="true" required-message="#{msgs['label.data.aquisicao']}"/>
+                    <b:dateTimePicker    show-time="false" value="#{patrimonioControle.patrimonio.dataAquisicao}" label="#{msgs['label.data.aquisicao']}" 
+                                         required="true" required-message="#{msgs['label.data.aquisicao']}"/>
 
-                    <b:inputText value="#{patrimonioControle.patrimonio.valorUnitario}" label="#{msgs['label.valor.unitario']}" 
-                                 required="true" required-message="#{msgs['label.valor.unitario']}"/>
+                    <b:inputText  class="moneyClass" onkeypress="mascara(this, valor)" value="#{patrimonioControle.patrimonio.valorUnitario}" 
+                                 label="#{msgs['label.valor.unitario']}"  required="true" required-message="#{msgs['label.valor.unitario']}">
+                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />  
+                    </b:inputText>
 
                     <b:inputText mask="integer" value="#{patrimonioControle.patrimonio.quantidade}" label="#{msgs['label.quantidade']}" 
                                  required="true" required-message="#{msgs['label.quantidade']}"/>
@@ -51,7 +52,7 @@
 
                     <b:selectOneMenu  label="#{msgs['label.situacao']}"  required="true" requiredMessage="#{msgs['label.informe.situacao']}"   
                                       id="estado" value="#{patrimonioControle.patrimonio.situacaoPatrimonio}" >
-                        <f:selectItem itemLabel="Selecione a SituaÃ§Ã£o" itemValue="" />
+                        <f:selectItem itemLabel="#{msgs['label.selecione.situacao']}" itemValue="" />
                         <f:converter converterId="enumSituacaoPatrimonioConverter" />
                         <f:selectItems value="#{patrimonioControle.listaSituacaoPatrimonio}" />
                     </b:selectOneMenu>
@@ -64,7 +65,8 @@
                     <b:commandButton action="#{patrimonioControle.voltar()}" immediate="true"  look="warning" value="#{msgs['btn.cancelar']}"/>
                     <b:commandButton action="#{patrimonioControle.salvar()}" look="success" value="#{msgs['btn.salvar']}"/>
                 </h:panelGrid>  
-            </b:panel>
+            </b:panel>  
         </h:form>
+
     </ui:define>
 </ui:composition>

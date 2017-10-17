@@ -32,19 +32,9 @@ public class CargoControle {
     }
 
     public String novo() {
-        cargo = new Cargo(); 
+        cargo = new Cargo();
         titulo = "Cadastro de Cargo";
         return "form?faces-redirect=true";
-    }
-
-    public String carregarCadastro() {
-        if (cargo != null) {
-            titulo = "Editar Cargo";
-            return "form?faces-redirect=true";
-        }
-        adicionaMensagem("Nenhum cargo foi selecionado para a alteração!", FacesMessage.SEVERITY_INFO);
-        return "lista?faces-redirect=true";
-
     }
 
     public String salvar() {
@@ -64,20 +54,21 @@ public class CargoControle {
         context.addMessage(null, new FacesMessage(tipo, message, null));
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (cargo == null) {
-                adicionaMensagem("Nenhum cargo foi selecionado para a exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoMe.show()");
+    public String editar(Cargo cargo) {
+        if (cargo != null) {
+            this.cargo = cargo;
+            titulo = "Editar Cargo";
+            return "form?faces-redirect=true";
         }
+        adicionaMensagem("Nenhum cargo foi selecionado para a alteraÃ§Ã£o!", FacesMessage.SEVERITY_INFO);
+        return "lista?faces-redirect=true";
+
     }
 
-    public String deletar() {
+    public String deletar(Cargo cargo) {
         try {
-            if (cargo != null) {
-
+            if (cargo != null) {                
+                this.cargo = cargo;
                 service.deletar(cargo);
                 cargos = null;
                 adicionaMensagem("Cargo excluido com sucesso!", FacesMessage.SEVERITY_INFO);
@@ -126,7 +117,5 @@ public class CargoControle {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
-    
 
 }

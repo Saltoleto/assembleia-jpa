@@ -42,6 +42,7 @@ public class Patrimonio implements Serializable, Comparable<Patrimonio> {
     private String obervacao;
     private BigDecimal valorTotal;
     private static final Locale BRASIL = new Locale("pt", "BR");
+    private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
 
     public Long getId() {
@@ -85,11 +86,7 @@ public class Patrimonio implements Serializable, Comparable<Patrimonio> {
     }
 
     public String getValorUnitarioFormatado() {
-        String teste = null;
-        DecimalFormat df = new DecimalFormat("� ###,###,##0.00", REAL);
-        teste = df.format(valorUnitario);
-
-        return teste;
+        return df.format(valorUnitario);
     }
 
     public BigDecimal getValorUnitario() {
@@ -125,10 +122,7 @@ public class Patrimonio implements Serializable, Comparable<Patrimonio> {
     }
 
     public String getValorTotal() {
-        String teste = null;
-        DecimalFormat df = new DecimalFormat("� ###,###,##0.00", REAL);
-        teste = df.format(valorTotal);
-        return teste;
+        return df.format(valorTotal);
     }
 
     public void setValorTotal(BigDecimal valorTotal) {

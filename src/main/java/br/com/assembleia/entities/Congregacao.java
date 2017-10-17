@@ -11,12 +11,21 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author fernandosaltoleto
  */
 @Entity
+@Table(name = "congregacao")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Congregacao.valorReceitaPeriodo", 
+            query = "SELECT c FROM Congregacao c where issede = true Order By c.nome  ")})
 public class Congregacao implements Comparable<Congregacao>, Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -55,8 +55,9 @@ public class DepartamentoControle {
         return "form?faces-redirect=true";
     }
 
-    public String carregarCadastro() {
+    public String editar(Departamento departamento) {
         if (departamento != null) {
+            this.departamento = departamento;
             titulo = "Editar o Departamento";
             funcaoFinal = new Funcao();
             funcaoTransiente = new Funcao();
@@ -82,7 +83,7 @@ public class DepartamentoControle {
     }
 
     public void retirarFuncaoLista() {
-           List<Funcao> funcoesTeste = new ArrayList<Funcao>();
+        List<Funcao> funcoesTeste = new ArrayList<Funcao>();
         if (departamento != null) {
             for (Funcao func : departamento.getFuncoes()) {
                 if (!func.getFuncao().equals(funcaoFinal.getFuncao())) {
@@ -105,20 +106,13 @@ public class DepartamentoControle {
         }
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (departamento == null) {
-                adicionaMensagem("Nenhum Departamento foi selecionado para a exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoMe.show()");
-        }
-    }
-
-    public String deletar() {
+    public String deletar(Departamento departamento) {
         try {
-            service.deletar(departamento);
-            adicionaMensagem("Departamento Excluido com Sucesso!", FacesMessage.SEVERITY_INFO);
+            if (departamento != null) {
+                this.departamento = departamento;
+                service.deletar(departamento);
+                adicionaMensagem("Departamento Excluido com Sucesso!", FacesMessage.SEVERITY_INFO);
+            }
 
         } catch (PersistenceException ex) {
             adicionaMensagem("Departamento está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);

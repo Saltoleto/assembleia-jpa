@@ -24,6 +24,17 @@ public enum EnumSituacaoPatrimonio {
 
         return null;
     }
+    
+        public static EnumSituacaoPatrimonio getSituacao(String situacao) {
+        if (situacao != null) {
+            for (EnumSituacaoPatrimonio e : values()) {
+                if (situacao.equalsIgnoreCase(e.getDescricao())) {
+                    return e;
+                }
+            }
+        }
+        return null;
+    }
 
     public String getDescricao() {
         return descricao;

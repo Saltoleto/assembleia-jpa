@@ -26,4 +26,7 @@ public class CongregacaoService {
         congregacaoRepository.delete(cargo);
     }
 
+    public List<Congregacao> listarSedes() {
+        return congregacaoRepository.listarSedes();
+    }
 }

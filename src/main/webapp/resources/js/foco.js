@@ -1,4 +1,0 @@
-
-function foco() {
-    alert('teste');
-}
