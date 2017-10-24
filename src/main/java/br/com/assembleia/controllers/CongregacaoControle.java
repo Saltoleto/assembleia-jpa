@@ -1,19 +1,24 @@
 package br.com.assembleia.controllers;
 
-import br.com.assembleia.enums.EnumEstado;
 import br.com.assembleia.entities.Congregacao;
+import br.com.assembleia.enums.EnumEstado;
 import br.com.assembleia.services.CongregacaoService;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.persistence.PersistenceException;
+import javax.servlet.ServletContext;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,15 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.persistence.PersistenceException;
-import javax.servlet.ServletContext;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
-import org.springframework.stereotype.Component;
 
 @ManagedBean
 @SessionScoped
@@ -38,30 +34,34 @@ import org.springframework.stereotype.Component;
 public class CongregacaoControle {
 
     private Congregacao congregacao;
-    private List<Congregacao> congregacaos;
+    private Congregacao sede;
+    private List<Congregacao> congregacoes;
     private List<Congregacao> congregacaosFiltrados;
     private String titulo;
     private StreamedContent fotoBanco;
     private UploadedFile file;
     private byte[] bimagem;
     private File arquivo;
-    
+
     @Autowired
     private CongregacaoService service;
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
     ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
     String teste = servletContext.getRealPath("/Resources/img/semFoto2.jpg");
-    
 
     @PostConstruct
     private void init() {
         congregacao = new Congregacao();
+
     }
 
     public String novo() throws FileNotFoundException {
+        this.sede = service.buscarSede();
         congregacao = new Congregacao();
-        titulo = "Cadastrar Congregacao";
+        congregacao.setIsSede(Boolean.FALSE);
+        congregacao.setSede(sede);
+        titulo = "Cadastrar Congregação";
 
         arquivo = new File(teste);
         InputStream f = new FileInputStream(arquivo);
@@ -70,8 +70,9 @@ public class CongregacaoControle {
         return "form?faces-redirect=true";
     }
 
-    public String carregarCadastro() {
+    public String editar(Congregacao congregacao) {
         if (congregacao != null) {
+            this.congregacao = congregacao;
             titulo = "Editar Congregacao";
             fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(congregacao.getLogoIgreja()));
             return "form?faces-redirect=true";
@@ -84,29 +85,33 @@ public class CongregacaoControle {
     public String salvar() throws IOException {
 
         try {
-            if (congregacao.getId() == null && file == null) {
-                Path path = Paths.get(teste);
-                byte[] data = Files.readAllBytes(path);
-                congregacao.setLogoIgreja(data);
-                service.salvar(congregacao);
-                adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
+            if (this.sede != null) {
+                if (congregacao.getId() == null && file == null) {
+                    Path path = Paths.get(teste);
+                    byte[] data = Files.readAllBytes(path);
+                    congregacao.setLogoIgreja(data);
+                    service.salvar(congregacao);
+                    adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
 
-                fotoBanco = null;
-                arquivo = null;
-            } else if (file == null && congregacao.getId() != null) {
-                service.salvar(congregacao);
-                adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
+                    fotoBanco = null;
+                    arquivo = null;
+                } else if (file == null && congregacao.getId() != null) {
+                    service.salvar(congregacao);
+                    adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
 
-                fotoBanco = null;
-                arquivo = null;
+                    fotoBanco = null;
+                    arquivo = null;
+                } else {
+                    bimagem = file.getContents();
+                    congregacao.setLogoIgreja(bimagem);
+                    service.salvar(congregacao);
+                    adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
+                    congregacao = null;
+                    fotoBanco = null;
+                    arquivo = null;
+                }
             } else {
-                bimagem = file.getContents();
-                congregacao.setLogoIgreja(bimagem);
-                service.salvar(congregacao);
-                adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
-                congregacao = null;
-                fotoBanco = null;
-                arquivo = null;
+                adicionaMensagem("Primeiramente cadastre a Sede!", FacesMessage.SEVERITY_INFO);
             }
 
         } catch (PersistenceException ex) {
@@ -115,26 +120,17 @@ public class CongregacaoControle {
         return "lista?faces-redirect=true";
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (congregacao == null) {
-                adicionaMensagem("Nenhuma Congregacao foi selecionada para a exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
+    public String deletar(Congregacao congregacao) {
+        try {
+            if (congregacao != null) {
+                this.congregacao = congregacao;
+                service.deletar(congregacao);
+                congregacoes = null;
+                adicionaMensagem("Congregação excluida com sucesso!", FacesMessage.SEVERITY_INFO);
             }
 
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoMe.show()");
-        }
-    }
-
-    public String deletar() {
-        try {
-            service.deletar(congregacao);
-            congregacaos = null;
-            adicionaMensagem("Congregação Excluida com Sucesso!", FacesMessage.SEVERITY_INFO);
-
-        } catch (PersistenceException ex) {
-            adicionaMensagem(ex.getMessage(), FacesMessage.SEVERITY_INFO);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Esta Congregação não pode ser excluída, ela possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
     }
@@ -150,16 +146,12 @@ public class CongregacaoControle {
         context.addMessage(null, new FacesMessage(tipo, message, null));
     }
 
-    public List<Congregacao> getCongregacaos() {
-        congregacaos = service.listarTodos();
+    public List<Congregacao> getCongregacoes() {
 
-        Collections.sort(congregacaos);
+        congregacoes = service.listarCongregacoes();
+        Collections.sort(congregacoes);
 
-        return congregacaos;
-    }
-
-    public void setCongregacaos(List<Congregacao> congregacaos) {
-        this.congregacaos = congregacaos;
+        return congregacoes;
     }
 
     public Congregacao getCongregacao() {
@@ -232,6 +224,14 @@ public class CongregacaoControle {
 
     public void setBimagem(byte[] bimagem) {
         this.bimagem = bimagem;
+    }
+
+    public Congregacao getSede() {
+        return sede;
+    }
+
+    public void setSede(Congregacao sede) {
+        this.sede = sede;
     }
 
 }

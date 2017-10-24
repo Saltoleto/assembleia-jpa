@@ -1,25 +1,27 @@
 package br.com.assembleia.entities;
 
 import br.com.assembleia.enums.EnumSituacaoPatrimonio;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Date;
 import java.util.Locale;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author fernandosaltoleto
  */
 @Entity
 @Table(name = "patrimonio")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Patrimonio.valorPatrimonio",
-            query = "SELECT SUM(valorTotal) as valor FROM Patrimonio ")
+        @NamedQuery(name = "Patrimonio.valorPatrimonio",
+                query = "SELECT SUM(valorTotal) as valor FROM Patrimonio "),
+        @NamedQuery(name = "Patrimonio.listarPorIgreja",
+                query = "SELECT p FROM Patrimonio p JOIN p.congregacao i WHERE i.id = :idIgreja")
 })
 public class Patrimonio implements Serializable, Comparable<Patrimonio> {
 

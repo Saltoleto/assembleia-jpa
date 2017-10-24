@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <f:metadata/>
+    <f:viewParam name="rel" value="#{usuarioControle.titulo}"/>
+
+    <ui:define name="content">
+        <h:form>
+            <b:messages/>
+            <b:panel title="#{usuarioControle.titulo}" collapsible="false" >
+
+                <b:inputText value="#{usuarioControle.usuario.login}" label="#{msgs['label.login']}" required="true"
+                             required-message="#{msgs['label.informe.login']}"/>
+
+                <b:inputText mask="email" value="#{usuarioControle.usuario.email}" label="#{msgs['label.email']}"
+                             required="true"
+                             required-message="#{msgs['label.informe.email']}">
+                    <f:facet name="prepend">
+                        <h:outputText value="@"/>
+                    </f:facet>
+                </b:inputText>
+
+                <b:selectOneMenu label="#{msgs['label.autorizacao']}" required="true"
+                                 requiredMessage="#{msgs['label.selecione.autorizaccao']}"
+                                 id="estado" value="#{usuarioControle.usuario.autorizacao}">
+                    <f:selectItem itemLabel="#{msgs['label.selecione.autorizaccao']}" itemValue="Teste"/>
+                    <f:converter converterId="enumAutorizacaoConverter"/>
+                    <f:selectItems value="#{usuarioControle.autorizacoes}" var="cl" itemLabel="#{cl.descricao}"
+                                   itemValue="#{cl.descricao}"/>
+                </b:selectOneMenu>
+
+                <b:inputSecret value="#{usuarioControle.usuario.senha}" label="#{msgs['label.senha']}" required="true"
+                               required-message="#{msgs['label.informe.senha']}"/>
+
+                <b:selectOneMenu id="congregacao" label="#{msgs['label.igreja']}"
+                                 value="#{usuarioControle.usuario.congregacao}">
+                    <f:selectItem itemLabel="#{msgs['label.selecione.igreja']}" itemValue=""
+                                  noSelectionOption="true"/>
+                    <f:selectItems value="#{usuarioControle.congregacoes}" var="congregacao"
+                                   itemValue="#{congregacao}" itemLabel="#{congregacao.nome}"/>
+                </b:selectOneMenu>
+
+                <h:panelGrid columns="2" class="pull-right" style="margin-top: 20px">
+                    <b:commandButton action="#{usuarioControle.voltar()}" immediate="true" look="warning"
+                                     value="#{msgs['btn.cancelar']}"/>
+                    <b:commandButton action="#{usuarioControle.salvar()}" look="success" value="#{msgs['btn.salvar']}"/>
+                </h:panelGrid>
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

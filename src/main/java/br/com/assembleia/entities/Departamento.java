@@ -4,16 +4,18 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author fernandosaltoleto
- */
 @Entity
-public class Departamento implements Comparable<Departamento>, Serializable {
+@XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = "Departamento.listarPorIgreja",
+                query = "SELECT d FROM Departamento d JOIN d.congregacao i WHERE i.id = :idIgreja")
+})
+public class Departamento implements Serializable, Comparable<Departamento> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,6 +31,8 @@ public class Departamento implements Comparable<Departamento>, Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private List<Funcao> funcoes;
     private int quantidadeIntegrantes;
+    @ManyToOne
+    private Congregacao congregacao;
 
     public Departamento() {
         integrantes = new ArrayList<Membro>();
@@ -83,6 +87,15 @@ public class Departamento implements Comparable<Departamento>, Serializable {
         this.descricao = descricao;
     }
 
+
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -110,7 +123,6 @@ public class Departamento implements Comparable<Departamento>, Serializable {
 
     @Override
     public int compareTo(Departamento t) {
-        return this.descricao.compareToIgnoreCase(t.getDescricao());
+        return this.nome.compareTo(t.nome);
     }
-
 }

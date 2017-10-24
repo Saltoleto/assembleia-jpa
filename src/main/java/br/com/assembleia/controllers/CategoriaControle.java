@@ -1,26 +1,26 @@
 package br.com.assembleia.controllers;
 
-import br.com.assembleia.entities.Categoria;
+import br.com.assembleia.entities.TipoDeDespesa;
 import br.com.assembleia.services.CategoriaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 @ManagedBean
 @SessionScoped
 @Component
 public class CategoriaControle {
 
-    private Categoria categoria;
-    private List<Categoria> categorias;
-    private List<Categoria> categoriasFiltrados;
+    private TipoDeDespesa categoria;
+    private List<TipoDeDespesa> categorias;
+    private List<TipoDeDespesa> categoriasFiltrados;
     private String titulo;
 
     @Autowired
@@ -28,18 +28,18 @@ public class CategoriaControle {
 
     @PostConstruct
     private void init() {
-        categoria = new Categoria();
+        categoria = new TipoDeDespesa();
     }
 
     public String novo() {
-        categoria = new Categoria(); 
-        titulo = "Cadastro de Categoria";
+        categoria = new TipoDeDespesa();
+        titulo = "Cadastro de TipoDeDespesa";
         return "form?faces-redirect=true";
     }
 
     public String carregarCadastro() {
         if (categoria != null) {
-            titulo = "Editar Categoria";
+            titulo = "Editar TipoDeDespesa";
             return "form?faces-redirect=true";
         }
         adicionaMensagem("Nenhuma categoria foi selecionada para a alteração!", FacesMessage.SEVERITY_INFO);
@@ -50,7 +50,7 @@ public class CategoriaControle {
     public String salvar() {
         try {
             service.salvar(categoria);
-            adicionaMensagem("Categoria salva com sucesso!", FacesMessage.SEVERITY_INFO);
+            adicionaMensagem("TipoDeDespesa salva com sucesso!", FacesMessage.SEVERITY_INFO);
             categoria = null;
         } catch (IllegalArgumentException e) {
             adicionaMensagem(e.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -80,7 +80,7 @@ public class CategoriaControle {
 
                 service.deletar(categoria);
                 categorias = null;
-                adicionaMensagem("Categoria excluida com sucesso!", FacesMessage.SEVERITY_INFO);
+                adicionaMensagem("TipoDeDespesa excluida com sucesso!", FacesMessage.SEVERITY_INFO);
             }
 
         } catch (PersistenceException ex) {
@@ -95,27 +95,27 @@ public class CategoriaControle {
         return "lista?faces-redirect=true";
     }
 
-    public Categoria getCategoria() {
+    public TipoDeDespesa getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(TipoDeDespesa categoria) {
         this.categoria = categoria;
     }
 
-    public List<Categoria> getCategorias() {
+    public List<TipoDeDespesa> getCategorias() {
         return categorias = service.listarTodos();
     }
 
-    public void setCategorias(List<Categoria> categorias) {
+    public void setCategorias(List<TipoDeDespesa> categorias) {
         this.categorias = categorias;
     }
 
-    public List<Categoria> getCategoriasFiltrados() {
+    public List<TipoDeDespesa> getCategoriasFiltrados() {
         return categoriasFiltrados;
     }
 
-    public void setCategoriasFiltrados(List<Categoria> categoriasFiltrados) {
+    public void setCategoriasFiltrados(List<TipoDeDespesa> categoriasFiltrados) {
         this.categoriasFiltrados = categoriasFiltrados;
     }
 

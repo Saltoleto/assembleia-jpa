@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <b:messages/>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="#{msgs['titulo.tipos.receitas']}"/>
+                <b:commandButton look="info" action="#{tipoDeReceitaControle.novo}"
+                                 tooltip="#{msgs['btn.novo.tipo.receita']}" class="pull-right"
+                                 value="#{msgs['btn.novo.tipo.receita']}"/>
+            </b:formGroup>
+
+            <b:panel collapsible="false">
+                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"
+                             customLangUrl="#{resource['js/pt-br.json']}"
+                             value="#{tipoDeReceitaControle.listTipoDeReceitas}" var="tipoReceita">
+                    <b:dataTableColumn value="#{tipoReceita.id}"/>
+                    <b:dataTableColumn value="#{tipoReceita.descricao}"/>
+                    <b:dataTableColumn label="#{msgs['label.acoes']}">
+                        <b:commandButton action="#{tipoDeReceitaControle.deletar(tipoReceita)}"
+                                         onclick="return confirm('#{msgs['confirmar.exclucao']}');"
+                                         tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{tipoDeReceitaControle.editar(tipoReceita)}" tooltip="#{msgs['btn.editar']}"
+                                         class="fa fa-pencil-square-o pull-right" look="warning"/>
+                    </b:dataTableColumn>
+                </b:dataTable>
+
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

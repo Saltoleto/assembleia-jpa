@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="cadastro">
+            <b:messages/>
+            <b:panel title="#{eventoControle.titulo}" collapsible="false" >
+
+                <b:inputText value="#{eventoControle.evento.nome}" label="#{msgs['label.nome']}" required="true"
+                             required-message="#{msgs['label.informe.nome']}"/>
+                
+                <b:inputText value="#{eventoControle.evento.descricao}" label="#{msgs['label.descricao']}" required="true"
+                             required-message="#{msgs['label.informe.descricao']}"/>
+
+                <b:dateTimePicker    show-time="false" value="#{eventoControle.evento.dataInicio}" label="#{msgs['label.data.inicio']}"
+                                     required="true" required-message="#{msgs['label.data.inicio']}"/>
+
+                <b:dateTimePicker    show-time="false" value="#{eventoControle.evento.dataEncerramento}" label="#{msgs['label.data.encerramento']}"
+                                     required="true" required-message="#{msgs['label.data.encerramento']}"/>
+
+                <b:inputText value="#{eventoControle.evento.localEvento}" label="#{msgs['label.local']}" required="true"
+                             required-message="#{msgs['label.informe.local']}"/>
+
+                <b:inputText mask="(99) 99999-9999" value="#{eventoControle.evento.telefone}" label="#{msgs['label.telefone.responsavel']}" required="true"
+                             required-message="#{msgs['label.informe.telefone.responsaval']}"/>
+
+
+                <b:selectOneMenu  id="congregacao" label="#{msgs['label.congregacao']}" value="#{eventoControle.evento.congregacao}">
+                    <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{eventoControle.congregacoes}" var="congregacao" itemValue="#{congregacao}" itemLabel="#{congregacao.nome}" />
+                </b:selectOneMenu>
+
+
+                <b:tabView id="tabViewConvidados" activeIndex="#{eventoControle.tab}" >
+
+                    <b:tab id="tabChild" title="#{msgs['label.convidados']}">
+
+                        <b:formGroup style="border: none">
+                            <b:button  onclick="$('.modalConvidados').modal()" iconAwesome="fa-plus-circle" tooltip="#{msgs['btn.novo.convidado']}"
+                                      class="pull-right" look="info"/>
+                        </b:formGroup>
+
+                        <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true" id="tblFuncao" searching="false" paginated="false"
+                                     value="#{eventoControle.evento.convidados}" var="convidado">
+
+                            <b:dataTableColumn style="width:50%" value="#{convidado.nome}"/>
+                            <b:dataTableColumn style="width:50%" value="#{convidado.funcao}"/>
+
+                            <b:dataTableColumn  label="#{msgs['label.acoes']}"> 
+                                <b:commandButton action="#{eventoControle.retirarConvidadoLista}" immediate="true"
+                                                 tooltip="#{msgs['btn.excluir']}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" class="fa fa-trash pull-right" look="danger">
+                                    <f:setPropertyActionListener value="#{convidado}" target="#{eventoControle.convidado}"/>
+                                </b:commandButton>
+                            </b:dataTableColumn>
+
+                        </b:dataTable>                   
+                    </b:tab>
+
+                    <b:tab title="#{msgs['label.participantes']}">
+
+                        <b:formGroup style="border: none">
+                            <b:button onclick="$('.modalParticipantes').modal(), destroy()" iconAwesome="fa-plus-circle" tooltip="#{msgs['btn.novo.integrante']}"
+                                      class="pull-right" look="info"/>
+                        </b:formGroup>
+
+                        <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true" id="tblIntegrantes" searching="false" paginated="false"
+                                     value="#{eventoControle.evento.participantes}" var="participante">
+
+                            <b:dataTableColumn  value="#{participante.nome}"/>
+
+                            <b:dataTableColumn label="#{msgs['label.acoes']}"> 
+                                <b:commandButton action="#{eventoControle.retirarParticipanteLista}" immediate="true"
+                                                 tooltip="#{msgs['btn.excluir']}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" class="fa fa-trash pull-right" look="danger">
+                                    <f:setPropertyActionListener value="#{participante}" target="#{eventoControle.participante}" />
+                                </b:commandButton>
+                            </b:dataTableColumn>
+
+                        </b:dataTable>  
+
+                    </b:tab>                    
+                </b:tabView>
+
+                <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
+                    <b:commandButton look="warning" value="Cancelar" action="#{eventoControle.voltar()}" immediate="true"/>
+                    <b:commandButton look="success" value="Salvar" action="#{eventoControle.salvar()}" ajax="false"/>
+                </h:panelGrid>            
+            </b:panel>                        
+        </h:form>
+
+        <h:form>
+            <b:modal id="amodal" title="#{msgs['titulo.incluir.convidado']}" styleClass="modalConvidados">
+                <h:panelGrid columns="1" cellspacing="12">
+                    <b:inputText label="#{msgs['label.nome']}" size="100" value="#{eventoControle.convidado.nome}"/>
+                    <b:inputText label="#{msgs['label.funcao']}" size="100" value="#{eventoControle.convidado.funcao}"/>
+                    <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">                        
+                        <b:commandButton value="Incluir"  look="success" actionListener="#{eventoControle.adicionarConvidados()}"
+                                        update="cadastro" ajax="true" icon="ui-icon-circle-check"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </b:modal>    
+        </h:form>
+
+        <h:form>
+            <b:modal id="amodal" title="#{msgs['titulo.incluir.participante']}" styleClass="modalParticipantes">
+                <h:panelGrid columns="1" cellspacing="12" style="width: 100%" >                                  
+                    <h:panelGroup>
+                        <b:selectOneMenu id="integrante" label="#{msgs['label.membro']}" size="500" value="#{eventoControle.participante}" >
+                            <f:selectItem itemLabel="Selecione o membro" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{eventoControle.membros}" var="membro" itemLabel="#{membro.nome}" itemValue="#{membro}" />
+                        </b:selectOneMenu>
+                    </h:panelGroup> 
+                    <h:panelGrid  columns="2" style="margin-top: 40px;" class="pull-right">                        
+                        <b:commandButton look="success" value="Incluir" actionListener="#{eventoControle.adicionarParticipantes}" update="cadastro" ajax="true" icon="ui-icon-circle-check"/>
+                    </h:panelGrid>
+                </h:panelGrid>            
+            </b:modal>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

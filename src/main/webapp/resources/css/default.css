@@ -1,0 +1,33 @@
+.btn-info  {
+    background-image:linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff2aabd2', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    background-repeat: repeat-x;
+    border-color: #3c3c3c;
+    color: white;
+    font-family: arial,sans-serif;
+    font-size: 14px
+}
+
+.btn-info:active, .btn-info:active:focus {
+    background-color: #080808;
+    border-color: #080808;
+}
+
+.btn-info:hover, .btn-info:focus {
+    background-color: #080808;
+    background-position: 0 -15px;
+    color: white;
+    font-family: arial,sans-serif;
+    font-size: 14px;
+    border-color: #080808;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    z-index: 3;
+    color: #fff;
+    background-color: gray;
+    border-color: gray;
+    cursor: default;
+}
+

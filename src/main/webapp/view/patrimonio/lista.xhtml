@@ -14,26 +14,27 @@
                 <b:commandButton action="#{patrimonioControle.novo}" tooltip="#{msgs['btn.novo.patrimonio']}" class="pull-right" look="info" value="#{msgs['btn.novo.patrimonio']}"/>
             </b:formGroup>
 
-            <b:panel collapsible="false" look="info">
-                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{patrimonioControle.patrimonios}" var="patrimonio">                    
-                    <b:dataTableColumn  value="#{patrimonio.codigo}" />
-                    <b:dataTableColumn  value="#{patrimonio.nome}" />
-                    <b:dataTableColumn  label="#{msgs['label.valor.unitario']}" value="#{patrimonio.valorUnitarioFormatado}"/>
+            <b:panel collapsible="false">
+                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}"
+                             value="#{patrimonioControle.patrimonios}" var="fornecedor">
+                    <b:dataTableColumn  value="#{fornecedor.codigo}" />
+                    <b:dataTableColumn  value="#{fornecedor.nome}" />
+                    <b:dataTableColumn  label="#{msgs['label.valor.unitario']}" value="#{fornecedor.valorUnitarioFormatado}"/>
                     <b:dataTableColumn  label="#{msgs['label.qtd']}">
-                        <h:outputText   value="#{patrimonio.quantidade}">
+                        <h:outputText   value="#{fornecedor.quantidade}">
                             <f:convertNumber maxFractionDigits="0" minFractionDigits="0" />
                         </h:outputText>
                     </b:dataTableColumn>
                     <b:dataTableColumn label="#{msgs['label.dt.aquisicao']}">
-                        <h:outputText value="#{patrimonio.dataAquisicao}">
+                        <h:outputText value="#{fornecedor.dataAquisicao}">
                             <f:convertDateTime pattern="dd/MM/yyyy" /> 
                         </h:outputText>                     
                     </b:dataTableColumn>                                                                
-                    <b:dataTableColumn label="#{msgs['label.valor.total']}" value="#{patrimonio.valorTotal}"/>
+                    <b:dataTableColumn label="#{msgs['label.valor.total']}" value="#{fornecedor.valorTotal}"/>
 
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
-                        <b:commandButton action="#{patrimonioControle.deletar(patrimonio)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
-                        <b:commandButton action="#{patrimonioControle.editar(patrimonio)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                        <b:commandButton action="#{patrimonioControle.deletar(fornecedor)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{patrimonioControle.editar(fornecedor)}" tooltip="#{msgs['btn.editar']}" class="fa fa-pencil-square-o pull-right" look="warning"/>
                     </b:dataTableColumn>
                 </b:dataTable>
             </b:panel>

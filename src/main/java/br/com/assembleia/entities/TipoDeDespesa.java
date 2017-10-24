@@ -1,10 +1,7 @@
 
 package br.com.assembleia.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -12,14 +9,15 @@ import java.io.Serializable;
  * @author fernandosaltoleto
  */
 @Entity
-public class Categoria implements Comparable<Categoria>, Serializable {
+public class TipoDeDespesa implements Comparable<TipoDeDespesa>, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;    
-    private String descricao;
+    private Long id;
 
+    @Column(unique = true)
+    private String descricao;
 
     public Long getId() {
         return id;
@@ -49,10 +47,10 @@ public class Categoria implements Comparable<Categoria>, Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Categoria)) {
+        if (!(object instanceof TipoDeDespesa)) {
             return false;
         }
-        Categoria other = (Categoria) object;
+        TipoDeDespesa other = (TipoDeDespesa) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -65,7 +63,7 @@ public class Categoria implements Comparable<Categoria>, Serializable {
     }
 
     @Override
-    public int compareTo(Categoria t) {
+    public int compareTo(TipoDeDespesa t) {
         return this.descricao.compareToIgnoreCase(t.getDescricao());
     }
 

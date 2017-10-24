@@ -42,7 +42,7 @@ public class Receita implements Serializable, Comparable<Receita> {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date data;
     @ManyToOne
-    private Categoria categoria;
+    private TipoDeDespesa categoria;
     private BigDecimal valor;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "membro_id")
@@ -70,11 +70,11 @@ public class Receita implements Serializable, Comparable<Receita> {
         this.data = data;
     }
 
-    public Categoria getCategoria() {
+    public TipoDeDespesa getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(TipoDeDespesa categoria) {
         this.categoria = categoria;
     }
 

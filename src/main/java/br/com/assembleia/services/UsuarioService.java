@@ -1,15 +1,12 @@
 package br.com.assembleia.services;
 
-import java.util.List;
-
+import br.com.assembleia.entities.Usuario;
+import br.com.assembleia.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.assembleia.entities.Usuario;
-import br.com.assembleia.repositories.UsuarioRepository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Service
 @Transactional
@@ -17,8 +14,6 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository userRepository;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public List<Usuario> listarTodos() {
         return userRepository.findAll();

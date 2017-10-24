@@ -1,20 +1,43 @@
 package br.com.assembleia.controllers;
 
 
+import br.com.assembleia.entities.Congregacao;
 import br.com.assembleia.entities.Usuario;
-import java.util.Calendar;
+import br.com.assembleia.enums.EnumAutorizacao;
+import br.com.assembleia.services.CongregacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import org.springframework.stereotype.Component;
+import java.util.Calendar;
+import java.util.List;
 
 @ManagedBean
 @SessionScoped
 @Component
 public class AplicacaoControle {
 
+    private static AplicacaoControle uniqueInstance;
+    private List<Congregacao> congregacoes;
+    private Congregacao congregacao;
+    private Congregacao congregacaoSelecionada;
     private Usuario usuario;
+
+    @Autowired
+    private CongregacaoService serviceCongregacao;
+
+    public AplicacaoControle() {
+
+    }
+
+    public static synchronized AplicacaoControle getInstance() {
+        if (uniqueInstance == null)
+            uniqueInstance = new AplicacaoControle();
+        return uniqueInstance;
+    }
 
     public String sair() {
         return "login?faces-redirect=true";
@@ -36,6 +59,16 @@ public class AplicacaoControle {
         return false;
     }
 
+    public boolean adminSede() {
+        usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        return (usuario.getCongregacao().getIsSede() && EnumAutorizacao.ADMIN.equals(usuario.getAutorizacao()));
+    }
+
+    public boolean adminCongregacao() {
+        usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        return (!usuario.getCongregacao().getIsSede() && EnumAutorizacao.ADMIN.equals(usuario.getAutorizacao()));
+    }
+
     public static void adicionaMensagem(String message, FacesMessage.Severity tipo) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getFlash().setKeepMessages(true);
@@ -52,6 +85,47 @@ public class AplicacaoControle {
         Calendar data = Calendar.getInstance();
         Integer ano = (data.get(Calendar.YEAR));
         return ano;
+    }
+
+    public Long getIdIgreja() {
+        congregacaoSelecionada = (Congregacao) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("congregacao");
+        if (congregacaoSelecionada != null) {
+            return congregacaoSelecionada.getId();
+        }
+
+        return null;
+    }
+
+    public Long getIdIgrejaPorUsuario() {
+        usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        if (usuario != null) {
+            return usuario.getCongregacao().getId();
+        }
+
+        return null;
+    }
+    public List<Congregacao> getCongregacoes() {
+        return congregacoes = serviceCongregacao.listarTodos();
+    }
+
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public Congregacao getCongregacaoSelecionada() {
+        return congregacaoSelecionada;
+    }
+
+    public void setCongregacaoSelecionada(Congregacao congregacaoSelecionada) {
+        this.congregacaoSelecionada = congregacaoSelecionada;
+    }
+
+    public void selectCongregagao() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("congregacao", this.congregacao);
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
     }
 
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <f:metadata/>
+    <f:viewParam name="rel" value="#{fornecedorControle.titulo}"/>
+
+    <ui:define name="content">     
+
+        <h:form id="cadastro">  
+           
+            <b:messages/>        
+            <b:panel title="#{fornecedorControle.titulo}" collapsible="false">
+
+                <b:panelGrid columns="2">      
+
+                    <b:inputText value="#{fornecedorControle.fornecedor.nome}" label="#{msgs['label.nome']}"
+                                 required="true" required-message="#{msgs['label.informe.nome']}"/>
+
+                    <b:inputText value="#{fornecedorControle.fornecedor.cnpj}" label="#{msgs['label.cnpj']}"
+                                 mask="99.999.999/9999-99" required="true" required-message="#{msgs['label.informe.cnpj']}"/>
+
+                    <b:inputText  mask="(99) 9999-9999" value="#{fornecedorControle.fornecedor.telefone}" label="#{msgs['label.telefone']}" required="true"
+                                  required-message="#{msgs['label.informe.telefone']}"/>
+
+                    <b:inputText mask="email" value="#{fornecedorControle.fornecedor.email}" label="#{msgs['label.email']}"
+                                 required="true"
+                                 required-message="#{msgs['label.informe.email']}">
+                        <f:facet name="prepend">
+                            <h:outputText value="@"/>
+                        </f:facet>
+                    </b:inputText>
+
+
+                    <b:selectOneMenu  id="congregacao" label="#{msgs['label.congregacao']}" value="#{fornecedorControle.fornecedor.congregacao}">
+                        <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue="" noSelectionOption="true"/>                        
+                        <f:selectItems value="#{fornecedorControle.congregacoes}" var="congregacao" itemValue="#{congregacao}" itemLabel="#{congregacao.nome}" />
+                    </b:selectOneMenu>
+
+
+                    <b:inputTextarea value="#{fornecedorControle.fornecedor.observacao}" label="#{msgs['label.observacao']}"/>
+
+                </b:panelGrid>
+                <h:panelGrid columns="2" class="pull-right" style="margin-top: 20px">                 
+                    <b:commandButton action="#{fornecedorControle.voltar()}" immediate="true"  look="warning" value="#{msgs['btn.cancelar']}"/>
+                    <b:commandButton action="#{fornecedorControle.salvar()}" look="success" value="#{msgs['btn.salvar']}"/>
+                </h:panelGrid>  
+            </b:panel>  
+        </h:form>
+
+    </ui:define>
+</ui:composition>

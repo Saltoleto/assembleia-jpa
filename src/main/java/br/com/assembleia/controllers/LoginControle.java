@@ -4,15 +4,9 @@
  */
 package br.com.assembleia.controllers;
 
-import br.com.assembleia.entities.Autorizacao;
 import br.com.assembleia.entities.Usuario;
+import br.com.assembleia.enums.EnumAutorizacao;
 import br.com.assembleia.services.UsuarioService;
-import java.util.ArrayList;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,12 +15,20 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
+
 @ManagedBean
 @SessionScoped
 @Component
 public class LoginControle {
 
     private Usuario usuario;
+
     @Autowired
     private UsuarioService service;
     private String login;
@@ -35,9 +37,9 @@ public class LoginControle {
     public String logar() {
         if (login.equals("admin") && senha.equals("admin12345")) {
             usuario = new Usuario();
-            usuario.setAutorizacao(Autorizacao.ADMIN);
+            usuario.setAutorizacao(EnumAutorizacao.ADMIN);
         } else {
-            usuario = service.findByLogin(login, senha);
+            usuario = service.findByLogin(login,senha);
         }
         if (usuario != null) {
             List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
@@ -45,7 +47,7 @@ public class LoginControle {
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(new UsernamePasswordAuthenticationToken(login, senha, roles));
             if (context.getAuthentication().isAuthenticated()) {
-                if (usuario.getAutorizacao().equals(Autorizacao.USUARIO)) {
+                if (usuario.getAutorizacao().equals(EnumAutorizacao.SECRETARIO)) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
                     return "index?faces-redirect=true";
                 } else {

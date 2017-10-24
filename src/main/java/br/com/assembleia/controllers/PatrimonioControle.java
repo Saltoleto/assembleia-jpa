@@ -7,12 +7,16 @@ import br.com.assembleia.enums.EnumSituacaoPatrimonio;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.DepartamentoService;
 import br.com.assembleia.services.PatrimonioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
+import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -20,10 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.persistence.PersistenceException;
-import org.springframework.stereotype.Component;
 
 @ManagedBean
 @SessionScoped
@@ -93,9 +93,8 @@ public class PatrimonioControle {
                 patrimonios = null;
                 adicionaMensagem("Patrimônio excluído com Sucesso!", FacesMessage.SEVERITY_INFO);
             }
-        } catch (PersistenceException ex) {
-            adicionaMensagem("O Patrimonio está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Esta Patrimônio não pode ser excluído, ele possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
     }
@@ -112,10 +111,8 @@ public class PatrimonioControle {
     }
 
     public List<Patrimonio> getPatrimonios() {
-        patrimonios = service.listarTodos();
-
+        patrimonios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
         Collections.sort(patrimonios);
-
         return patrimonios;
     }
 

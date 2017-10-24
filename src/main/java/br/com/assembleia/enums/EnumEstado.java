@@ -23,10 +23,10 @@ public enum EnumEstado {
         this.uf = uf;
     }
 
-    public static EnumEstado getEstado(String estado) {
+     public static EnumEstado getEstado(String estado) {
         if (estado != null) {
             for (EnumEstado e : values()) {
-                if (estado.equalsIgnoreCase(e.name())) {
+                if (estado.equalsIgnoreCase(e.getDescricao())) {
                     return e;
                 }
             }

@@ -1,19 +1,23 @@
 package br.com.assembleia.controllers;
 
+import br.com.assembleia.entities.Congregacao;
+import br.com.assembleia.entities.Usuario;
+import br.com.assembleia.enums.EnumAutorizacao;
+import br.com.assembleia.services.CongregacaoService;
+import br.com.assembleia.services.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import java.util.Collections;
-import org.springframework.beans.factory.annotation.Autowired;
-
-
-import br.com.assembleia.entities.Usuario;
-import br.com.assembleia.services.UsuarioService;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.PersistenceException;
-import org.springframework.stereotype.Component;
+import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @ManagedBean
 @SessionScoped
@@ -22,11 +26,14 @@ public class UsuarioControle {
 
     private Usuario usuario;
     private List<Usuario> usuarios;
-    private List<Usuario> usuariosFintrados;
+    private List<Congregacao> congregacoes;
     private String titulo;
 
     @Autowired
     private UsuarioService service;
+
+    @Autowired
+    private CongregacaoService serviceCongregacao;
 
     @PostConstruct
     private void init() {
@@ -35,16 +42,16 @@ public class UsuarioControle {
 
     public String novo() {
         usuario = new Usuario();
-        titulo = "Cadastrar Usuario";
+        titulo = "Cadastrar Usuário";
         return "form?faces-redirect=true";
     }
 
-    public String carregarCadastro() {
+    public String editar(Usuario usuario) {
         if (usuario != null) {
-            titulo = "Editar Usuario";
+            this.usuario = usuario;
+            titulo = "Editar Usuário";
             return "form?faces-redirect=true";
         }
-        adicionaMensagem("Nenhum Elemento foi Selecionado para a Alteração!", FacesMessage.SEVERITY_INFO);
         return "lista?faces-redirect=true";
 
     }
@@ -66,27 +73,23 @@ public class UsuarioControle {
         context.addMessage(null, new FacesMessage(tipo, message, null));
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (usuario == null) {
-                adicionaMensagem("Nenhum Elemento foi Selecionado para a Exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoUs.show()");
-        }
-    }
-
-    public String deletar() {
+    public String deletar(Usuario usuario) {
         try {
-            service.deletar(usuario);
-            usuarios = null;
-            adicionaMensagem("Usuário Excluido com Sucesso!", FacesMessage.SEVERITY_INFO);
+            if (usuario != null) {
+                this.usuario = usuario;
+                service.deletar(usuario);
+                usuarios = null;
+                adicionaMensagem("Usuário excluido com sucesso!", FacesMessage.SEVERITY_INFO);
+            }
 
-        } catch (PersistenceException ex) {
-            adicionaMensagem("O Usuário esta ativo, não pode ser excluído!", FacesMessage.SEVERITY_ERROR);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Esta Usuário não pode ser excluído, ele possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
+    }
+
+    public List<EnumAutorizacao> getAutorizacoes() {
+        return Arrays.asList(EnumAutorizacao.values());
     }
 
     public String voltar() {
@@ -100,20 +103,23 @@ public class UsuarioControle {
         return usuarios;
     }
 
+    public List<Congregacao> getCongregacoes() {
+
+        if (AplicacaoControle.getInstance().adminSede()) {
+            congregacoes = serviceCongregacao.listarTodos();
+        } else {
+            congregacoes = new ArrayList<>();
+            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getUsuario().getCongregacao().getId()));
+        }
+        return congregacoes;
+    }
+
+    public void setCongregacoes(List<Congregacao> congregacoes) {
+        this.congregacoes = congregacoes;
+    }
+
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
-    }
-
-    public List<Usuario> getUsuariosFintrados() {
-
-        usuariosFintrados = service.listarTodos();
-
-        Collections.sort(usuariosFintrados);
-        return usuariosFintrados;
-    }
-
-    public void setUsuariosFintrados(List<Usuario> usuariosFintrados) {
-        this.usuariosFintrados = usuariosFintrados;
     }
 
     public Usuario getUsuario() {
@@ -131,6 +137,6 @@ public class UsuarioControle {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
-    
+
+
 }

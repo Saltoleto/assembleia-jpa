@@ -1,23 +1,25 @@
 package br.com.assembleia.controllers;
 
+import br.com.assembleia.entities.Congregacao;
 import br.com.assembleia.entities.Departamento;
 import br.com.assembleia.entities.Funcao;
 import br.com.assembleia.entities.Membro;
+import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.DepartamentoService;
 import br.com.assembleia.services.MembroService;
+import org.primefaces.context.RequestContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
-import org.primefaces.context.RequestContext;
-import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean
 @SessionScoped
@@ -30,6 +32,7 @@ public class DepartamentoControle {
     private Funcao funcaoFinal;
     private Membro membroTransiente;
     private List<Membro> membros;
+    private List<Congregacao> congregacoes;
     private int tab = 0;
     private Membro membroFinal;
 
@@ -39,6 +42,8 @@ public class DepartamentoControle {
     private DepartamentoService service;
     @Autowired
     private MembroService serviceMembro;
+    @Autowired
+    private CongregacaoService serviceCongregacao;
 
     @PostConstruct
     private void init() {
@@ -52,6 +57,7 @@ public class DepartamentoControle {
         funcaoFinal = new Funcao();
         membroFinal = new Membro();
         titulo = "Cadastrar Departamento";
+        tab = 0;
         return "form?faces-redirect=true";
     }
 
@@ -114,9 +120,8 @@ public class DepartamentoControle {
                 adicionaMensagem("Departamento Excluido com Sucesso!", FacesMessage.SEVERITY_INFO);
             }
 
-        } catch (PersistenceException ex) {
-            adicionaMensagem("Departamento está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Este Departamento não pode ser excluído, elae possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
     }
@@ -169,6 +174,16 @@ public class DepartamentoControle {
 
     }
 
+    public List<Congregacao> getCongregacoes() {
+        if (AplicacaoControle.getInstance().adminSede()) {
+            congregacoes = serviceCongregacao.listarTodos();
+        } else {
+            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgreja()));
+        }
+        return congregacoes;
+    }
+
+
     public List<Membro> getMembros() {
         return membros = serviceMembro.listarTodos();
     }
@@ -214,7 +229,14 @@ public class DepartamentoControle {
     }
 
     public List<Departamento> getDepartamentos() {
-        return departamentos = service.listarTodos();
+        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            departamentos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+            departamentos = service.listarTodos();
+        } else {
+            departamentos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+        return departamentos;
     }
 
     public Membro getMembroFinal() {

@@ -1,24 +1,23 @@
 package br.com.assembleia.controllers;
 
-import br.com.assembleia.entities.Congregacao;
-import br.com.assembleia.entities.Membro;
-import br.com.assembleia.entities.Patrimonio;
-import br.com.assembleia.entities.Receita;
-import br.com.assembleia.entities.Relatorios;
+import br.com.assembleia.entities.*;
 import br.com.assembleia.enums.EnumMesInt;
 import br.com.assembleia.enums.EnumSexo;
-import br.com.assembleia.services.CargoService;
-import br.com.assembleia.services.CongregacaoService;
-import br.com.assembleia.services.MembroService;
-import br.com.assembleia.services.PatrimonioService;
-import br.com.assembleia.services.ReceitaService;
+import br.com.assembleia.services.*;
 import br.com.assembleia.util.ReportsUtil;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import net.sf.jasperreports.engine.JRException;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.sql.DataSource;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -26,26 +25,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.sql.DataSource;
-import net.sf.jasperreports.engine.JRException;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -384,14 +366,14 @@ public class RelatorioControle {
             rel.setDescricaoRelatorio("Gráfico comparativo entre Receitas e Despesas.");
             relatoriosFiananceiro.add(rel);
             rel = new Relatorios();
-            rel.setDescricaoLink("Receitas por Categoria");
+            rel.setDescricaoLink("Receitas por TipoDeDespesa");
             rel.setLinkRelatorio("/relatorios/receitascategoria.jsf");
-            rel.setDescricaoRelatorio("Gráfico de Receitas agrupadas por Categoria.");
+            rel.setDescricaoRelatorio("Gráfico de Receitas agrupadas por TipoDeDespesa.");
             relatoriosFiananceiro.add(rel);
             rel = new Relatorios();
-            rel.setDescricaoLink("Despesas por Categoria");
+            rel.setDescricaoLink("Despesas por TipoDeDespesa");
             rel.setLinkRelatorio("/relatorios/despesascategoria.jsf");
-            rel.setDescricaoRelatorio("Gráfico de Despesas agrupadas por Categoria.");
+            rel.setDescricaoRelatorio("Gráfico de Despesas agrupadas por TipoDeDespesa.");
             relatoriosFiananceiro.add(rel);
         }
         return relatoriosFiananceiro;

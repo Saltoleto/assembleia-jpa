@@ -14,7 +14,7 @@
         <h:form id="cadastro">  
            
             <b:messages/>        
-            <b:panel title="#{patrimonioControle.titulo}" collapsible="false" look="info">
+            <b:panel title="#{patrimonioControle.titulo}" collapsible="false">
 
                 <b:panelGrid columns="2">      
 
@@ -41,7 +41,7 @@
                     <b:dateTimePicker    show-time="false" value="#{patrimonioControle.patrimonio.dataAquisicao}" label="#{msgs['label.data.aquisicao']}" 
                                          required="true" required-message="#{msgs['label.data.aquisicao']}"/>
 
-                    <b:inputText  class="moneyClass" onkeypress="mascara(this, valor)" value="#{patrimonioControle.patrimonio.valorUnitario}" 
+                    <b:inputText  class="moneyClass" value="#{patrimonioControle.patrimonio.valorUnitario}"
                                  label="#{msgs['label.valor.unitario']}"  required="true" required-message="#{msgs['label.valor.unitario']}">
                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />  
                     </b:inputText>

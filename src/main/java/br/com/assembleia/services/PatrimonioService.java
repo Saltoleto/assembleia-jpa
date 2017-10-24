@@ -2,11 +2,12 @@ package br.com.assembleia.services;
 
 import br.com.assembleia.entities.Patrimonio;
 import br.com.assembleia.repositories.PatrimonioRepository;
-import java.math.BigDecimal;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @Transactional
@@ -31,4 +32,7 @@ public class PatrimonioService {
         return patrimonioRepository.valorPatrimonio();
     }
 
+    public List<Patrimonio> listarPorIgreja(Long idIgreja) {
+        return patrimonioRepository.listarPorIgreja(idIgreja);
+    }
 }

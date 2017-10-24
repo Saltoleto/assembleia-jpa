@@ -3,24 +3,12 @@
  */
 package br.com.assembleia.entities;
 
+import br.com.assembleia.enums.EnumAutorizacao;
+
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-
-/**
- * @author Siva
- *
- */
 @Entity
 @Table(name = "usuario")
 @XmlRootElement
@@ -29,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     ,
     @NamedQuery(name = "Usuario.findByUserId", query = "SELECT u FROM Usuario u WHERE u.usuarioId = :usuarioId")
     ,
-    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.login =:login and u.senha=md5(:senha)")
+    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.login = :login and u.senha = :senha ")
 
 })
 public class Usuario implements Comparable<Usuario>, Serializable {
@@ -45,7 +33,9 @@ public class Usuario implements Comparable<Usuario>, Serializable {
     private String senha;
     @Column(name = "autorizacao")
     @Enumerated(EnumType.STRING)
-    private Autorizacao autorizacao;
+    private EnumAutorizacao autorizacao;
+    @ManyToOne
+    private Congregacao congregacao;
     private String email;
 
     public Usuario() {
@@ -67,11 +57,23 @@ public class Usuario implements Comparable<Usuario>, Serializable {
         return login;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getSenha() {
         return senha;
     }
 
-    public Autorizacao getAutorizacao() {
+    public EnumAutorizacao getAutorizacao() {
         return autorizacao;
     }
 
@@ -84,9 +86,20 @@ public class Usuario implements Comparable<Usuario>, Serializable {
         return this.login.compareToIgnoreCase(t.getLogin());
     }
 
-    public void setAutorizacao(Autorizacao autorizacao) {
+    public void setAutorizacao(EnumAutorizacao autorizacao) {
         this.autorizacao = autorizacao;
     }
-    
-    
+
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
+    }
+
+    public boolean isAdmin(){
+        return EnumAutorizacao.ADMIN.equals(this.getAutorizacao());
+    }
+
 }

@@ -1,20 +1,10 @@
 package br.com.assembleia.entities;
 
-
-
 import br.com.assembleia.enums.EnumEstado;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  *
@@ -24,8 +14,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "congregacao")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Congregacao.valorReceitaPeriodo", 
-            query = "SELECT c FROM Congregacao c where issede = true Order By c.nome  ")})
+    @NamedQuery(name = "Congregacao.listarSedes",
+            query = "SELECT c FROM Congregacao c where issede = true Order By c.nome  ")
+    ,
+@NamedQuery(name = "Congregacao.listarCongregacoes",
+            query = "SELECT c FROM Congregacao c where issede = false Order By c.nome")
+    ,
+@NamedQuery(name = "Congregacao.buscarSede",
+            query = "SELECT c FROM Congregacao c where issede = true Order By c.nome")
+        ,
+        @NamedQuery(name = "Congregacao.getById",
+                query = "SELECT c FROM Congregacao c where id = :id")
+})
 public class Congregacao implements Comparable<Congregacao>, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +43,8 @@ public class Congregacao implements Comparable<Congregacao>, Serializable {
     private String endereco;
     private String cep;
     private Boolean isSede;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name="sede_id")
     private Congregacao sede;
     private byte[] logoIgreja;
 

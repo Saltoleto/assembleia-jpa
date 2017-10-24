@@ -2,16 +2,16 @@ package br.com.assembleia.controllers;
 
 import br.com.assembleia.entities.Cargo;
 import br.com.assembleia.services.CargoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.PersistenceException;
-import org.springframework.stereotype.Component;
+import javax.faces.context.FacesContext;
+import java.util.List;
 
 @ManagedBean
 @SessionScoped
@@ -60,7 +60,6 @@ public class CargoControle {
             titulo = "Editar Cargo";
             return "form?faces-redirect=true";
         }
-        adicionaMensagem("Nenhum cargo foi selecionado para a alteraÃ§Ã£o!", FacesMessage.SEVERITY_INFO);
         return "lista?faces-redirect=true";
 
     }
@@ -74,9 +73,8 @@ public class CargoControle {
                 adicionaMensagem("Cargo excluido com sucesso!", FacesMessage.SEVERITY_INFO);
             }
 
-        } catch (PersistenceException ex) {
-            adicionaMensagem("O cargo esta vinculado a algum membro, não pode ser excluído!", FacesMessage.SEVERITY_ERROR);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Este Cargo não pode ser excluído, ele possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
     }

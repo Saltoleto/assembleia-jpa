@@ -1,40 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:b="http://bootsfaces.net/ui">
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:b="http://bootsfaces.net/ui">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/font-awesome.min.css"/>
+        <h:outputScript library="js" name="bootstrap.js" />
+        <h:outputScript library="js" name="bootstrap.min.js" />
+        <h:outputScript library="js" name="jquery.maskMoney.js" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css"/>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+    </h:head>
 
-  <ui:remove>
-  </ui:remove>
+
     <b:navBar brand="#{msgs['menu.assembleia']}"
               brandHref="http://www.bootsfaces.net/" inverse="true"
               fixed="top">
         <b:container>
             <b:navbarLinks>
-                <b:navLink />
-                <b:navLink />
+                <b:navLink/>
+                <b:navLink/>
                 <b:navbarLinks>
-                    <b:navLink outcome="/index" value="Home" iconAwesome="home" />
+                    <b:navLink outcome="/index" value="Home" iconAwesome="home"/>
                 </b:navbarLinks>
                 <b:dropMenu value="#{msgs['menu.secretaria']}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
-                    <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-group" outcome="/view/departamento/lista"/>
-                    <b:navLink value="#{msgs['menu.patrimonio']}" iconAwesome="fa-archive" outcome="/view/patrimonio/lista"/>
+
+                    <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-group"
+                               outcome="/view/departamento/lista"/>
+
+                    <b:navLink value="#{msgs['menu.fornecedores']}" iconAwesome="fa-cart-plus"
+                               outcome="/view/fornecedor/lista"/>
+
+                    <b:navLink value="#{msgs['menu.patrimonio']}" iconAwesome="fa-archive"
+                               outcome="/view/patrimonio/lista"/>
+
+                    <b:navLink value="#{msgs['menu.tipo.despesa']}" iconAwesome="fa-cloud-upload"
+                               outcome="/view/tipodespesa/lista"/>
+
+                    <b:navLink value="#{msgs['menu.tipo.receita']}" iconAwesome="fa-cloud-download"
+                               outcome="/view/tiporeceita/lista"/>
                 </b:dropMenu>
+
                 <b:dropMenu value="#{msgs['menu.financeiro']}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
                 </b:dropMenu>
-                  <b:dropMenu value="#{msgs['menu.configuracoes']}">
-                    <b:navLink value="#{msgs['menu.congregacoes']}" iconAwesome="fa-sitemap" outcome="/view/cargo/lista"/>
+                <b:dropMenu value="#{msgs['menu.configuracoes']}">
+
+                    <b:navLink value="#{msgs['menu.congregacoes']}" iconAwesome="fa-sitemap"
+                               outcome="/view/congregacao/lista"/>
+
                     <b:navLink value="#{msgs['menu.sede']}" iconAwesome="fa-institution" outcome="/view/sede/lista"/>
+
+                    <b:navLink value="#{msgs['menu.usuarios']}" iconAwesome="fa-user-plus"
+                               outcome="/view/usuario/lista"/>
                 </b:dropMenu>
             </b:navbarLinks>
 
             <b:navbarLinks pull="right">
-                <b:navLink href="http://showcase.bootsfaces.net/"  iconAwesome="fa-power-off" />
+                <b:navLink tooltip="Sair" active="true" href="#{request.contextPath}/logout"
+                           iconAwesome="fa-power-off"/>
             </b:navbarLinks>
+
+            <b:navbarLinks pull="right">
+                <b:navLink active="true" value="#{aplicacaoControle.usuario.login}" tooltip="Usuário"/>
+            </b:navbarLinks>
+
+            <b:navbarLinks style="background-image:linear-gradient(to bottom, #3c3c3c 0%, #222 100%);"
+                           rendered="#{aplicacaoControle.adminSede()}" tooltip="Igreja" pull="right">
+
+                <h:form style="display:inline" styleClass="form-inline">
+                    <b:selectOneMenu value="#{aplicacaoControle.congregacao}" style="margin-top:8px"
+                                     onchange="$('.theme-selector-button').click()">
+                        <f:selectItem itemLabel="#{msgs['label.todas.igreja']}" itemValue=""
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{aplicacaoControle.congregacoes}" var="congregacao"
+                                       itemLabel="#{congregacao.nome}"
+                                       itemValue="#{congregacao}"/>
+                    </b:selectOneMenu>
+                    <b:commandButton class="theme-selector-button" value="select"
+                                     action="#{aplicacaoControle.selectCongregagao()}"
+                                     style="display:none"/>
+                </h:form>
+            </b:navbarLinks>
+
         </b:container>
     </b:navBar>
 

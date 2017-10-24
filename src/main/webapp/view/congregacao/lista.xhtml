@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <h:outputStylesheet library="css" name="default.css"/>
+            <b:messages />
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="#{msgs['titulo.congregacoes']}"/>
+                <b:commandButton styleClass="btn-novo"
+                                 action="#{congregacaoControle.novo()}" look="info" tooltip="#{msgs['btn.nova.congregacao']}" class="pull-right" value="#{msgs['btn.nova.congregacao']}"/>
+            </b:formGroup>
+            <b:panel collapsible="false">
+                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true" customLangUrl="#{resource['js/pt-br.json']}" id="tabela" widgetVar="tabela"  selectionMode="single"
+                             value="#{congregacaoControle.congregacoes}" var="congregacao">      
+
+                    <b:dataTableColumn value="#{congregacao.nome}"/>  
+                    <b:dataTableColumn value="#{congregacao.dirigente}"/>  
+                    <b:dataTableColumn value="#{congregacao.cidade}"/>                  
+                    <b:dataTableColumn value="#{congregacao.telefone}"/>                   
+                    <b:dataTableColumn value="#{congregacao.email}"/>
+
+                    <b:dataTableColumn label="#{msgs['label.acoes']}">
+                        <b:commandButton action="#{congregacaoControle.deletar(congregacao)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{congregacaoControle.editar(congregacao)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                    </b:dataTableColumn>
+                </b:dataTable>       
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

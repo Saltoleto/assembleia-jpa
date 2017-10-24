@@ -3,20 +3,22 @@ package br.com.assembleia.controllers;
 
 import br.com.assembleia.entities.Congregacao;
 import br.com.assembleia.enums.EnumEstado;
-import br.com.assembleia.services.CongregacaoService;
+import br.com.assembleia.services.SedeService;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Controller;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.persistence.PersistenceException;
+import javax.servlet.ServletContext;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,12 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.PersistenceException;
-import javax.servlet.ServletContext;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 
 @Controller
 @Scope("session")
@@ -50,7 +46,7 @@ public class SedeControle {
     String semImagem = servletContext.getRealPath("/Resources/img/semFoto2.jpg");
 
     @Autowired
-    private CongregacaoService service;
+    private SedeService service;
 
     @PostConstruct
     private void init() {
@@ -120,12 +116,12 @@ public class SedeControle {
             this.congregacao = congregacao;
             service.deletar(congregacao);
             congregacoes = null;
-            adicionaMensagem("Sede exclu�da com sucesso!", FacesMessage.SEVERITY_INFO);
+            adicionaMensagem("Sede excluída com sucesso!", FacesMessage.SEVERITY_INFO);
 
-        } catch (PersistenceException ex) {
-            adicionaMensagem(ex.getMessage(), FacesMessage.SEVERITY_INFO);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Esta Sede não pode ser excluída, ela possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
+
         return "lista?faces-redirect=true";
     }
 
