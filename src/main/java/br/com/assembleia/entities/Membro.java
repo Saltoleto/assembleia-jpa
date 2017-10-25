@@ -4,35 +4,38 @@ import br.com.assembleia.enums.EnumEstado;
 import br.com.assembleia.enums.EnumEstadoCivil;
 import br.com.assembleia.enums.EnumSexo;
 import br.com.assembleia.enums.EnumSituacao;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author fernandosaltoleto
  */
 @Entity
 @Table(name = "membro")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Membro.buscarQtdTotalMembros",
-            query = "Select Count(*) from Membro"),
-    @NamedQuery(name = "Membro.buscarQtdMembrosSituacao",
-            query = "Select Count(*) from Membro Where situacao =:situacao"),
-    @NamedQuery(name = "Membro.buscarQtdMembrosDizimistas",
-            query = "Select Count(*) from Membro m Where m.dizimista = true "),
-    @NamedQuery(name = "Membro.aniversariantesMes", 
-            query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now())"),
-    @NamedQuery(name = "Membro.listarObreiros", 
-            query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao != 'Membro' Order By m.nome "),
-    @NamedQuery(name = "Membro.listarPorSexoCargo", 
-            query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao = 'Membro' Order By m.nome "),
-    @NamedQuery(name = "Membro.aniversariantesRelatorio", 
-            query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) =:mes order by extract(DAY FROM m.dataNascimento) ")
+        @NamedQuery(name = "Membro.buscarQtdTotalMembros",
+                query = "Select Count(*) from Membro"),
+        @NamedQuery(name = "Membro.buscarQtdMembrosSituacao",
+                query = "Select Count(*) from Membro Where situacao =:situacao"),
+        @NamedQuery(name = "Membro.buscarQtdMembrosDizimistas",
+                query = "Select Count(*) from Membro m Where m.dizimista = true "),
+        @NamedQuery(name = "Membro.aniversariantesMes",
+                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now())"),
+        @NamedQuery(name = "Membro.listarObreiros",
+                query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao != 'Membro' Order By m.nome "),
+        @NamedQuery(name = "Membro.listarPorSexoCargo",
+                query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao = 'Membro' Order By m.nome "),
+        @NamedQuery(name = "Membro.aniversariantesRelatorio",
+                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) =:mes order by extract(DAY FROM m.dataNascimento) "),
+
+        @NamedQuery(name = "Membro.listarPorIgreja",
+                query = "SELECT m FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja")
 })
 public class Membro implements Serializable {
 
@@ -64,7 +67,7 @@ public class Membro implements Serializable {
     private String observacao;
     private boolean dizimista;
 
-//   ----------------- DADOS ECLESIASTICOS -------------------- 
+    //   ----------------- DADOS ECLESIASTICOS --------------------
     @Temporal(TemporalType.DATE)
     private Date membroDesde;
     @Temporal(TemporalType.DATE)
@@ -81,8 +84,10 @@ public class Membro implements Serializable {
     private String procedencia;
     @Transient
     private String codigoMembro;
+    @ManyToOne
+    private Congregacao congregacao;
 
-//    ------------------FOTO-------------------
+    //    ------------------FOTO-------------------
     private byte[] foto;
     @Transient
     private InputStream is;
@@ -398,4 +403,11 @@ public class Membro implements Serializable {
         this.codigoMembro = codigoMembro;
     }
 
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
+    }
 }

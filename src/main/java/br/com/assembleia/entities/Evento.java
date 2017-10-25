@@ -14,6 +14,10 @@ import java.util.List;
  * @author fernandosaltoleto
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Evento.listarPorIgreja",
+                query = "SELECT d FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja")
+})
 public class Evento implements Serializable, Comparable<Evento> {
 
     private static final long serialVersionUID = 1L;

@@ -18,16 +18,15 @@
                 <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"
                              customLangUrl="#{resource['js/pt-br.json']}" value="#{eventoControle.eventos}"
                              var="evento">
-                    <b:dataTableColumn label="#{msgs['label.igreja']}" style="width: 35%"
-                                       value="#{evento.congregacao.nome}"/>
-                    <b:dataTableColumn value="#{evento.localEvento}"/>
+                    <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{evento.congregacao.nome}"/>
+                    <b:dataTableColumn label="#{msgs['label.local']}" value="#{evento.localEvento}"/>
                     <b:dataTableColumn label="#{msgs['label.telefone.responsavel']}" value="#{evento.telefone}"/>
-                    <b:dataTableColumn value="#{evento.dataInicio}"/>
-                    <b:dataTableColumn value="#{evento.dataEncerramento}"/>
-                    <b:dataTableColumn value="#{evento.dataInicio.time}"/>
-                    <b:dataTableColumn value="#{evento.dataEncerramento.time}"/>
+                    <b:dataTableColumn label="#{msgs['label.inicio']}" value="#{evento.dataInicio}"/>
+                    <b:dataTableColumn label="#{msgs['label.encerramento']}" value="#{evento.dataEncerramento}"/>
+                    <b:dataTableColumn label="#{msgs['label.hora.inicio']}" value="#{evento.dataInicio.time}"/>
+                    <b:dataTableColumn label="#{msgs['label.hora.encerramento']}" value="#{evento.dataEncerramento.time}"/>
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
-                        <b:commandButton action="#{eventoControle.deletar(eventoControle)}"
+                        <b:commandButton action="#{eventoControle.deletar(evento)}"
                                          onclick="return confirm('#{msgs['confirmar.exclucao']}');"
                                          tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
                         <b:commandButton action="#{eventoControle.editar(eventoControle)}"

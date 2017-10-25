@@ -39,6 +39,7 @@ public class EventoControle {
     private String mesExtenso;
     private List<Congregacao> congregacoes;
     private String titulo;
+    private Congregacao congregacao;
 
     @Autowired
     private EventoService service;
@@ -58,6 +59,7 @@ public class EventoControle {
         evento = new Evento();
         titulo = "Cadastro de Evento";
         convidado = new Convidado();
+        tab = 0;
         return "form?faces-redirect=true";
     }
 
@@ -83,6 +85,7 @@ public class EventoControle {
     public String salvar() {
 
         try {
+            evento.setCongregacao(this.congregacao);
             service.salvar(evento);
             adicionaMensagem("Evento salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             evento = null;
@@ -126,9 +129,9 @@ public class EventoControle {
     public void retirarParticipanteLista() {
 
         if (evento != null) {
-            evento.getParticipantes().remove(participante);
+            this.participante = participante;
+            evento.getParticipantes().remove(this.participante);
             tab = 1;
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoIntegrante.hide()");
         }
 
     }
@@ -145,16 +148,17 @@ public class EventoControle {
             evento.setConvidados(convidados);
             convidado = new Convidado();
             tab = 0;
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoConvidado.hide()");
         }
     }
 
 
-    public String deletar() {
+    public String deletar(Evento evento) {
         try {
-            service.deletar(evento);
-            adicionaMensagem("Evento excluido com Sucesso!", FacesMessage.SEVERITY_INFO);
-
+            if(evento !=null){
+                this.evento = evento;
+                service.deletar(evento);
+                adicionaMensagem("Evento excluido com Sucesso!", FacesMessage.SEVERITY_INFO);
+            }
         } catch (PersistenceException ex) {
             adicionaMensagem("O  Evento não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
             voltar();
@@ -221,7 +225,11 @@ public class EventoControle {
     }
 
     public List<Membro> getMembros() {
-        return membros = serviceMembro.listarTodos();
+
+        if(this.congregacao!= null){
+            membros = serviceMembro.listarPorIgreja(congregacao.getId());
+        }
+        return membros;
     }
 
     public Evento getEvento() {
@@ -241,6 +249,14 @@ public class EventoControle {
     }
 
     public List<Evento> getEventos() {
+
+        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            eventos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+            eventos = service.listarTodos();
+        } else {
+            eventos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
         eventos = service.listarTodos();
 
         Collections.sort(eventos, new Comparator<Evento>() {
@@ -257,11 +273,15 @@ public class EventoControle {
         if (AplicacaoControle.getInstance().adminSede()) {
             congregacoes = serviceCongregacao.listarTodos();
         } else {
-            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgreja()));
+            congregacoes = new ArrayList<>();
+            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgrejaPorUsuario()));
         }
         return congregacoes;
     }
 
+    public void selectCongregacao() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("congregacaoEvento", this.congregacao);
+    }
     public int getTab() {
         return tab;
     }
@@ -295,4 +315,11 @@ public class EventoControle {
         this.mesExtenso = mesExtenso;
     }
 
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
+    }
 }

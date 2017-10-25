@@ -10,13 +10,13 @@
             <b:messages/>
             <b:formGroup style="border: none">
                 <h:outputText style="font-size: 26px" value="#{msgs['titulo.departamentos']}"/>
-                <b:commandButton action="#{eventoControle.novo}" tooltip="#{msgs['btn.novo.departamento']}"
+                <b:commandButton action="#{departamentoControle.novo}" tooltip="#{msgs['btn.novo.departamento']}"
                                  class="pull-right" look="info" value="#{msgs['btn.novo.departamento']}"/>
             </b:formGroup>
 
             <b:panel collapsible="false">
                 <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"
-                             customLangUrl="#{resource['js/pt-br.json']}" value="#{eventoControle.departamentos}"
+                             customLangUrl="#{resource['js/pt-br.json']}" value="#{departamentoControle.departamentos}"
                              var="departamento">
                     <b:dataTableColumn label="#{msgs['label.igreja']}" style="width: 35%"
                                        value="#{departamento.congregacao.nome}"/>
@@ -25,10 +25,10 @@
                     <b:dataTableColumn label="#{msgs['label.quantidade.integrantes']}"
                                        value="#{departamento.quantidadeIntegrantes}"/>
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
-                        <b:commandButton action="#{eventoControle.deletar(departamento)}"
+                        <b:commandButton action="#{departamentoControle.deletar(departamento)}"
                                          onclick="return confirm('#{msgs['confirmar.exclucao']}');"
                                          tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
-                        <b:commandButton action="#{eventoControle.editar(departamento)}"
+                        <b:commandButton action="#{departamentoControle.editar(departamento)}"
                                          tooltip="#{msgs['btn.editar']}" class="fa fa-pencil-square-o pull-right"
                                          look="warning"/>
                     </b:dataTableColumn>
