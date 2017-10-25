@@ -2,7 +2,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="#{pageContext.request.contextPath}/templates/template.xhtml">
 
     <ui:define name="content">
@@ -21,15 +21,31 @@
                     <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{evento.congregacao.nome}"/>
                     <b:dataTableColumn label="#{msgs['label.local']}" value="#{evento.localEvento}"/>
                     <b:dataTableColumn label="#{msgs['label.telefone.responsavel']}" value="#{evento.telefone}"/>
-                    <b:dataTableColumn label="#{msgs['label.inicio']}" value="#{evento.dataInicio}"/>
-                    <b:dataTableColumn label="#{msgs['label.encerramento']}" value="#{evento.dataEncerramento}"/>
-                    <b:dataTableColumn label="#{msgs['label.hora.inicio']}" value="#{evento.dataInicio.time}"/>
-                    <b:dataTableColumn label="#{msgs['label.hora.encerramento']}" value="#{evento.dataEncerramento.time}"/>
+                    <b:dataTableColumn label="#{msgs['label.inicio']}" >
+                        <h:outputText value="#{evento.dataInicio}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn label="#{msgs['label.encerramento']}">
+                        <h:outputText value="#{evento.dataEncerramento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn label="#{msgs['label.hora.inicio']}">
+                        <h:outputText value="#{evento.dataInicio.time}" >
+                            <f:convertDateTime timeStyle="default" pattern="HH:mm" timeZone="GMT-3"/>
+                        </h:outputText>
+                    </b:dataTableColumn>
+                    <b:dataTableColumn label="#{msgs['label.hora.encerramento']}">
+                        <h:outputText value="#{evento.dataEncerramento.time}" >
+                            <f:convertDateTime timeStyle="default" pattern="HH:mm" timeZone="GMT-3"/>
+                        </h:outputText>
+                    </b:dataTableColumn>
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
                         <b:commandButton action="#{eventoControle.deletar(evento)}"
                                          onclick="return confirm('#{msgs['confirmar.exclucao']}');"
                                          tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
-                        <b:commandButton action="#{eventoControle.editar(eventoControle)}"
+                        <b:commandButton action="#{eventoControle.editar(evento)}"
                                          tooltip="#{msgs['btn.editar']}" class="fa fa-pencil-square-o pull-right"
                                          look="warning"/>
                     </b:dataTableColumn>

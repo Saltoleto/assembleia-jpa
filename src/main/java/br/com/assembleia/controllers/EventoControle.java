@@ -76,6 +76,7 @@ public class EventoControle {
             this.evento = evento;
             titulo = "Editar o Evento";
             convidado = new Convidado();
+            tab = 0;
             return "form?faces-redirect=true";
         }
         return "lista?faces-redirect=true";
