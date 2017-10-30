@@ -7,7 +7,6 @@ import br.com.assembleia.entities.Membro;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.DepartamentoService;
 import br.com.assembleia.services.MembroService;
-import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
@@ -68,6 +67,7 @@ public class DepartamentoControle {
             funcaoFinal = new Funcao();
             funcaoTransiente = new Funcao();
             membroFinal = new Membro();
+            tab = 0;
             return "form?faces-redirect=true";
         }
         adicionaMensagem("Nenhum Departamento foi selecionado para a alteração!", FacesMessage.SEVERITY_INFO);
@@ -98,7 +98,6 @@ public class DepartamentoControle {
             }
             tab = 0;
             departamento.setFuncoes(funcoesTeste);
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoFuncao.hide()");
         }
 
     }
@@ -108,7 +107,6 @@ public class DepartamentoControle {
         if (departamento != null) {
             departamento.getIntegrantes().remove(membroFinal);
             tab = 1;
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoIntegrante.hide()");
         }
     }
 
@@ -150,11 +148,7 @@ public class DepartamentoControle {
             funcaoTransiente = new Funcao();
             funcaoFinal = new Funcao();
             tab = 0;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("loggedIn", true);
-        } else {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("loggedIn", false);
+
         }
 
     }
@@ -165,13 +159,8 @@ public class DepartamentoControle {
             departamento.getIntegrantes().add(membroFinal);
             membroFinal = new Membro();
             tab = 1;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("loggedIn", true);
-        } else {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("loggedIn", false);
-        }
 
+        }
     }
 
     public List<Congregacao> getCongregacoes() {

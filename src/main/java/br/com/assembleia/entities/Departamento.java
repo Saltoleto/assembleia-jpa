@@ -23,7 +23,6 @@ public class Departamento implements Serializable, Comparable<Departamento> {
     @Column(name = "Id_Departamento")
     private Long id;
     private String nome;
-    private String descricao;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     private List<Membro> integrantes;
@@ -78,15 +77,6 @@ public class Departamento implements Serializable, Comparable<Departamento> {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
 
     public Congregacao getCongregacao() {
         return congregacao;

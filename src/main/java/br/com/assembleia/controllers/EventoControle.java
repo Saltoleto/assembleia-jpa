@@ -258,7 +258,6 @@ public class EventoControle {
         } else {
             eventos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
-        eventos = service.listarTodos();
 
         Collections.sort(eventos, new Comparator<Evento>() {
             @Override

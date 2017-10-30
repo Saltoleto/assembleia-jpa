@@ -25,7 +25,6 @@ public class Evento implements Serializable, Comparable<Evento> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private String descricao;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dataInicio;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
@@ -59,14 +58,6 @@ public class Evento implements Serializable, Comparable<Evento> {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public Date getDataInicio() {

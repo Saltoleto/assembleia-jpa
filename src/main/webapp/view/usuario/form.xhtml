@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -13,6 +12,7 @@
         <h:form>
             <b:messages/>
             <b:panel title="#{usuarioControle.titulo}" collapsible="false" >
+                <b:panelGrid columns="2">
 
                 <b:inputText value="#{usuarioControle.usuario.login}" label="#{msgs['label.login']}" required="true"
                              required-message="#{msgs['label.informe.login']}"/>
@@ -44,12 +44,15 @@
                     <f:selectItems value="#{usuarioControle.congregacoes}" var="congregacao"
                                    itemValue="#{congregacao}" itemLabel="#{congregacao.nome}"/>
                 </b:selectOneMenu>
+                </b:panelGrid>
 
                 <h:panelGrid columns="2" class="pull-right" style="margin-top: 20px">
                     <b:commandButton action="#{usuarioControle.voltar()}" immediate="true" look="warning"
                                      value="#{msgs['btn.cancelar']}"/>
                     <b:commandButton action="#{usuarioControle.salvar()}" look="success" value="#{msgs['btn.salvar']}"/>
                 </h:panelGrid>
+
+                <b:selectBooleanCheckbox rendered="#{!usuarioControle.usuario.reiniciada}" value="#{usuarioControle.usuario.reiniciarSenha}" caption="checkbox 1" label="Please decide" />
             </b:panel>
         </h:form>
     </ui:define>

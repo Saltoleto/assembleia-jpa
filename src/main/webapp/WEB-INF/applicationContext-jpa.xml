@@ -12,6 +12,15 @@
 
 		<security:http  auto-config="true" access-denied-page="/negado.jsf" use-expressions="true">
 
+			<!--SEVRETARIO-->
+			<security:intercept-url pattern="/view/cargo/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/cargo/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/evento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/evento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/usuario/lista.jsf" access="hasAnyRole('ADMIN')"/>
+			<security:intercept-url pattern="/view/usuario/form.jsf" access="hasAnyRole('ADMIN')"/>
+
 			<security:intercept-url pattern="/index.jsf" access="hasAnyRole('ADMIN')"/>
 			<security:form-login login-page="/login.jsf" authentication-failure-url="/login.jsf?erro=true"/>
 			<security:logout invalidate-session="true" logout-success-url="/login.jsf?logout" logout-url="/logout" />

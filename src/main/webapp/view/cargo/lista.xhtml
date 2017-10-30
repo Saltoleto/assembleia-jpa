@@ -17,9 +17,8 @@
             <b:panel collapsible="false">
                 <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"
                              customLangUrl="#{resource['js/pt-br.json']}" value="#{cargoControle.cargos}" var="cargo">
-                    <b:dataTableColumn value="#{cargo.id}"/>
                     <b:dataTableColumn value="#{cargo.descricao}"/>
-                    <b:dataTableColumn label="#{msgs['label.acoes']}">
+                    <b:dataTableColumn   label="#{msgs['label.acoes']}">
                         <b:commandButton action="#{cargoControle.deletar(cargo)}"
                                          onclick="return confirm('#{msgs['confirmar.exclucao']}');"
                                          tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>

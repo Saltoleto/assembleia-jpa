@@ -52,14 +52,14 @@
                 <b:dropMenu value="#{msgs['menu.financeiro']}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
                 </b:dropMenu>
-                <b:dropMenu value="#{msgs['menu.configuracoes']}">
+                <b:dropMenu value="#{msgs['menu.configuracoes']}" rendered="#{aplicacaoControle.adminSede() || aplicacaoControle.adminCongregacao()}">
 
                     <b:navLink value="#{msgs['menu.congregacoes']}" iconAwesome="fa-sitemap"
                                outcome="/view/congregacao/lista"/>
 
-                    <b:navLink value="#{msgs['menu.sede']}" iconAwesome="fa-institution" outcome="/view/sede/lista"/>
+                    <b:navLink value="#{msgs['menu.sede']}" rendered="#{aplicacaoControle.adminSede()}" iconAwesome="fa-institution" outcome="/view/sede/lista"/>
 
-                    <b:navLink value="#{msgs['menu.usuarios']}" iconAwesome="fa-user-plus"
+                    <b:navLink  value="#{msgs['menu.usuarios']}"  iconAwesome="fa-user-plus"
                                outcome="/view/usuario/lista"/>
                 </b:dropMenu>
             </b:navbarLinks>
@@ -70,7 +70,7 @@
             </b:navbarLinks>
 
             <b:navbarLinks pull="right">
-                <b:navLink active="true" value="#{aplicacaoControle.usuario.login}" tooltip="Usuário"/>
+                <b:navLink active="true" value="#{aplicacaoControle.usuario.login}" iconAwesome="fa-user" tooltip="Usuário"/>
             </b:navbarLinks>
 
             <b:navbarLinks style="background-image:linear-gradient(to bottom, #3c3c3c 0%, #222 100%);"

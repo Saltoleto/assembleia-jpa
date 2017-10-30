@@ -111,7 +111,14 @@ public class PatrimonioControle {
     }
 
     public List<Patrimonio> getPatrimonios() {
-        patrimonios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            patrimonios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+            patrimonios = service.listarTodos();
+        } else {
+            patrimonios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+
         Collections.sort(patrimonios);
         return patrimonios;
     }

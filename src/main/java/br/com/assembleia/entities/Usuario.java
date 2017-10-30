@@ -37,6 +37,10 @@ public class Usuario implements Comparable<Usuario>, Serializable {
     @ManyToOne
     private Congregacao congregacao;
     private String email;
+    @Column(name = "reiniciarSenha")
+    private Boolean reiniciarSenha;
+    @Column(name = "reiniciada")
+    private Boolean reiniciada;
 
     public Usuario() {
     }
@@ -102,4 +106,19 @@ public class Usuario implements Comparable<Usuario>, Serializable {
         return EnumAutorizacao.ADMIN.equals(this.getAutorizacao());
     }
 
+    public Boolean getReiniciarSenha() {
+        return reiniciarSenha;
+    }
+
+    public void setReiniciarSenha(Boolean reiniciarSenha) {
+        this.reiniciarSenha = reiniciarSenha;
+    }
+
+    public Boolean getReiniciada() {
+        return reiniciada;
+    }
+
+    public void setReiniciada(Boolean reiniciada) {
+        this.reiniciada = reiniciada;
+    }
 }

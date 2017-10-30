@@ -9,112 +9,144 @@
     <ui:define name="content">
 
         <h:form id="cadastro">
+
             <b:messages/>
-            <b:panel title="#{departamentoControle.titulo}" collapsible="false" >
 
-                <b:inputText value="#{departamentoControle.departamento.nome}" label="#{msgs['label.nome']}" required="true"
-                             required-message="#{msgs['label.informe.nome']}"/>
-                
-                <b:inputText value="#{departamentoControle.departamento.descricao}" label="#{msgs['label.descricao']}" required="true"
-                             required-message="#{msgs['label.informe.descricao']}"/>
+            <b:panel title="#{departamentoControle.titulo}" collapsible="false">
 
-                <b:selectOneMenu  id="congregacao" label="#{msgs['label.congregacao']}" value="#{departamentoControle.departamento.congregacao}">
-                    <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{departamentoControle.congregacoes}" var="congregacao" itemValue="#{congregacao}" itemLabel="#{congregacao.nome}" />
-                </b:selectOneMenu>
+                <b:panelGrid columns="1">
+                    <b:inputText value="#{departamentoControle.departamento.nome}" label="#{msgs['label.nome']}"
+                                 required="true"
+                                 required-message="#{msgs['label.informe.nome']}"/>
 
-
-                <b:tabView id="tabViewFuncao" activeIndex="#{departamentoControle.tab}" >
-
-                    <b:tab id="tabChild" title="#{msgs['label.funcoes']}">
-
-                        <b:formGroup style="border: none">
-                            <b:button  onclick="$('.modalFuncoes').modal()" iconAwesome="fa-plus-circle" tooltip="#{msgs['btn.nova.funcao']}"
-                                      class="pull-right" look="info"/>
+                    <h:form style="display:inline" styleClass="form-inline">
+                        <b:formGroup>
+                            <b:selectOneMenu value="#{departamentoControle.departamento.congregacao}" update="formModal:modalParticipantes"
+                                             process="@form" style="margin-top:8px">
+                                <f:selectItem itemLabel="#{msgs['label.selecione.igreja']}" itemValue=""
+                                              noSelectionOption="true"/>
+                                <f:selectItems value="#{departamentoControle.congregacoes}" var="congregacao"
+                                               itemLabel="#{congregacao.nome}"
+                                               itemValue="#{congregacao}"/>
+                            </b:selectOneMenu>
                         </b:formGroup>
+                    </h:form>
 
-                        <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true" id="tblFuncao" searching="false" paginated="false"
-                                     value="#{departamentoControle.departamento.funcoes}" var="funcao">
+                </b:panelGrid>
 
-                            <b:dataTableColumn style="width:50%" value="#{funcao.funcao}"/>
-                            <b:dataTableColumn style="width:50%" value="#{funcao.membro.nome}"/>
+                <h:form id="formTabs">
+                    <b:tabView id="tabViewConvidados" activeIndex="#{departamentoControle.tab}">
 
-                            <b:dataTableColumn  label="#{msgs['label.acoes']}"> 
-                                <b:commandButton action="#{departamentoControle.retirarFuncaoLista()}" immediate="true"
-                                                 tooltip="#{msgs['btn.excluir']}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" class="fa fa-trash pull-right" look="danger">
-                                    <f:setPropertyActionListener value="#{funcao}" target="#{departamentoControle.funcaoFinal}"/>
-                                </b:commandButton>
-                            </b:dataTableColumn>
+                        <b:tab id="tab" title="#{msgs['label.funcoes']}">
 
-                        </b:dataTable>                   
-                    </b:tab>
+                            <b:formGroup style="border: none">
+                                <b:button onclick="$('.modalConvidados').modal()" iconAwesome="fa-plus-circle"
+                                          tooltip="#{msgs['btn.nova.funcao']}"
+                                          class="pull-right" look="info"/>
+                            </b:formGroup>
 
-                    <b:tab title="#{msgs['label.integrantes']}">                        
+                            <b:dataTable scroll-x="false"   customLangUrl="#{resource['js/pt-br.json']}" scroll-size="400px" fixedHeader="true" responsive="true"
+                                         id="tabelaConvidado" searching="false" paginated="false"
+                                         value="#{departamentoControle.departamento.funcoes}" var="convidado">
 
-                        <b:formGroup style="border: none">
-                            <b:button onclick="$('.modalIntegrantes').modal(), destroy()" iconAwesome="fa-plus-circle" tooltip="#{msgs['btn.novo.integrante']}"
-                                      class="pull-right" look="info"/>
-                        </b:formGroup>
+                                <b:dataTableColumn style="width:50%" value="#{convidado.funcao}"/>
+                                <b:dataTableColumn style="width:50%" value="#{convidado.membro.nome}"/>
 
-                        <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true" id="tblIntegrantes" searching="false" paginated="false"
-                                     value="#{departamentoControle.departamento.integrantes}" var="membro">
+                                <b:dataTableColumn label="#{msgs['label.acoes']}">
+                                    <b:commandButton action="#{departamentoControle.retirarFuncaoLista}"
+                                                     tooltip="#{msgs['btn.excluir']}"
+                                                     class="fa fa-trash pull-right" look="danger"
+                                                     update="cadastro:formTabs">
+                                        <f:setPropertyActionListener value="#{convidado}"
+                                                                     target="#{departamentoControle.funcaoFinal}"/>
+                                    </b:commandButton>
+                                </b:dataTableColumn>
 
-                            <b:dataTableColumn  value="#{membro.nome}"/>     
+                            </b:dataTable>
+                        </b:tab>
 
-                            <b:dataTableColumn label="#{msgs['label.acoes']}"> 
-                                <b:commandButton action="#{departamentoControle.retirarIntegranteLista()}" immediate="true"
-                                                 tooltip="#{msgs['btn.excluir']}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" class="fa fa-trash pull-right" look="danger">
-                                    <f:setPropertyActionListener value="#{membro}" target="#{departamentoControle.membroFinal}" />
-                                </b:commandButton>
-                            </b:dataTableColumn>
+                        <b:tab title="#{msgs['label.integrantes']}">
 
-                        </b:dataTable>  
+                            <b:formGroup style="border: none">
+                                <b:button onclick="$('.modalParticipantes').modal()" iconAwesome="fa-plus-circle"
+                                          tooltip="#{msgs['btn.novo.integrante']}"
+                                          class="pull-right" look="info"/>
+                            </b:formGroup>
 
-                    </b:tab>                    
-                </b:tabView>
+                            <b:dataTable scroll-x="false"   customLangUrl="#{resource['js/pt-br.json']}" scroll-size="400px" fixedHeader="true" responsive="true"
+                                         id="tabelaIntegrante" searching="false" paginated="false"
+                                         value="#{departamentoControle.departamento.integrantes}" var="participante">
+
+                                <b:dataTableColumn value="#{participante.nome}"/>
+
+                                <b:dataTableColumn label="#{msgs['label.acoes']}">
+                                    <b:commandButton action="#{departamentoControle.retirarIntegranteLista()}"
+                                                     immediate="true"
+                                                     tooltip="#{msgs['btn.excluir']}"
+                                                     class="fa fa-trash pull-right" look="danger"
+                                                     update="cadastro:formTabs">
+                                        <f:setPropertyActionListener value="#{participante}"
+                                                                     target="#{departamentoControle.membroFinal}"/>
+                                    </b:commandButton>
+                                </b:dataTableColumn>
+
+                            </b:dataTable>
+
+                        </b:tab>
+                    </b:tabView>
+                </h:form>
 
                 <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
-                    <b:commandButton look="warning" value="Cancelar" action="#{departamentoControle.voltar()}" immediate="true"/>
+                    <b:commandButton look="warning" value="Cancelar" action="#{departamentoControle.voltar()}"
+                                     immediate="true"/>
                     <b:commandButton look="success" value="Salvar" action="#{departamentoControle.salvar()}" ajax="false"/>
-                </h:panelGrid>            
-            </b:panel>                        
+                </h:panelGrid>
+            </b:panel>
+
         </h:form>
 
         <h:form>
-            <b:modal id="amodal" title="#{msgs['titulo.novao.funcao']}" styleClass="modalFuncoes">                 
+            <b:modal id="amodal" title="#{msgs['titulo.novao.funcao']}" styleClass="modalConvidados">
+                <b:messages/>
                 <h:panelGrid columns="1" cellspacing="12">
-                    <b:inputText label="#{msgs['label.funcao']}" size="100" value="#{departamentoControle.funcaoTransiente.funcao}"/>
+                    <b:inputText id="txtFuncao" label="#{msgs['label.funcao']}"  size="100" value="#{departamentoControle.funcaoTransiente.funcao}"/>
                     <h:panelGroup>
-                        <b:selectOneMenu  label="#{msgs['label.membro']}" id="funcao" value="#{departamentoControle.membroTransiente}" >
+                        <b:selectOneMenu label="#{msgs['label.membro']}" id="funcao"
+                                         value="#{departamentoControle.membroTransiente}">
                             <f:selectItem itemLabel="Selecione o membro" itemValue="" noSelectionOption="true"/>
                             <f:selectItems value="#{departamentoControle.membros}" var="membroFuncao"
                                            itemLabel="#{membroFuncao.nome}"
                                            itemValue="#{membroFuncao}"/>
                         </b:selectOneMenu>
                     </h:panelGroup>
-                    <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">                        
-                        <b:commandButton value="Incluir"  look="success" actionListener="#{departamentoControle.adicionarFuncoes()}"
-                                        update="cadastro" ajax="true" icon="ui-icon-circle-check"/>
+                    <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
+                        <b:commandButton value="Incluir" look="success"
+                                         actionListener="#{departamentoControle.adicionarFuncoes}"
+                                         update="cadastro:formTabs, txtFuncao" ajax="true" />
                     </h:panelGrid>
                 </h:panelGrid>
-            </b:modal>    
-        </h:form>
-
-        <h:form>
-            <b:modal id="amodal" title="#{msgs['titulo.incluir.integrantes']}" styleClass="modalIntegrantes">
-                <h:panelGrid columns="1" cellspacing="12" style="width: 100%" >                                  
-                    <h:panelGroup>
-                        <b:selectOneMenu id="integrante" label="#{msgs['label.membro']}" size="500" value="#{departamentoControle.membroTransiente}" >
-                            <f:selectItem itemLabel="Selecione o membro" itemValue="" noSelectionOption="true"/>
-                            <f:selectItems value="#{departamentoControle.membros}" var="membro" itemLabel="#{membro.nome}" itemValue="#{membro}" />
-                        </b:selectOneMenu>
-                    </h:panelGroup> 
-                    <h:panelGrid  columns="2" style="margin-top: 40px;" class="pull-right">                        
-                        <b:commandButton look="success" value="Incluir" actionListener="#{departamentoControle.adicionarIntegrantes()}" update="cadastro" ajax="true" icon="ui-icon-circle-check"/>
-                    </h:panelGrid>
-                </h:panelGrid>            
             </b:modal>
         </h:form>
 
+        <h:form id="formModal">
+            <b:modal id="modalParticipantes" title="#{msgs['titulo.incluir.integrantes']}"
+                     styleClass="modalParticipantes">
+                <h:panelGrid columns="1" cellspacing="12" style="width: 100%">
+                    <h:panelGroup>
+                        <b:selectOneMenu id="integrante" label="#{msgs['label.membro']}" size="500"
+                                         value="#{departamentoControle.membroTransiente}">
+                            <f:selectItem itemLabel="Selecione o membro" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{departamentoControle.membros}" var="membro" itemLabel="#{membro.nome}"
+                                           itemValue="#{membro}"/>
+                        </b:selectOneMenu>
+                    </h:panelGroup>
+                    <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
+                        <b:commandButton  look="success" value="Incluir"
+                                          actionListener="#{departamentoControle.adicionarIntegrantes}"
+                                          update="cadastro:formTabs" ajax="true"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </b:modal>
+        </h:form>
     </ui:define>
 </ui:composition>

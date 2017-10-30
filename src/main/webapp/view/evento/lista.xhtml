@@ -23,22 +23,12 @@
                     <b:dataTableColumn label="#{msgs['label.telefone.responsavel']}" value="#{evento.telefone}"/>
                     <b:dataTableColumn label="#{msgs['label.inicio']}" >
                         <h:outputText value="#{evento.dataInicio}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </h:outputText>
                     </b:dataTableColumn>
                     <b:dataTableColumn label="#{msgs['label.encerramento']}">
                         <h:outputText value="#{evento.dataEncerramento}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn label="#{msgs['label.hora.inicio']}">
-                        <h:outputText value="#{evento.dataInicio.time}" >
-                            <f:convertDateTime timeStyle="default" pattern="HH:mm" timeZone="GMT-3"/>
-                        </h:outputText>
-                    </b:dataTableColumn>
-                    <b:dataTableColumn label="#{msgs['label.hora.encerramento']}">
-                        <h:outputText value="#{evento.dataEncerramento.time}" >
-                            <f:convertDateTime timeStyle="default" pattern="HH:mm" timeZone="GMT-3"/>
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </h:outputText>
                     </b:dataTableColumn>
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
