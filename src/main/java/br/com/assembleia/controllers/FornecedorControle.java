@@ -90,7 +90,7 @@ public class FornecedorControle {
         if (AplicacaoControle.getInstance().adminSede()) {
             congregacoes = congregacaoService.listarTodos();
         } else {
-            congregacoes =  new ArrayList<>();
+            congregacoes =  new ArrayList();
             congregacoes.add(congregacaoService.getById(AplicacaoControle.getInstance().getIdIgrejaPorUsuario()));
         }
         return congregacoes;

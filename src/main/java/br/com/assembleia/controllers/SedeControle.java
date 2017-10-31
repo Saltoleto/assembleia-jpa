@@ -43,7 +43,7 @@ public class SedeControle {
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
     ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-    String semImagem = servletContext.getRealPath("/Resources/img/semFoto2.jpg");
+    String semImagem = servletContext.getRealPath("/resources/img/semFoto2.jpg");
 
     @Autowired
     private SedeService service;
@@ -69,6 +69,7 @@ public class SedeControle {
         this.congregacao = congregacao;
         if (congregacao != null) {
             titulo = "Editar Sede";
+
             fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(congregacao.getLogoIgreja()));
             return "form?faces-redirect=true";
         }        

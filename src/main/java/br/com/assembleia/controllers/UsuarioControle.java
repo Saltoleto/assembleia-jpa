@@ -108,7 +108,7 @@ public class UsuarioControle {
         if (AplicacaoControle.getInstance().adminSede()) {
             congregacoes = serviceCongregacao.listarTodos();
         } else {
-            congregacoes = new ArrayList<>();
+            congregacoes = new ArrayList();
             congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getUsuario().getCongregacao().getId()));
         }
         return congregacoes;

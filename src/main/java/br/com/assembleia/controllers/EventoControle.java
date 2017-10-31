@@ -260,7 +260,7 @@ public class EventoControle {
         }
 
         Collections.sort(eventos, new Comparator<Evento>() {
-            @Override
+
             public int compare(Evento o1, Evento o2) {
                 return o2.getDataInicio().compareTo(o1.getDataInicio());
             }
@@ -273,7 +273,7 @@ public class EventoControle {
         if (AplicacaoControle.getInstance().adminSede()) {
             congregacoes = serviceCongregacao.listarTodos();
         } else {
-            congregacoes = new ArrayList<>();
+            congregacoes = new ArrayList();
             congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgrejaPorUsuario()));
         }
         return congregacoes;

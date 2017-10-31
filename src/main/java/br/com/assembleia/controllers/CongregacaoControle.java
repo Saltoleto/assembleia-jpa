@@ -48,7 +48,7 @@ public class CongregacaoControle {
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
     ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-    String teste = servletContext.getRealPath("/Resources/img/semFoto2.jpg");
+    String teste = servletContext.getRealPath("/resources/img/semFoto2.jpg");
 
     @PostConstruct
     private void init() {
@@ -87,6 +87,7 @@ public class CongregacaoControle {
         try {
             if (this.sede != null) {
                 if (congregacao.getId() == null && file == null) {
+                    System.out.println("Entrou no primeiro if ");
                     Path path = Paths.get(teste);
                     byte[] data = Files.readAllBytes(path);
                     congregacao.setLogoIgreja(data);
@@ -96,13 +97,16 @@ public class CongregacaoControle {
                     fotoBanco = null;
                     arquivo = null;
                 } else if (file == null && congregacao.getId() != null) {
+                    System.out.println("Entrou no segundo if ");
                     service.salvar(congregacao);
                     adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
 
                     fotoBanco = null;
                     arquivo = null;
                 } else {
+                    System.out.println("Criando byte array do file " + file);
                     bimagem = file.getContents();
+                    System.out.println("Byte array criado bimagem " + bimagem);
                     congregacao.setLogoIgreja(bimagem);
                     service.salvar(congregacao);
                     adicionaMensagem("Congregacao salva com sucesso!", FacesMessage.SEVERITY_INFO);
@@ -188,6 +192,7 @@ public class CongregacaoControle {
             InputStream is = event.getFile().getInputstream();
             fotoBanco = new DefaultStreamedContent(is);
             file = event.getFile();
+            System.out.println("Upload realizado: " + file);
         } catch (IOException ex) {
             Logger.getLogger(MembroControle.class.getName()).log(Level.SEVERE,
                     null, ex);
