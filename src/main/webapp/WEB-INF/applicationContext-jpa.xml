@@ -70,6 +70,7 @@
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
 -->
+
 	<bean class="java.net.URI" id="dbUrl">
 		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
 	</bean>
