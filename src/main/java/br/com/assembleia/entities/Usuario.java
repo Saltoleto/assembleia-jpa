@@ -13,11 +13,13 @@ import java.io.Serializable;
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    ,
-    @NamedQuery(name = "Usuario.findByUserId", query = "SELECT u FROM Usuario u WHERE u.usuarioId = :usuarioId")
-    ,
-    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.login = :login and u.senha = :senha ")
+        @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+        ,
+        @NamedQuery(name = "Usuario.findByUserId", query = "SELECT u FROM Usuario u WHERE u.usuarioId = :usuarioId")
+        ,
+        @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.login = :login and u.senha = :senha ")
+        ,
+        @NamedQuery(name = "Usuario.listarPorIgreja", query = "SELECT u FROM Usuario u JOIN u.congregacao i WHERE i.id = :idIgreja")
 
 })
 public class Usuario implements Comparable<Usuario>, Serializable {
@@ -102,7 +104,7 @@ public class Usuario implements Comparable<Usuario>, Serializable {
         this.congregacao = congregacao;
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return EnumAutorizacao.ADMIN.equals(this.getAutorizacao());
     }
 

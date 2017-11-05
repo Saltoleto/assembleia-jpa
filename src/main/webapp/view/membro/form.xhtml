@@ -43,7 +43,7 @@
                                 <b:inputText mask="999.999.999-99" value="#{membroControle.membro.cpf}"
                                              label="#{msgs['label.cpf']}"/>
 
-                                <b:inputText mask="integer" value="#{membroControle.membro.rg}"
+                                <b:inputText mask="integer"  value="#{membroControle.membro.rg}"
                                              label="#{msgs['label.rg']}"/>
 
                                 <b:selectOneMenu label="#{msgs['label.estado.civil']}" required="true"
@@ -116,7 +116,7 @@
                                 <b:inputText mask="(99) 9999-9999" value="#{membroControle.membro.telefone}"
                                              label="#{msgs['label.telefone.resiencial']}"/>
 
-                                <b:inputText mask="(99) 9999-9999" value="#{membroControle.membro.celular}"
+                                <b:inputText mask="(99) 99999-9999" value="#{membroControle.membro.celular}"
                                              label="#{msgs['label.celular']}"/>
 
                                 <b:inputText mask="email" value="#{membroControle.membro.email}"
@@ -136,6 +136,14 @@
                                 <b:inputText disabled="true" placeholder="Será gerado pelo Sistema"
                                              value="#{membroControle.membro.codigoMembro}"
                                              label="#{msgs['label.codigo.membro']}"/>
+
+                                <b:selectOneMenu label="#{msgs['label.selecione.igreja']}" value="#{membroControle.membro.congregacao}">
+                                    <f:selectItem itemLabel="#{msgs['label.selecione.igreja']}" itemValue=""
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{membroControle.congregacoes}" var="congregacao"
+                                                   itemLabel="#{congregacao.nome}"
+                                                   itemValue="#{congregacao}"/>
+                                </b:selectOneMenu>
 
                                 <b:inputText value="#{membroControle.membro.procedencia}"
                                              label="#{msgs['label.procedencia']}"/>
@@ -168,9 +176,9 @@
                                 <b:dateTimePicker showTime="false" value="#{membroControle.membro.dataConsagracao}"
                                                   label="#{msgs['label.data.consagracao']}"/>
 
-                                <b:selectOneMenu label="#{msgs['label.selecione.situacao']}" id="situacao"
+                                <b:selectOneMenu required="true" requiredMessage="#{msgs['label.selecione.situacao']}" label="#{msgs['label.selecione.situacao']}" id="situacao"
                                                  value="#{membroControle.membro.situacao}">
-                                    <f:selectItem itemLabel="#{msgs['label.selecione.situacao']}" itemValue="Teste"/>
+                                    <f:selectItem itemLabel="#{msgs['label.selecione.situacao']}" itemValue=""/>
                                     <f:converter converterId="enumSituacaoConverter"/>
                                     <f:selectItems value="#{membroControle.listaSituacao}" var="cl"
                                                    itemLabel="#{cl.descricao}"
@@ -179,7 +187,7 @@
 
                                 <b:selectOneMenu label="#{msgs['label.selecione.lider']}" id="membro"
                                                  value="#{membroControle.membro.lider}">
-                                    <f:selectItem itemLabel="#{msgs['label.selecione.lider']}" itemValue="Teste"/>
+                                    <f:selectItem itemLabel="#{msgs['label.selecione.lider']}" itemValue=""/>
                                     <f:selectItems value="#{membroControle.listaLider}" var="lider"
                                                    itemLabel="#{lider.nome}"
                                                    itemValue="#{lider}"/>

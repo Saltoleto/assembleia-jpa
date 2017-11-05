@@ -44,17 +44,18 @@
 
                     <b:navLink value="#{msgs['menu.patrimonio']}" iconAwesome="fa-archive"
                                outcome="/view/patrimonio/lista"/>
+                </b:dropMenu>
+
+                <b:dropMenu value="#{msgs['menu.financeiro']}">
 
                     <b:navLink value="#{msgs['menu.tipo.despesa']}" iconAwesome="fa-cloud-upload"
                                outcome="/view/tipodespesa/lista"/>
 
                     <b:navLink value="#{msgs['menu.tipo.receita']}" iconAwesome="fa-cloud-download"
                                outcome="/view/tiporeceita/lista"/>
+
                 </b:dropMenu>
 
-                <b:dropMenu value="#{msgs['menu.financeiro']}">
-                    <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
-                </b:dropMenu>
                 <b:dropMenu value="#{msgs['menu.configuracoes']}" rendered="#{aplicacaoControle.adminSede() || aplicacaoControle.adminCongregacao()}">
 
                     <b:navLink value="#{msgs['menu.congregacoes']}" iconAwesome="fa-sitemap"

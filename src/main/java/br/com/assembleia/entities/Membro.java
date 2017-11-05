@@ -33,7 +33,6 @@ import java.util.Date;
                 query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao = 'Membro' Order By m.nome "),
         @NamedQuery(name = "Membro.aniversariantesRelatorio",
                 query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) =:mes order by extract(DAY FROM m.dataNascimento) "),
-
         @NamedQuery(name = "Membro.listarPorIgreja",
                 query = "SELECT m FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja")
 })

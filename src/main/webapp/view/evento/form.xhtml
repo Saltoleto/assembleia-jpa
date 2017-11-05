@@ -37,9 +37,9 @@
 
                     <h:form style="display:inline" styleClass="form-inline">
                         <b:formGroup>
-                            <b:selectOneMenu value="#{eventoControle.congregacao}" update="formModal:modalParticipantes"
-                                             process="@form" style="margin-top:8px">
-                                <f:selectItem itemLabel="#{msgs['label.selecione.igreja']}" itemValue=""
+                            <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}" value="#{eventoControle.congregacao}" update="formModal:modalParticipantes"
+                                             process="@form" >
+                                <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue=""
                                               noSelectionOption="true"/>
                                 <f:selectItems value="#{eventoControle.congregacoes}" var="congregacao"
                                                itemLabel="#{congregacao.nome}"

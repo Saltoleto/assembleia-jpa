@@ -31,4 +31,8 @@ public class UsuarioService {
         return userRepository.findByLogin(login, senha);
     }
 
+    public List<Usuario> listarPorIgreja(Long idIgreja) {
+        return userRepository.listarPorIgreja(idIgreja);
+    }
+
 }

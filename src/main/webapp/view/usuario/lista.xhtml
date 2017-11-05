@@ -7,19 +7,26 @@
 
     <ui:define name="content">
         <h:form>
-            <b:messages  />
+            <b:messages/>
             <b:formGroup style="border: none">
                 <h:outputText style="font-size: 26px" value="#{msgs['titulo.usuarios']}"/>
-                <b:commandButton action="#{usuarioControle.novo}" tooltip="#{msgs['btn.novo.usuario']}" class="pull-right" look="info" value="#{msgs['btn.novo.usuario']}"/>
+                <b:commandButton action="#{usuarioControle.novo}" tooltip="#{msgs['btn.novo.usuario']}"
+                                 class="pull-right" look="info" value="#{msgs['btn.novo.usuario']}"/>
             </b:formGroup>
 
             <b:panel collapsible="false" look="info">
-                <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{usuarioControle.usuarios}" var="usuario">
-                    <b:dataTableColumn value="#{usuario.login}" />
-                    <b:dataTableColumn  value="#{usuario.autorizacao.descricao}"/>
+                <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"
+                             customLangUrl="#{resource['js/pt-br.json']}" value="#{usuarioControle.usuarios}"
+                             var="usuario">
+                    <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{usuario.congregacao.nome}"/>
+                    <b:dataTableColumn value="#{usuario.login}"/>
+                    <b:dataTableColumn value="#{usuario.autorizacao.descricao}"/>
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
-                        <b:commandButton action="#{usuarioControle.deletar(usuario)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
-                        <b:commandButton action="#{usuarioControle.editar(usuario)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
+                        <b:commandButton action="#{usuarioControle.deletar(usuario)}"
+                                         onclick="return confirm('#{msgs['confirmar.exclucao']}');"
+                                         tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{usuarioControle.editar(usuario)}" tooltip="#{msgs['btn.editar']}"
+                                         class="fa fa-pencil-square-o pull-right" look="warning"/>
                     </b:dataTableColumn>
                 </b:dataTable>
 

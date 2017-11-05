@@ -10,27 +10,28 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- *
  * @author fernandosaltoleto
  */
 @Entity
 @Table(name = "receita")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Receita.valorReceitaPeriodo", 
-            query = "Select SUM(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
-    @NamedQuery(name = "Receita.listarReceitasRecebidas",
-            query = "Select sum(r.valor) from Receita r where r.recebido = true "),
-    @NamedQuery(name = "Receita.listarReceitasMesAno", 
-            query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
-    @NamedQuery(name = "Receita.buscarReceitaGrafico", 
-            query = "Select sum(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano"),
-    @NamedQuery(name = "Receita.listarReceitasCategoriaMesAno",
-            query = "Select sum(r.valor) from Receita r Where r.categoria.id =:id and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
-    @NamedQuery(name = "Receita.listarUltimasReceitasVisao",
-            query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano AND r.recebido = true"),
-    @NamedQuery(name = "Receita.buscarReceitaMembroData",
-            query = "Select r FROM Receita r inner join r.membro m Where extract(MONTH FROM r.data) =:mes AND r.recebido = true order by m.nome ")
+        @NamedQuery(name = "Receita.valorReceitaPeriodo",
+                query = "Select SUM(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
+        @NamedQuery(name = "Receita.listarReceitasRecebidas",
+                query = "Select sum(r.valor) from Receita r where r.recebido = true "),
+        @NamedQuery(name = "Receita.listarReceitasMesAno",
+                query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
+        @NamedQuery(name = "Receita.buscarReceitaGrafico",
+                query = "Select sum(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano"),
+        @NamedQuery(name = "Receita.listarReceitasCategoriaMesAno",
+                query = "Select sum(r.valor) from Receita r Where r.categoria.id =:id and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
+        @NamedQuery(name = "Receita.listarUltimasReceitasVisao",
+                query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano AND r.recebido = true"),
+        @NamedQuery(name = "Receita.buscarReceitaMembroData",
+                query = "Select r FROM Receita r inner join r.membro m Where extract(MONTH FROM r.data) =:mes AND r.recebido = true order by m.nome "),
+        @NamedQuery(name = "Membro.listarPorIgreja",
+                query = "SELECT r FROM Receita m JOIN r.congregacao i WHERE i.id = :idIgreja")
 })
 public class Receita implements Serializable, Comparable<Receita> {
 
@@ -49,6 +50,8 @@ public class Receita implements Serializable, Comparable<Receita> {
     private Membro membro;
     @ManyToOne
     private Departamento departamento;
+    @ManyToOne
+    private Congregacao congregacao;
     @Column(nullable = true)
     private boolean recebido;
     private static final Locale BRASIL = new Locale("pt", "BR");
@@ -156,11 +159,11 @@ public class Receita implements Serializable, Comparable<Receita> {
         return this.descricao.compareTo(t.descricao);
     }
 
-     public String getRecebidoFormatado() {
-       if(recebido){
-           return "Sim";
-       }else{
-           return "Não";
-       }
+    public String getRecebidoFormatado() {
+        if (recebido) {
+            return "Sim";
+        } else {
+            return "Não";
+        }
     }
 }

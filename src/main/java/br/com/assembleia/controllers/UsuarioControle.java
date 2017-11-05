@@ -98,7 +98,15 @@ public class UsuarioControle {
     }
 
     public List<Usuario> getUsuarios() {
-        usuarios = service.listarTodos();
+
+        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            usuarios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+            usuarios = service.listarTodos();
+        } else {
+            usuarios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+
         Collections.sort(usuarios);
         return usuarios;
     }

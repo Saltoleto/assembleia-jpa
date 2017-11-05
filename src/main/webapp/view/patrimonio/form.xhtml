@@ -47,7 +47,7 @@
                                  required="true" required-message="#{msgs['label.quantidade']}"/>
 
 
-                    <b:selectOneMenu  label="#{msgs['label.situacao']}"  required="true" requiredMessage="#{msgs['label.informe.situacao']}"   
+                    <b:selectOneMenu  label="#{msgs['label.selecione.situacao']}"  required="true" requiredMessage="#{msgs['label.informe.situacao']}"
                                       id="estado" value="#{patrimonioControle.patrimonio.situacaoPatrimonio}" >
                         <f:selectItem itemLabel="#{msgs['label.selecione.situacao']}" itemValue="null" noSelectionOption="true" />
                         <f:converter converterId="enumSituacaoPatrimonioConverter" />

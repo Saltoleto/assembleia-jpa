@@ -51,6 +51,7 @@ public class MembroControle {
     private String titulo;
     private List<Cargo> cargos;
     private List<Membro> listaLider;
+    private List<Congregacao> congregacoes;
     private byte[] bimagem;
     private StreamedContent fotoBanco;
     private StreamedContent fotoBancoDialog;
@@ -336,7 +337,7 @@ public class MembroControle {
         } else {
             membros = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
-        return membros = service.listarTodos();
+        return membros ;
     }
 
     public void setMembros(List<Membro> membros) {
@@ -513,5 +514,19 @@ public class MembroControle {
 
     public void setTab(int tab) {
         this.tab = tab;
+    }
+
+    public List<Congregacao> getCongregacoes() {
+        congregacoes = new ArrayList<Congregacao>();
+        if (AplicacaoControle.getInstance().adminSede()) {
+            congregacoes = serviceCongregacao.listarTodos();
+        } else {
+            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgrejaPorUsuario()));
+        }
+        return congregacoes;
+    }
+
+    public void setCongregacoes(List<Congregacao> congregacoes) {
+        this.congregacoes = congregacoes;
     }
 }

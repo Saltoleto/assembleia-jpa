@@ -18,6 +18,8 @@
                 <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"
                              customLangUrl="#{resource['js/pt-br.json']}" value="#{membroControle.membros}" var="membro">
 
+                    <b:dataTableColumn label="#{msgs['label.igreja']}"
+                                       value="#{membro.congregacao.nome}"/>
                     <b:dataTableColumn value="#{membro.nome}"/>
                     <b:dataTableColumn value="#{membro.telefone}"/>
                     <b:dataTableColumn value="#{membro.celular}"/>

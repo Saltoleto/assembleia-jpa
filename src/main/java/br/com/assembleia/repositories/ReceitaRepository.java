@@ -2,19 +2,28 @@
 package br.com.assembleia.repositories;
 
 import br.com.assembleia.entities.Receita;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+
 import java.math.BigDecimal;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface ReceitaRepository extends JpaRepository<Receita, Integer>
-{
-    BigDecimal valorReceitaPeriodo(Integer mes, Integer ano);
+public interface ReceitaRepository extends JpaRepository<Receita, Integer> {
+    BigDecimal valorReceitaPeriodo(@Param("mes") Integer mes, @Param("ano") Integer ano);
+
     BigDecimal listarReceitasRecebidas();
-    List<Receita> listarReceitasMesAno(Integer mes, Integer ano);
-    BigDecimal buscarReceitaGrafico(Long mes, Integer ano);
-    BigDecimal listarReceitasCategoriaMesAno(Long id,Integer mes, Integer ano);
-    List<Receita> listarUltimasReceitasVisao(Integer mes, Integer ano);
-    List<Receita> buscarReceitaMembroData(Long mes);
+
+    List<Receita> listarReceitasMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano);
+
+    BigDecimal buscarReceitaGrafico(@Param("mes") Long mes,@Param("ano") Integer ano);
+
+    BigDecimal listarReceitasCategoriaMesAno(@Param("id") Long id, @Param("mes") Integer mes, @Param("ano") Integer ano);
+
+    List<Receita> listarUltimasReceitasVisao(@Param("mes")  Integer mes,@Param("ano") Integer ano);
+
+    List<Receita> buscarReceitaMembroData(@Param("mes") Long mes);
+
+    List<Receita> listarPorIgreja(@Param("idIgreja") Long idIgreja);
 }
 
