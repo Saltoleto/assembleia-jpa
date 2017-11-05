@@ -4,13 +4,6 @@ import br.com.assembleia.entities.Cargo;
 import br.com.assembleia.entities.Congregacao;
 import br.com.assembleia.entities.Membro;
 import br.com.assembleia.entities.ModeloClassesVisao;
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-
 import br.com.assembleia.enums.EnumEstado;
 import br.com.assembleia.enums.EnumEstadoCivil;
 import br.com.assembleia.enums.EnumSexo;
@@ -19,39 +12,33 @@ import br.com.assembleia.services.CargoService;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.MembroService;
 import br.com.assembleia.util.ReportsUtil;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import javax.persistence.PersistenceException;
-//import javax.persistence.criteria.Path;
-import javax.servlet.ServletContext;
+import net.sf.jasperreports.engine.JRException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import net.sf.jasperreports.engine.JRException;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.FlowEvent;
-import org.primefaces.model.DefaultUploadedFile;
-import org.springframework.stereotype.Component;
+
+//import javax.persistence.criteria.Path;
 
 @ManagedBean
 @SessionScoped
@@ -61,7 +48,6 @@ public class MembroControle {
     private Membro membro;
     private Membro membroRelatorio;
     private List<Membro> membros;
-    private List<Membro> membrosFiltrados;
     private String titulo;
     private List<Cargo> cargos;
     private List<Membro> listaLider;
@@ -79,18 +65,19 @@ public class MembroControle {
     private List<Membro> listaAniversariantes = new ArrayList<Membro>();
     private Cargo cargo;
     private String str;
-    private ReportsUtil report = new ReportsUtil();     
+    private ReportsUtil report = new ReportsUtil();
+    private int tab = 0;
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
     ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-    String teste = servletContext.getRealPath("/Resources/img/semFoto2.jpg");
+    String semFotoResource = servletContext.getRealPath("/resources/img/semFoto2.jpg");
     @Autowired
     private MembroService service;
     @Autowired
     private CargoService CargoService;
     @Autowired
     private CongregacaoService serviceCongregacao;
-    
+
 
     @PostConstruct
     private void init() {
@@ -101,10 +88,10 @@ public class MembroControle {
         membro = new Membro();
         titulo = "Cadastro de Membro";
         membro.setCodigoMembro("");
-        arquivo = new File(teste);
+        arquivo = new File(semFotoResource);
         InputStream f = new FileInputStream(arquivo);
-        StreamedContent img = new DefaultStreamedContent(f);        
-        fotoBanco = img;        
+        StreamedContent img = new DefaultStreamedContent(f);
+        tab = 0;
         return "form?faces-redirect=true";
     }
 
@@ -113,9 +100,10 @@ public class MembroControle {
     }
 
     public String novoVisaoGeral() throws FileNotFoundException {
+        novoCargo();
         membro = new Membro();
         titulo = "Cadastro de Membro";
-        arquivo = new File(teste);
+        arquivo = new File(semFotoResource);
         InputStream f = new FileInputStream(arquivo);
         StreamedContent img = new DefaultStreamedContent(f);
         fotoBanco = img;
@@ -123,14 +111,23 @@ public class MembroControle {
         return "/membro/form.xhtml?faces-redirect=true";
     }
 
-    public String carregarCadastro() throws FileNotFoundException { 
+    public String editar(Membro membro) throws FileNotFoundException {
+        novoCargo();
         if (membro != null) {
+            this.membro = membro;
             titulo = "Editar Membro";
-            fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(membro.getFoto()));  
+            if (membro.getFoto() != null) {
+                fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(membro.getFoto()));
+            } else {
+                arquivo = new File(semFotoResource);
+                InputStream f = new FileInputStream(arquivo);
+                StreamedContent img = new DefaultStreamedContent(f);
+                fotoBanco = img;
+            }
             membro.setCodigoMembro(membro.getCodigoMembroFormatado());
+            tab = 0;
             return "form?faces-redirect=true";
         }
-        adicionaMensagem("Nenhum membro foi selecionado para a alteração!", FacesMessage.SEVERITY_INFO);
         return "lista?faces-redirect=true";
 
     }
@@ -139,7 +136,7 @@ public class MembroControle {
         try {
 
             if (membro.getId() == null && file == null) {
-                Path path = Paths.get(teste);
+                Path path = Paths.get(semFotoResource);
                 byte[] data = Files.readAllBytes(path);
                 membro.setFoto(data);
                 service.salvar(membro);
@@ -149,12 +146,8 @@ public class MembroControle {
                 fotoBanco = null;
                 arquivo = null;
             } else if (file == null && membro.getId() != null) {
-//                String nomeArquivo = file.getFileName().substring(file.getFileName().lastIndexOf("\\") + 1);
-//                bimagem = file.getContents();
-//                membro.setFoto(bimagem);
                 service.salvar(membro);
                 adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
-
                 membro = null;
                 fotoBanco = null;
                 arquivo = null;
@@ -181,7 +174,7 @@ public class MembroControle {
                 CargoService.salvar(cargo);
                 cargos = CargoService.listarTodos();
                 cargo = null;
-                org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('dialogCargo').hide();");
+
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.addCallbackParam("loggedIn", false);
@@ -208,19 +201,16 @@ public class MembroControle {
         }
     }
 
-    public String deletar() {
+    public String deletar(Membro membro) {
         try {
             if (membro != null) {
-
+                this.membro = membro;
                 service.deletar(membro);
-                membros = null;
                 adicionaMensagem("Membro excluido com sucesso!", FacesMessage.SEVERITY_INFO);
                 file = new DefaultUploadedFile();
             }
-
-        } catch (PersistenceException ex) {
-            adicionaMensagem("O membro possui vínculos, não pode ser excluído(a)!", FacesMessage.SEVERITY_ERROR);
-            voltar();
+        } catch (DataIntegrityViolationException ex) {
+            adicionaMensagem("Ops! Este Membro não pode ser excluído, ele possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
     }
@@ -237,13 +227,11 @@ public class MembroControle {
         return "lista?faces-redirect=true";
     }
 
-    public String onFlowProcess(FlowEvent event) {
-        if (skip) {
-            skip = false;   //reset in case user goes back
-            return "confirm";
-        } else {
-            return event.getNewStep();
-        }
+    public void nextTab() {
+        tab++;
+       if(tab > 0){
+           tab = 1;
+       }
     }
 
     public List<ModeloClassesVisao> totalMembros() {
@@ -289,24 +277,24 @@ public class MembroControle {
         List<Congregacao> listaCong = new ArrayList<Congregacao>();
         List<Membro> membrosComFoto = new ArrayList<Membro>();
         listaCong = serviceCongregacao.listarTodos();
-        str = "FichaMembro";  
+        str = "FichaMembro";
         listaRelatorio.add(membroRelatorio);
 
         for (Congregacao congre : listaCong) {
             InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
             parametros.put("nomeIgrena", congre.getNome());
             parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone()); 
+            parametros.put("telefone", congre.getTelefone());
             parametros.put("cidade", congre.getCidade());
             parametros.put("email", congre.getEmail());
-            parametros.put("logo", is); 
+            parametros.put("logo", is);
             parametros.put("cnpj", congre.getCnpj());
             parametros.put("uf", congre.getEstado().getUf());
             parametros.put("bairro", congre.getBairro());
             parametros.put("cep", congre.getCep());
         }
-        
-         for (Membro membro : listaRelatorio) {
+
+        for (Membro membro : listaRelatorio) {
             membro.setIs(new ByteArrayInputStream(membro.getFoto()));
             membrosComFoto.add(membro);
 
@@ -341,19 +329,18 @@ public class MembroControle {
     }
 
     public List<Membro> getMembros() {
+        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            membros = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+            membros = service.listarTodos();
+        } else {
+            membros = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
         return membros = service.listarTodos();
     }
 
     public void setMembros(List<Membro> membros) {
         this.membros = membros;
-    }
-
-    public List<Membro> getMembrosFiltrados() {
-        return membrosFiltrados;
-    }
-
-    public void setMembrosFiltrados(List<Membro> membrosFiltrados) {
-        this.membrosFiltrados = membrosFiltrados;
     }
 
     public String getTitulo() {
@@ -470,8 +457,7 @@ public class MembroControle {
     public void setMembroRelatorio(Membro membroRelatorio) {
         this.membroRelatorio = membroRelatorio;
     }
-    
-     
+
 
     public Cargo getCargo() {
         return cargo;
@@ -505,7 +491,7 @@ public class MembroControle {
         this.fileReport = fileReport;
     }
 
-    public ReportsUtil getReport() { 
+    public ReportsUtil getReport() {
         return report;
     }
 
@@ -513,13 +499,19 @@ public class MembroControle {
         this.report = report;
     }
 
-    public String getTeste() {
-        return teste;
+    public String getSemFotoResource() {
+        return semFotoResource;
     }
 
-    public void setTeste(String teste) {
-        this.teste = teste;
+    public void setSemFotoResource(String semFotoResource) {
+        this.semFotoResource = semFotoResource;
     }
-   
 
+    public int getTab() {
+        return tab;
+    }
+
+    public void setTab(int tab) {
+        this.tab = tab;
+    }
 }

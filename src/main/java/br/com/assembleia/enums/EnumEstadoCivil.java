@@ -25,6 +25,17 @@ public enum EnumEstadoCivil {
         return null;
     }
 
+    public static EnumEstadoCivil getEstadoCivil(String estado) {
+        if (estado != null) {
+            for (EnumEstadoCivil e : values()) {
+                if (estado.equalsIgnoreCase(e.getDescricao())) {
+                    return e;
+                }
+            }
+        }
+        return null;
+    }
+
     public String getDescricao() {
         return descricao;
     }

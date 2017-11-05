@@ -15,7 +15,7 @@
             </b:formGroup>
 
             <b:panel collapsible="false">
-                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"
+                <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"
                              customLangUrl="#{resource['js/pt-br.json']}" value="#{eventoControle.eventos}"
                              var="evento">
                     <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{evento.congregacao.nome}"/>

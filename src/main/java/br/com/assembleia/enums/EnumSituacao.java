@@ -1,7 +1,6 @@
 package br.com.assembleia.enums;
 
 /**
- *
  * @author fernandosaltoleto
  */
 public enum EnumSituacao {
@@ -12,6 +11,17 @@ public enum EnumSituacao {
 
     private EnumSituacao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public static EnumSituacao getSituacao(String estado) {
+        if (estado != null) {
+            for (EnumSituacao e : values()) {
+                if (estado.equalsIgnoreCase(e.getDescricao())) {
+                    return e;
+                }
+            }
+        }
+        return null;
     }
 
     public static EnumSituacao busca(Integer codigo) {

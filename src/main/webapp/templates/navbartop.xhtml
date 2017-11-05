@@ -30,14 +30,17 @@
                 <b:dropMenu value="#{msgs['menu.secretaria']}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
 
-                    <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-group"
+                    <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-vcard-o"
                                outcome="/view/departamento/lista"/>
 
                     <b:navLink value="#{msgs['menu.eventos']}" iconAwesome="fa-calendar"
                                outcome="/view/evento/lista"/>
 
-                    <b:navLink value="#{msgs['menu.fornecedores']}" iconAwesome="fa-cart-plus"
+                    <b:navLink value="#{msgs['menu.fornecedores']}" iconAwesome="fa-truck"
                                outcome="/view/fornecedor/lista"/>
+
+                    <b:navLink value="#{msgs['menu.membros']}" iconAwesome="fa-group"
+                               outcome="/view/membro/lista"/>
 
                     <b:navLink value="#{msgs['menu.patrimonio']}" iconAwesome="fa-archive"
                                outcome="/view/patrimonio/lista"/>

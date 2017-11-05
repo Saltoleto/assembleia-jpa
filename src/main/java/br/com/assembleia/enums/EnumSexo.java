@@ -14,7 +14,7 @@ public enum EnumSexo {
         this.descricao = descricao;     
     }
 
-    public static EnumSexo getEstado(String sexo) {
+    public static EnumSexo getSexo(String sexo) {
         if (sexo != null) {
             for (EnumSexo e : values()) {
                 if (sexo.equalsIgnoreCase(e.name())) {

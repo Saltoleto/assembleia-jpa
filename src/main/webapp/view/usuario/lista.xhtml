@@ -14,10 +14,10 @@
             </b:formGroup>
 
             <b:panel collapsible="false" look="info">
-                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{usuarioControle.usuarios}" var="usuario">
-                    <b:dataTableColumn style="width: 10%" value="#{usuario.login}" />
-                    <b:dataTableColumn style="width: 70%" value="#{usuario.autorizacao.descricao}"/>
-                    <b:dataTableColumn style="width: 9%" label="#{msgs['label.acoes']}">
+                <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}" value="#{usuarioControle.usuarios}" var="usuario">
+                    <b:dataTableColumn value="#{usuario.login}" />
+                    <b:dataTableColumn  value="#{usuario.autorizacao.descricao}"/>
+                    <b:dataTableColumn label="#{msgs['label.acoes']}">
                         <b:commandButton action="#{usuarioControle.deletar(usuario)}" onclick="return confirm('#{msgs['confirmar.exclucao']}');" tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
                         <b:commandButton action="#{usuarioControle.editar(usuario)}" tooltip="#{msgs['btn.editar']}"  class="fa fa-pencil-square-o pull-right" look="warning"/>
                     </b:dataTableColumn>

@@ -12,11 +12,35 @@
 
 		<security:http  auto-config="true" access-denied-page="/negado.jsf" use-expressions="true">
 
-			<!--SEVRETARIO-->
 			<security:intercept-url pattern="/view/cargo/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 			<security:intercept-url pattern="/view/cargo/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/congregacao/lista.jsf" access="hasAnyRole('ADMIN')"/>
+			<security:intercept-url pattern="/view/congregacao/form.jsf" access="hasAnyRole('ADMIN')"/>
+
+			<security:intercept-url pattern="/view/departamento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/departamento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
 			<security:intercept-url pattern="/view/evento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 			<security:intercept-url pattern="/view/evento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/fornecedor/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/fornecedor/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/membro/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/membro/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/patrimonio/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/patrimonio/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/sede/lista.jsf" access="hasAnyRole('ADMIN')"/>
+			<security:intercept-url pattern="/view/sede/form.jsf" access="hasAnyRole('ADMIN')"/>
+
+			<security:intercept-url pattern="/view/tipodespesa/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/tipodespesa/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
+			<security:intercept-url pattern="/view/tiporeceita/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+			<security:intercept-url pattern="/view/tiporeceita/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
 			<security:intercept-url pattern="/view/usuario/lista.jsf" access="hasAnyRole('ADMIN')"/>
 			<security:intercept-url pattern="/view/usuario/form.jsf" access="hasAnyRole('ADMIN')"/>
@@ -62,16 +86,15 @@
          <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
        </property>
    </bean>
-<!--
+
    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
 		<property name="url" value="${jdbc.url}"></property>
 		<property name="username" value="${jdbc.username}"></property>
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
--->
 
-	<bean class="java.net.URI" id="dbUrl">
+	<!--<bean class="java.net.URI" id="dbUrl">
 		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
 	</bean>
 
@@ -80,7 +103,7 @@
 		<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
 		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
 	</bean>
-
+-->
 
 
 

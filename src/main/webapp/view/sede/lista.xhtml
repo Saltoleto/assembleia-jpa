@@ -13,7 +13,7 @@
                 <b:commandButton   action="#{sedeControle.novaSede()}" rendered="#{sedeControle.sedes.size()==0}" tooltip="#{msgs['btn.nova.sede']}" class="pull-right" look="info" value="#{msgs['btn.nova.sede']}"/>
             </b:formGroup>
             <b:panel collapsible="false" look="info">
-                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true" customLangUrl="#{resource['js/pt-br.json']}" id="tabela" widgetVar="tabela"  selectionMode="single"
+                <b:dataTable scroll-x="false"  fixedHeader="true" responsive="true" customLangUrl="#{resource['js/pt-br.json']}" id="tabela" widgetVar="tabela"  selectionMode="single"
                              value="#{sedeControle.sedes}" var="congregacao">      
                     
                     <b:dataTableColumn value="#{congregacao.nome}"/>  

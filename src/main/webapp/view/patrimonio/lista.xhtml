@@ -15,7 +15,7 @@
             </b:formGroup>
 
             <b:panel collapsible="false">
-                <b:dataTable scroll-x="false" scroll-size="400px" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}"
+                <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"  customLangUrl="#{resource['js/pt-br.json']}"
                              value="#{patrimonioControle.patrimonios}" var="patrimonio">
                     <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{patrimonio.congregacao.nome}" />
                     <b:dataTableColumn  value="#{patrimonio.nome}" />

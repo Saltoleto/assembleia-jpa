@@ -44,6 +44,10 @@ public class LoginControle {
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(new UsernamePasswordAuthenticationToken(login, senha, roles));
             if (context.getAuthentication().isAuthenticated()) {
+                if(usuario.getReiniciarSenha() != null && usuario.getReiniciarSenha()){
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
+                    return "/view/reiniciarsenha/form?faces-redirect=true";
+                }
                 if (usuario.getAutorizacao().equals(EnumAutorizacao.SECRETARIO)) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", usuario);
                     return "index?faces-redirect=true";

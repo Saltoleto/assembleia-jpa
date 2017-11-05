@@ -9,27 +9,36 @@
         <h:form>
             <b:messages/>
             <b:formGroup style="border: none">
-                <h:outputText style="font-size: 26px" value="#{msgs['titulo.tipos.despesas']}"/>
-                <b:commandButton look="info" action="#{tipoDeDespesaControle.novo}"
-                                 tooltip="#{msgs['btn.novo.tipo.despesa']}" class="pull-right"
-                                 value="#{msgs['btn.novo.tipo.despesa']}"/>
+                <h:outputText style="font-size: 26px" value="#{msgs['titulo.membros']}"/>
+                <b:commandButton look="info" action="#{membroControle.novo}" tooltip="#{msgs['btn.novo.membro']}"
+                                 class="pull-right" value="#{msgs['btn.novo.membro']}"/>
             </b:formGroup>
 
             <b:panel collapsible="false">
                 <b:dataTable scroll-x="false" fixedHeader="true" responsive="true"
-                             customLangUrl="#{resource['js/pt-br.json']}"
-                             value="#{tipoDeDespesaControle.listTipoDeDespesas}" var="tipoDespesa">
-                    <b:dataTableColumn value="#{tipoDespesa.descricao}"/>
+                             customLangUrl="#{resource['js/pt-br.json']}" value="#{membroControle.membros}" var="membro">
+
+                    <b:dataTableColumn value="#{membro.nome}"/>
+                    <b:dataTableColumn value="#{membro.telefone}"/>
+                    <b:dataTableColumn value="#{membro.celular}"/>
+                    <b:dataTableColumn value="#{membro.email}"/>
+                    <b:dataTableColumn value="#{membro.endereco}"/>
+                    <b:dataTableColumn value="#{membro.situacao}"/>
+                    <b:dataTableColumn label="#{msgs['label.dizimista']}" value="#{membro.dizimistaFormatado}"/>
+
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
-                        <b:commandButton action="#{tipoDeDespesaControle.deletar(tipoDespesa)}"
+                        <b:commandButton action="#{membroControle.deletar(membro)}"
                                          onclick="return confirm('#{msgs['confirmar.exclucao']}');"
                                          tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
-                        <b:commandButton action="#{tipoDeDespesaControle.editar(tipoDespesa)}" tooltip="#{msgs['btn.editar']}"
+                        <b:commandButton action="#{membroControle.editar(membro)}" tooltip="#{msgs['btn.editar']}"
                                          class="fa fa-pencil-square-o pull-right" look="warning"/>
                     </b:dataTableColumn>
                 </b:dataTable>
 
             </b:panel>
         </h:form>
+
+
     </ui:define>
 </ui:composition>
+

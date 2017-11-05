@@ -119,7 +119,7 @@ public class DepartamentoControle {
             }
 
         } catch (DataIntegrityViolationException ex) {
-            adicionaMensagem("Ops! Este Departamento não pode ser excluído, elae possui vínculos", FacesMessage.SEVERITY_ERROR);
+            adicionaMensagem("Ops! Este Departamento não pode ser excluído, ele possui vínculos", FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
     }
@@ -164,10 +164,11 @@ public class DepartamentoControle {
     }
 
     public List<Congregacao> getCongregacoes() {
+        congregacoes = new ArrayList<Congregacao>();
         if (AplicacaoControle.getInstance().adminSede()) {
             congregacoes = serviceCongregacao.listarTodos();
         } else {
-            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgreja()));
+            congregacoes.add(serviceCongregacao.getById(AplicacaoControle.getInstance().getIdIgrejaPorUsuario()));
         }
         return congregacoes;
     }

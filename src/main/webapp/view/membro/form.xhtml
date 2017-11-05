@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <f:metadata/>
+    <f:viewParam name="rel" value="#{membroControle.titulo}"/>
+
+    <ui:define name="content">
+
+        <b:form id="cadastro" enctype="multipart/form-data">
+
+            <b:messages/>
+
+            <b:panel title="#{membroControle.titulo}" collapsible="false">
+
+                <h:form id="formTabs">
+                    <b:tabView id="tabViewDados" activeIndex="#{membroControle.tab}">
+
+                        <b:tab id="tabDadosPessoais" title="#{msgs['label.dados.pessoais']}">
+                            <b:formGroup>
+                                <p:graphicImage id="fotoMembro" cache="false" value="#{membroControle.fotoBanco}"
+                                                style="border: 1px solid #E1E1E1; border-radius: 4px" height="130"
+                                                width="170"/><br/>
+                                <p:fileUpload label="Selecionar a foto" style="border: none!important; font-size: 12px;"
+                                              fileUploadListener="#{membroControle.fileUploadAction}"
+                                              update="fotoMembro" auto="true"/>
+                            </b:formGroup>
+                            <b:panelGrid columns="2">
+
+                                <b:inputText value="#{membroControle.membro.nome}" label="#{msgs['label.nome']}"
+                                             required="true"
+                                             required-message="#{msgs['label.informe.nome']}"/>
+
+                                <b:dateTimePicker showTime="false" value="#{membroControle.membro.dataNascimento}"
+                                                  label="#{msgs['label.data.nascimento']}" required="true"
+                                                  required-message="#{msgs['label.data.nascimento']}"/>
+
+                                <b:inputText mask="999.999.999-99" value="#{membroControle.membro.cpf}"
+                                             label="#{msgs['label.cpf']}"/>
+
+                                <b:inputText mask="integer" value="#{membroControle.membro.rg}"
+                                             label="#{msgs['label.rg']}"/>
+
+                                <b:selectOneMenu label="#{msgs['label.estado.civil']}" required="true"
+                                                 requiredMessage="#{msgs['label.informe.estado.civil']}"
+                                                 id="estadoCivil" value="#{membroControle.membro.estadoCivil}">
+                                    <f:selectItem itemLabel="Selecione o Estado Civil" itemValue="Teste"/>
+                                    <f:converter converterId="enumEstadoCivilConverter"/>
+                                    <f:selectItems value="#{membroControle.listaEstadoCivil}" var="cl"
+                                                   itemLabel="#{cl.descricao}" itemValue="#{cl}"/>
+                                </b:selectOneMenu>
+
+                                <b:selectOneMenu label="#{msgs['label.sexo']}" required="true"
+                                                 requiredMessage="#{msgs['label.informe.sexo']}"
+                                                 id="sexo" value="#{membroControle.membro.sexo}">
+                                    <f:selectItem itemLabel="Selecione o Sexo" itemValue="Teste"/>
+                                    <f:converter converterId="enumSexoConverter"/>
+                                    <f:selectItems value="#{membroControle.listaSexo}" var="cl"
+                                                   itemLabel="#{cl.descricao}"
+                                                   itemValue="#{cl}"/>
+                                </b:selectOneMenu>
+
+                                <b:inputText value="#{membroControle.membro.nomeConjuge}"
+                                             label="#{msgs['label.conjuge']}"/>
+
+                                <b:inputText value="#{membroControle.membro.quantidadeFilhos}"
+                                             label="#{msgs['label.qtd.filhos']}"/>
+
+                                <b:inputText value="#{membroControle.membro.nomePai}" label="#{msgs['label.nome.pai']}"
+                                             required="true" required-message="#{msgs['label.informe.nome.pai']}"/>
+
+                                <b:inputText value="#{membroControle.membro.nomeMae}" label="#{msgs['label.nome.mae']}"
+                                             required="true" required-message="#{msgs['label.informe.nome.mae']}"/>
+
+                                <b:inputText value="#{membroControle.membro.nacionalidade}"
+                                             label="#{msgs['label.nacionalidade']}" required="true"
+                                             required-message="#{msgs['label.informe.nacionalidade']}"/>
+
+                                <b:inputText value="#{membroControle.membro.naturalidade}"
+                                             label="#{msgs['label.naturalidade']}"
+                                             required="true" required-message="#{msgs['label.informe.naturalidade']}"/>
+
+                                <b:selectOneMenu label="#{msgs['label.estado']}" required="true"
+                                                 requiredMessage="#{msgs['label.informe.estado']}"
+                                                 id="estado" value="#{membroControle.membro.estado}">
+                                    <f:selectItem itemLabel="Selecione o Estado" itemValue="Teste"/>
+                                    <f:converter converterId="enumTypeConverter"/>
+                                    <f:selectItems value="#{membroControle.listaEstado}" var="cl"
+                                                   itemLabel="#{cl.descricao}"
+                                                   itemValue="#{cl}"/>
+                                </b:selectOneMenu>
+
+                                <b:inputText value="#{membroControle.membro.cidade}" label="#{msgs['label.cidade']}"
+                                             required="true"
+                                             required-message="#{msgs['label.informe.cidade']}"/>
+
+                                <b:inputText value="#{membroControle.membro.bairro}" label="#{msgs['label.bairro']}"
+                                             required="true"
+                                             required-message="#{msgs['label.informe.bairro']}"/>
+
+                                <b:inputText value="#{membroControle.membro.endereco}" label="#{msgs['label.endereco']}"
+                                             required="true"
+                                             required-message="#{msgs['label.informe.endereco']}"/>
+
+                                <b:inputText mask="99999-999" value="#{membroControle.membro.cep}"
+                                             label="#{msgs['label.cep']}"
+                                             required="true"
+                                             required-message="#{msgs['label.informe.cep']}"/>
+
+
+                                <b:inputText mask="(99) 9999-9999" value="#{membroControle.membro.telefone}"
+                                             label="#{msgs['label.telefone.resiencial']}"/>
+
+                                <b:inputText mask="(99) 9999-9999" value="#{membroControle.membro.celular}"
+                                             label="#{msgs['label.celular']}"/>
+
+                                <b:inputText mask="email" value="#{membroControle.membro.email}"
+                                             label="#{msgs['label.email']}">
+                                    <f:facet name="prepend">
+                                        <h:outputText value="@"/>
+                                    </f:facet>
+                                </b:inputText>
+
+                            </b:panelGrid>
+
+                        </b:tab>
+                        <b:tab id="tabDadosEclesiasticos" title="#{msgs['label.dados.eclesiasticos']}">
+
+                            <b:panelGrid columns="2" style="margin-top:30px">
+
+                                <b:inputText disabled="true" placeholder="Será gerado pelo Sistema"
+                                             value="#{membroControle.membro.codigoMembro}"
+                                             label="#{msgs['label.codigo.membro']}"/>
+
+                                <b:inputText value="#{membroControle.membro.procedencia}"
+                                             label="#{msgs['label.procedencia']}"/>
+
+                                <b:dateTimePicker showTime="false" value="#{membroControle.membro.membroDesde}"
+                                                  label="#{msgs['label.membro.desde']}"/>
+
+                                <b:dateTimePicker showTime="false" value="#{membroControle.membro.dataBatismo}"
+                                                  label="#{msgs['label.data.batismo']}"/>
+
+                                <b:dateTimePicker showTime="false"
+                                                  value="#{membroControle.membro.dataBatismoEspiritoSanto}"
+                                                  label="#{msgs['label.data.batismo.espirito.sanco']}"/>
+
+                                <h:panelGroup id="panelSelect">
+                                    <b:selectOneMenu id="selectCargos" label="#{msgs['label.selecione.cargo']}"
+                                                     value="#{membroControle.membro.cargo}">
+                                        <f:selectItem itemLabel="#{msgs['label.selecione.cargo']}" itemValue=""
+                                                      noSelectionOption="true"/>
+                                        <f:selectItems value="#{membroControle.cargos}" var="cargo"
+                                                       itemLabel="#{cargo.descricao}"
+                                                       itemValue="#{cargo}"/>
+                                        <f:facet name="append">
+                                            <b:button onclick="$('.modalCargos').modal()" iconAwesome="fa-plus-circle"
+                                                      tooltip="#{msgs['btn.novo.integrante']}"
+                                                      class="pull-right" look="info"/>
+                                        </f:facet>
+                                    </b:selectOneMenu>
+                                </h:panelGroup>
+                                <b:dateTimePicker showTime="false" value="#{membroControle.membro.dataConsagracao}"
+                                                  label="#{msgs['label.data.consagracao']}"/>
+
+                                <b:selectOneMenu label="#{msgs['label.selecione.situacao']}" id="situacao"
+                                                 value="#{membroControle.membro.situacao}">
+                                    <f:selectItem itemLabel="#{msgs['label.selecione.situacao']}" itemValue="Teste"/>
+                                    <f:converter converterId="enumSituacaoConverter"/>
+                                    <f:selectItems value="#{membroControle.listaSituacao}" var="cl"
+                                                   itemLabel="#{cl.descricao}"
+                                                   itemValue="#{cl}"/>
+                                </b:selectOneMenu>
+
+                                <b:selectOneMenu label="#{msgs['label.selecione.lider']}" id="membro"
+                                                 value="#{membroControle.membro.lider}">
+                                    <f:selectItem itemLabel="#{msgs['label.selecione.lider']}" itemValue="Teste"/>
+                                    <f:selectItems value="#{membroControle.listaLider}" var="lider"
+                                                   itemLabel="#{lider.nome}"
+                                                   itemValue="#{lider}"/>
+                                </b:selectOneMenu>
+
+                                <b:selectBooleanCheckbox value="#{membroControle.membro.dizimista}"
+                                                         label="#{msgs['label.dizimista']}"/>
+
+                            </b:panelGrid>
+
+                            <h:panelGrid columns="2" class="pull-right" style="margin-top: 20px">
+                                <b:commandButton action="#{membroControle.voltar()}" look="warning" immediate="true"
+                                                 value="#{msgs['btn.cancelar']}"/>
+                                <b:commandButton action="#{membroControle.salvar()}" look="success"
+                                                 value="#{msgs['btn.salvar']}"/>
+                            </h:panelGrid>
+
+                        </b:tab>
+                    </b:tabView>
+                </h:form>
+            </b:panel>
+        </b:form>
+        <h:form id="formModal">
+            <b:modal id="modalCargo" title="#{msgs['titulo.novo.cargo']}"
+                     styleClass="modalCargos">
+                <h:panelGrid columns="1" cellspacing="12">
+                    <b:inputText id="txtNome" label="#{msgs['label.nome']}" size="100"
+                                 value="#{membroControle.cargo.descricao}"/>
+                    <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
+                        <b:commandButton value="Salvar" look="success"
+                                         actionListener="#{membroControle.salvarCargo()}"
+                                         oncomplete="$('.modalCargos').modal('toggle');"
+                                         update="cadastro:formTabs:tabDadosPessoais:panelSelect" ajax="true">
+                        </b:commandButton>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </b:modal>
+        </h:form>
+    </ui:define>
+</ui:composition>

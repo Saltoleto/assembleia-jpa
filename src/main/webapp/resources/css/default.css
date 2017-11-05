@@ -14,6 +14,15 @@
     border-color: #080808;
 }
 
+#scrollUpCustom {
+    background: url(../img/top3.png);
+    bottom: 35px;
+    right: 18px;
+    width: 38px; /* width of the custom image */
+    height: 38px; /* height of the custom image */
+    outline: none;
+}
+
 .btn-info:hover, .btn-info:focus {
     background-color: #080808;
     background-position: 0 -15px;
