@@ -157,7 +157,7 @@ public class DespesaControle {
                     despesa = null;
                 }
             } else {
-                service.editar(despesa);
+                service.salvar(despesa);
                 adicionaMensagem("Despesa salva com sucesso!", FacesMessage.SEVERITY_INFO);
             }
 

@@ -18,24 +18,18 @@ import java.util.Locale;
 @NamedQueries({
         @NamedQuery(name = "Despesa.valorDespesaPeriodo",
                 query = "Select SUM(r.valor) from Despesa r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
-        @NamedQuery(name = "Despesa.listarDespesasRecebidas",
-                query = "Select sum(r.valor) from Despesa r where r.recebido = true "),
         @NamedQuery(name = "Despesa.listarDespesasMesAno",
                 query = "Select r from Despesa r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Despesa.buscarDespesaGrafico",
                 query = "Select sum(r.valor) from Despesa r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano"),
         @NamedQuery(name = "Despesa.listarDespesasTipoMesAno",
-                query = "Select sum(r.valor) from Despesa r Where r.categoria.id =:id and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
-        @NamedQuery(name = "Despesa.listarUltimasDespesasVisao",
-                query = "Select r from Despesa r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano AND r.recebido = true"),
-        @NamedQuery(name = "Despesa.buscarDespesaMembroData",
-                query = "Select r FROM Despesa r inner join r.membro m Where extract(MONTH FROM r.data) =:mes AND r.recebido = true order by m.nome "),
+                query = "Select sum(r.valor) from Despesa r Where r.tipoDeDespesa.id =:id and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Despesa.listarPorIgreja",
-                query = "SELECT r FROM Despesa m JOIN r.congregacao i WHERE i.id = :idIgreja"),
+                query = "SELECT r FROM Despesa r JOIN r.congregacao i WHERE i.id = :idIgreja"),
         @NamedQuery(name = "Despesa.listarDespesasPagas",
                 query = "SELECT sum(d.valor) FROM Despesa d where d.pago = true"),
         @NamedQuery(name = "Despesa.despesasPagarVisaoGeral",
-                query = "SELECT sum(d.valor) FROM Despesa d Where extract(MONTH FROM d.data) = ? and extract(YEAR FROM d.data) = ? AND d.pago = false ")
+                query = "SELECT sum(d.valor) FROM Despesa d Where extract(MONTH FROM d.data) = :mes and extract(YEAR FROM d.data) = :ano AND d.pago = false ")
 })
 public class Despesa implements Serializable, Comparable<Despesa> {
 

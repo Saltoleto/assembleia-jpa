@@ -18,19 +18,15 @@ public class DespesaService {
     private DespesaRepository despesaRepository;
 
     public void salvar(Despesa despesa) {
-        despesaRepository.salvar(despesa);
+        despesaRepository.save(despesa);
     }
 
     public List<Despesa> listarTodos() {
-        return despesaRepository.listarTodos();
-    }
-
-    public void editar(Despesa despesa) {
-        despesaRepository.editar(despesa);
+        return despesaRepository.findAll();
     }
 
     public void deletar(Despesa despesa) {
-        despesaRepository.deletar(despesa);
+        despesaRepository.delete(despesa);
     }
 
     public Despesa getById(final Long id) {

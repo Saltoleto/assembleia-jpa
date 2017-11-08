@@ -29,9 +29,9 @@ import java.util.Locale;
         @NamedQuery(name = "Receita.listarUltimasReceitasVisao",
                 query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano AND r.recebido = true"),
         @NamedQuery(name = "Receita.buscarReceitaMembroData",
-                query = "Select r FROM Receita r inner join r.membro m Where extract(MONTH FROM r.data) =:mes AND r.recebido = true order by m.nome "),
-        @NamedQuery(name = "Membro.listarPorIgreja",
-                query = "SELECT r FROM Receita m JOIN r.congregacao i WHERE i.id = :idIgreja")
+                query = "Select r FROM Receita r  JOIN r.membro m Where extract(MONTH FROM r.data) =:mes AND r.recebido = true order by m.nome "),
+        @NamedQuery(name = "Receita.listarPorIgreja",
+                query = "SELECT r FROM Receita r JOIN r.congregacao i WHERE i.id = :idIgreja")
 })
 public class Receita implements Serializable, Comparable<Receita> {
 
@@ -127,6 +127,14 @@ public class Receita implements Serializable, Comparable<Receita> {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
     }
 
     @Override
