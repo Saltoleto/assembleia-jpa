@@ -48,6 +48,12 @@
 
                 <b:dropMenu value="#{msgs['menu.financeiro']}">
 
+                    <b:navLink value="#{msgs['menu.despesa']}" iconAwesome="fa-minus-square"
+                               outcome="/view/despesa/lista"/>
+
+                    <b:navLink value="#{msgs['menu.receita']}" iconAwesome="fa-plus-square"
+                               outcome="/view/receita/lista"/>
+
                     <b:navLink value="#{msgs['menu.tipo.despesa']}" iconAwesome="fa-cloud-upload"
                                outcome="/view/tipodespesa/lista"/>
 

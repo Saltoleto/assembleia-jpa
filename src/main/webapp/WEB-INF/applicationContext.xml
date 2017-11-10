@@ -6,14 +6,21 @@
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context
 						http://www.springframework.org/schema/context/spring-context.xsd">
-	
+
 	<context:annotation-config />
 
 	<context:component-scan base-package="br.com.assembleia" />
 
-	<context:property-placeholder location="classpath:application.properties" />
-	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="corePlaceHolder">
+		<property name="locations">
+			<list>
+				<value>classpath*:application.properties</value>
+			</list>
+		</property>
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+	</bean>
+
 	<import resource="applicationContext-jpa.xml"/>
         <import resource="customer-bean.xml" />
-	
+
 </beans>

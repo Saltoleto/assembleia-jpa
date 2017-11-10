@@ -57,7 +57,6 @@ public class CongregacaoControle {
     }
 
     public String novo() throws FileNotFoundException {
-        this.sede = service.buscarSede();
         congregacao = new Congregacao();
         congregacao.setIsSede(Boolean.FALSE);
         congregacao.setSede(sede);
@@ -85,6 +84,7 @@ public class CongregacaoControle {
     public String salvar() throws IOException {
 
         try {
+            this.sede = service.buscarSede();
             if (this.sede != null) {
                 if (congregacao.getId() == null && file == null) {
                     System.out.println("Entrou no primeiro if ");
@@ -104,7 +104,7 @@ public class CongregacaoControle {
                     fotoBanco = null;
                     arquivo = null;
                 } else {
-                    System.out.println("Criando byte array do file " + file);
+                    System.out.println("Criando byte array do file " + file.getContents());
                     bimagem = file.getContents();
                     System.out.println("Byte array criado bimagem " + bimagem);
                     congregacao.setLogoIgreja(bimagem);
@@ -193,6 +193,7 @@ public class CongregacaoControle {
             fotoBanco = new DefaultStreamedContent(is);
             file = event.getFile();
             System.out.println("Upload realizado: " + file);
+            System.out.println("Tentando recuperar Byte array : " + file.getContents());
         } catch (IOException ex) {
             Logger.getLogger(MembroControle.class.getName()).log(Level.SEVERE,
                     null, ex);

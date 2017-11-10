@@ -52,6 +52,7 @@ public class Despesa implements Serializable, Comparable<Despesa> {
     private String parcelas = "1";
     private Integer totalParcelar = 1;
     private static final Locale BRASIL = new Locale("pt", "BR");
+    private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
 
     public Long getId() {
@@ -83,11 +84,7 @@ public class Despesa implements Serializable, Comparable<Despesa> {
     }
 
     public String getValorFormatado() {
-        String teste = null;
-        DecimalFormat df = new DecimalFormat("###,###,##0.00", REAL);
-        teste = df.format(valor);
-
-        return teste;
+        return df.format(valor);
     }
 
     public void setValor(BigDecimal valor) {
@@ -172,7 +169,7 @@ public class Despesa implements Serializable, Comparable<Despesa> {
         return this.descricao.compareTo(t.descricao);
     }
 
-    public String getRecebidoFormatado() {
+    public String getPagoFormatado() {
         if (pago) {
             return "Sim";
         } else {

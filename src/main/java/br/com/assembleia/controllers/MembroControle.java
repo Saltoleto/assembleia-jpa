@@ -101,7 +101,6 @@ public class MembroControle {
     }
 
     public String novoVisaoGeral() throws FileNotFoundException {
-        novoCargo();
         membro = new Membro();
         titulo = "Cadastro de Membro";
         arquivo = new File(semFotoResource);
@@ -113,20 +112,19 @@ public class MembroControle {
     }
 
     public String editar(Membro membro) throws FileNotFoundException {
-        novoCargo();
         if (membro != null) {
             this.membro = membro;
             titulo = "Editar Membro";
-            if (membro.getFoto() != null) {
+            if(membro.getFoto() !=null){
                 fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(membro.getFoto()));
-            } else {
+            }
+            else{
                 arquivo = new File(semFotoResource);
                 InputStream f = new FileInputStream(arquivo);
                 StreamedContent img = new DefaultStreamedContent(f);
                 fotoBanco = img;
             }
             membro.setCodigoMembro(membro.getCodigoMembroFormatado());
-            tab = 0;
             return "form?faces-redirect=true";
         }
         return "lista?faces-redirect=true";
@@ -141,26 +139,27 @@ public class MembroControle {
                 byte[] data = Files.readAllBytes(path);
                 membro.setFoto(data);
                 service.salvar(membro);
-                adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
-
                 membro = null;
                 fotoBanco = null;
                 arquivo = null;
+                tab =0;
+                adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             } else if (file == null && membro.getId() != null) {
                 service.salvar(membro);
-                adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
                 membro = null;
                 fotoBanco = null;
                 arquivo = null;
+                tab =0;
+                adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             } else {
                 bimagem = file.getContents();
                 membro.setFoto(bimagem);
                 service.salvar(membro);
-                adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
-
                 membro = null;
                 fotoBanco = null;
                 arquivo = null;
+                tab = 0;
+                adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             }
         } catch (IllegalArgumentException e) {
             adicionaMensagem(e.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -228,11 +227,12 @@ public class MembroControle {
         return "lista?faces-redirect=true";
     }
 
-    public void nextTab() {
-        tab++;
-       if(tab > 0){
-           tab = 1;
-       }
+    public void nextTab(){
+        if (this.tab == 1){
+            this.tab = 0;
+        }else{
+            this.tab = 1;
+        }
     }
 
     public List<ModeloClassesVisao> totalMembros() {
@@ -337,7 +337,7 @@ public class MembroControle {
         } else {
             membros = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
-        return membros ;
+        return membros = service.listarTodos();
     }
 
     public void setMembros(List<Membro> membros) {
@@ -441,10 +441,11 @@ public class MembroControle {
 
     public void fileUploadAction(FileUploadEvent event) {
         try {
-
             InputStream is = event.getFile().getInputstream();
             fotoBanco = new DefaultStreamedContent(is);
             file = event.getFile();
+            System.out.println("Upload realizado: " + file);
+            System.out.println("Tentando recuperar Byte array : " + file.getContents());
         } catch (IOException ex) {
             Logger.getLogger(MembroControle.class.getName()).log(Level.SEVERE,
                     null, ex);

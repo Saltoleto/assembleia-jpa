@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+
+    <ui:define name="content">
+        <h:form>
+            <b:messages/>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="#{msgs['titulo.despesas']}"/>
+                <b:commandButton look="info" action="#{despesaControle.novo}" tooltip="#{msgs['btn.nova.desepesa']}"
+                                 class="pull-right" value="#{msgs['btn.nova.desepesa']}"/>
+            </b:formGroup>
+
+            <b:panel collapsible="false">
+
+                <b:panelGrid columns="3" colSm="6" >
+                    <b:selectOneMenu  value="#{despesaControle.mesPesquisa}">
+                        <f:selectItem itemLabel="JANEIRO" itemValue="#{1}"/>
+                        <f:selectItem itemLabel="FEVEREIRO" itemValue="#{2}"/>
+                        <f:selectItem itemLabel="MARÇO" itemValue="#{3}"/>
+                        <f:selectItem itemLabel="ABRIL" itemValue="#{4}"/>
+                        <f:selectItem itemLabel="MAIO" itemValue="#{5}"/>
+                        <f:selectItem itemLabel="JUNHO" itemValue="#{6}"/>
+                        <f:selectItem itemLabel="JULHO" itemValue="#{7}"/>
+                        <f:selectItem itemLabel="AGOSTO" itemValue="#{8}"/>
+                        <f:selectItem itemLabel="SETEMBRO" itemValue="#{9}"/>
+                        <f:selectItem itemLabel="OUTUBRO" itemValue="#{10}"/>
+                        <f:selectItem itemLabel="NOVEMBRO" itemValue="#{11}"/>
+                        <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
+                    </b:selectOneMenu>
+                    <b:inputText value="#{despesaControle.anoPesquisa}"  placeholder="Ano"  />
+                    <b:commandButton value="Listar"   action="#{despesaControle.listar()}"/>
+                </b:panelGrid>
+
+                <b:dataTable scroll-x="false"   fixedHeader="true" responsive="true" paginated="false" searching="false" info="false"
+                             value="#{despesaControle.despesas}" var="despesa">
+
+                    <b:dataTableColumn  value="#{despesa.descricao}"/>
+                    <b:dataTableColumn label="#{msgs['label.tipo']}" value="#{despesa.tipoDeDespesa.descricao}"/>
+                    <b:dataTableColumn label="#{msgs['label.valor']}"  value="#{despesa.valorFormatado}"/>
+                    <b:dataTableColumn label="#{msgs['label.pago']}" value="#{despesa.pagoFormatado}"/>
+                    <b:dataTableColumn value="#{despesa.data}"/>
+
+                    <b:dataTableColumn label="#{msgs['label.acoes']}">
+                        <b:commandButton action="#{despesaControle.deletar(despesa)}"
+                                         onclick="return confirm('#{msgs['confirmar.exclucao']}');"
+                                         tooltip="#{msgs['btn.excluir']}" class="fa fa-trash pull-right" look="danger"/>
+                        <b:commandButton action="#{despesaControle.editar(despesa)}" tooltip="#{msgs['btn.editar']}"
+                                         class="fa fa-pencil-square-o pull-right" look="warning"/>
+                    </b:dataTableColumn>
+                </b:dataTable>
+
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

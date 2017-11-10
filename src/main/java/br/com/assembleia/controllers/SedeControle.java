@@ -72,7 +72,7 @@ public class SedeControle {
 
             fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(congregacao.getLogoIgreja()));
             return "form?faces-redirect=true";
-        }        
+        }
         return "lista?faces-redirect=true";
 
     }
@@ -175,6 +175,8 @@ public class SedeControle {
             InputStream is = event.getFile().getInputstream();
             fotoBanco = new DefaultStreamedContent(is);
             file = event.getFile();
+            System.out.println("Upload realizado: " + file);
+            System.out.println("Tentando recuperar Byte array : " + file.getContents());
         } catch (IOException ex) {
             Logger.getLogger(SedeControle.class.getName()).log(Level.SEVERE,
                     null, ex);
@@ -214,7 +216,7 @@ public class SedeControle {
     }
 
     public List<Congregacao> getSedes() {
-       
+
         sedes = service.listarSedes();
         Collections.sort(sedes);
 

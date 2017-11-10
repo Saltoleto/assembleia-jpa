@@ -106,13 +106,13 @@ public class DespesaControle {
         return "/fluxocaixa/lista.xhtml?faces-redirect=true";
     }
 
-    public String carregarCadastro() {
+    public String editar(Despesa despesa) {
         if (despesa != null) {
+            this.despesa = despesa;
             titulo = "Editar Despesa";
             desabilitaParcela = true;
             return "form?faces-redirect=true";
         }
-        adicionaMensagem("Nenhuma Despesa foi selecionada para a alteração!", FacesMessage.SEVERITY_INFO);
         return "lista?faces-redirect=true";
 
     }
