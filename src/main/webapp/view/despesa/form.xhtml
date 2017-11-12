@@ -35,6 +35,11 @@
                         <f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
                     </b:inputText>
 
+                    <b:selectOneMenu  id="fornecedor" label="#{msgs['label.selecione.fornecedor']}" value="#{despesaControle.despesa.fornecedor}">
+                        <f:selectItem itemLabel="#{msgs['label.selecione.fornecedor']}" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{despesaControle.fornecedores}" var="fornecedor" itemValue="#{fornecedor}" itemLabel="#{fornecedor.nome}" />
+                    </b:selectOneMenu>
+
                     <b:selectOneMenu  id="departamento" label="#{msgs['label.departamento']}" value="#{despesaControle.despesa.departamento}">
                         <f:selectItem itemLabel="#{msgs['label.selecione.departamento']}" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{despesaControle.departamentos}" var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.nome}" />

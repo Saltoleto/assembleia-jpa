@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public interface MembroRepository extends JpaRepository<Membro, Integer> {
-    
+
     Integer buscarQtdTotalMembros();
 
     Integer buscarQtdMembrosSituacao(EnumSituacao situacao);
@@ -27,4 +27,10 @@ public interface MembroRepository extends JpaRepository<Membro, Integer> {
     List<Membro> aniversariantesRelatorio(Long mes);
 
     List<Membro> listarPorIgreja(@Param("idIgreja") Long idIgreja);
+
+    Integer totalMembrosAtivos(@Param("idIgreja") Long idIgreja);
+
+    Integer totalMembrosPorSexo(@Param("idIgreja") Long idIgreja, @Param("sexo") EnumSexo enumSexo);
+
+    Integer totalDizimistasPorParametro(@Param("idIgreja") Long idIgreja,@Param("dizimista") Boolean dizimista);
 }

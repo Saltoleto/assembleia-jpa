@@ -1,110 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:security="http://www.springframework.org/schema/security"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	   xmlns:tx="http://www.springframework.org/schema/tx"
-	   xmlns:p="http://www.springframework.org/schema/p"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 						http://www.springframework.org/schema/security
                         http://www.springframework.org/schema/security/spring-security-3.0.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-		<security:http  auto-config="true" access-denied-page="/negado.jsf" use-expressions="true">
+    <security:http auto-config="true" access-denied-page="/negado.jsf" use-expressions="true">
 
-			<security:intercept-url pattern="/view/cargo/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/cargo/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/cargo/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/cargo/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
-			<security:intercept-url pattern="/view/congregacao/lista.jsf" access="hasAnyRole('ADMIN')"/>
-			<security:intercept-url pattern="/view/congregacao/form.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:intercept-url pattern="/view/congregacao/lista.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:intercept-url pattern="/view/congregacao/form.jsf" access="hasAnyRole('ADMIN')"/>
 
-			<security:intercept-url pattern="/view/departamento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/departamento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/despesa/lista.jsf" access="hasAnyRole('ADMIN','TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/despesa/form.jsf" access="hasAnyRole('ADMIN','TESOUREIRO')"/>
 
-			<security:intercept-url pattern="/view/evento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/evento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/receita/lista.jsf" access="hasAnyRole('ADMIN','TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/receita/form.jsf" access="hasAnyRole('ADMIN','TESOUREIRO')"/>
 
-			<security:intercept-url pattern="/view/fornecedor/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/fornecedor/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/departamento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/departamento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
-			<security:intercept-url pattern="/view/membro/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/membro/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/evento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/evento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
-			<security:intercept-url pattern="/view/patrimonio/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/patrimonio/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/fornecedor/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO','TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/fornecedor/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO','TESOUREIRO')"/>
 
-			<security:intercept-url pattern="/view/sede/lista.jsf" access="hasAnyRole('ADMIN')"/>
-			<security:intercept-url pattern="/view/sede/form.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:intercept-url pattern="/view/membro/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/membro/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
-			<security:intercept-url pattern="/view/tipodespesa/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/tipodespesa/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/patrimonio/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/patrimonio/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
-			<security:intercept-url pattern="/view/tiporeceita/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
-			<security:intercept-url pattern="/view/tiporeceita/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/sede/lista.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:intercept-url pattern="/view/sede/form.jsf" access="hasAnyRole('ADMIN')"/>
 
-			<security:intercept-url pattern="/view/usuario/lista.jsf" access="hasAnyRole('ADMIN')"/>
-			<security:intercept-url pattern="/view/usuario/form.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:intercept-url pattern="/view/tipodespesa/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/tipodespesa/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
 
-			<security:intercept-url pattern="/index.jsf" access="hasAnyRole('ADMIN')"/>
-			<security:form-login login-page="/login.jsf" authentication-failure-url="/login.jsf?erro=true"/>
-			<security:logout invalidate-session="true" logout-success-url="/login.jsf?logout" logout-url="/logout" />
-		</security:http>
+        <security:intercept-url pattern="/view/tiporeceita/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/tiporeceita/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
 
-		<security:authentication-manager>
-			<security:authentication-provider>
-				<security:jdbc-user-service data-source-ref="dataSource"
-											users-by-username-query=""
-											authorities-by-username-query=""/>
-			</security:authentication-provider>
-		</security:authentication-manager>
-	
-	<jpa:repositories base-package="br.com.assembleia.repositories" />
-	
-	<tx:annotation-driven transaction-manager="transactionManager"/>
-	
-	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>               
-	
-	<bean id="transactionManager" 
-		class="org.springframework.orm.jpa.JpaTransactionManager"
-      		p:entityManagerFactory-ref="entityManagerFactory"/>
-     
-     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">      	 	
-      	<property name="dataSource" ref="dataSource"></property>
-      	<property name="jpaVendorAdapter">
-      		<bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-        			p:showSql="${hibernate.show_sql}"/>
-      	</property>
-      	<property name="jpaProperties">
-      		<props>
-      			<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-      			<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-      		</props>
-      	</property>
-      	<property name="packagesToScan" value="br.com.assembleia.entities"></property>
-      	<property name="loadTimeWeaver">
-         <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
-       </property>
-   </bean>
+        <security:intercept-url pattern="/view/usuario/lista.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:intercept-url pattern="/view/usuario/form.jsf" access="hasAnyRole('ADMIN')"/>
+
+        <security:intercept-url pattern="/index.jsf" access="hasAnyRole('ADMIN')"/>
+        <security:form-login login-page="/login.jsf" authentication-failure-url="/login.jsf?erro=true"/>
+        <security:logout invalidate-session="true" logout-success-url="/login.jsf?logout" logout-url="/logout"/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                                        users-by-username-query=""
+                                        authorities-by-username-query=""/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <jpa:repositories base-package="br.com.assembleia.repositories"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager"
+          p:entityManagerFactory-ref="entityManagerFactory"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="jpaVendorAdapter">
+            <bean id="jpaAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                  p:showSql="${hibernate.show_sql}"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            </props>
+        </property>
+        <property name="packagesToScan" value="br.com.assembleia.entities"></property>
+        <property name="loadTimeWeaver">
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>
+    </bean>
+
 
 
    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}"></property>
-		<property name="url" value="${jdbc.url}"></property>
-		<property name="username" value="${jdbc.username}"></property>
-		<property name="password" value="${jdbc.password}"></property>
-	</bean>
+        <property name="driverClassName" value="${jdbc.driverClassName}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
 
 
+    <!--
+    <bean class="java.net.URI" id="dbUrl">
+        <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
+    </bean>
 
-	<!--<bean class="java.net.URI" id="dbUrl">
-		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
-	</bean>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="url"      value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+        <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
+    </ban>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
-		<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
-		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
-	</bean>
--->
+    -->
+
 </beans>

@@ -17,9 +17,8 @@
             </b:formGroup>
 
             <b:panel collapsible="false">
-
                 <b:panelGrid columns="3" colSm="6" >
-                    <b:selectOneMenu  value="#{despesaControle.mesPesquisa}">
+                    <b:selectOneMenu style="padding: 5px" tooltip="#{msgs['label.mes']}"   value="#{despesaControle.mesPesquisa}">
                         <f:selectItem itemLabel="JANEIRO" itemValue="#{1}"/>
                         <f:selectItem itemLabel="FEVEREIRO" itemValue="#{2}"/>
                         <f:selectItem itemLabel="MARÇO" itemValue="#{3}"/>
@@ -33,18 +32,26 @@
                         <f:selectItem itemLabel="NOVEMBRO" itemValue="#{11}"/>
                         <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
                     </b:selectOneMenu>
-                    <b:inputText value="#{despesaControle.anoPesquisa}"  placeholder="Ano"  />
-                    <b:commandButton value="Listar"   action="#{despesaControle.listar()}"/>
+                    <b:inputText value="#{despesaControle.anoPesquisa}"  placeholder="Ano" tooltip="#{msgs['label.ano']}"  />
+                    <b:commandButton value="Listar"   action="#{despesaControle.listar()}" tooltip="#{msgs['label.listar']}"/>
                 </b:panelGrid>
 
-                <b:dataTable scroll-x="false"   fixedHeader="true" responsive="true" paginated="false" searching="false" info="false"
+                <h:outputText title="#{msgs['titulo.total.despesas']}"  style="float: right; font-family: fantasy; font-size: x-large;margin-right: 2px" value="#{despesaControle.valorTotalDespesa}"/>
+
+                <b:dataTable scroll-x="false"   fixedHeader="true" responsive="true" paginated="false" info="false"
+                             searching="false"
                              value="#{despesaControle.despesas}" var="despesa">
 
                     <b:dataTableColumn  value="#{despesa.descricao}"/>
+                    <b:dataTableColumn  label="#{msgs['label.fornecedor']}" value="#{despesa.fornecedor.nome}"/>
                     <b:dataTableColumn label="#{msgs['label.tipo']}" value="#{despesa.tipoDeDespesa.descricao}"/>
                     <b:dataTableColumn label="#{msgs['label.valor']}"  value="#{despesa.valorFormatado}"/>
                     <b:dataTableColumn label="#{msgs['label.pago']}" value="#{despesa.pagoFormatado}"/>
-                    <b:dataTableColumn value="#{despesa.data}"/>
+                    <b:dataTableColumn label="#{msgs['label.inicio']}" >
+                        <h:outputText value="#{despesa.data}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </b:dataTableColumn>
 
                     <b:dataTableColumn label="#{msgs['label.acoes']}">
                         <b:commandButton action="#{despesaControle.deletar(despesa)}"

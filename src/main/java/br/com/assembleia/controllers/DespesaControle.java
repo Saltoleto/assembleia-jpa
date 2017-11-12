@@ -28,9 +28,11 @@ public class DespesaControle {
     private Despesa despesa;
     private List<Despesa> despesas;
     private List<Despesa> despesasFiltrados;
+    private List<Fornecedor> fornecedores;
     private String titulo;
     private BigDecimal valorDespesaPeriodo;
     private static final Locale BRASIL = new Locale("pt", "BR");
+    private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
     private int mesPesquisa = Calendar.getInstance().get(Calendar.MONTH);
 
@@ -50,7 +52,7 @@ public class DespesaControle {
     private BigDecimal saldoAtual;
     private TipoDeDespesa tipoDeDespesa;
 
-//    LISTA DE RECEITAS PARA FLUXO DE CAIXA
+    //    LISTA DE RECEITAS PARA FLUXO DE CAIXA
     private List<Receita> listaReceitasFluxoCaixa = new ArrayList<Receita>();
     private BigDecimal valorPrevistoPeriodo;
     private BigDecimal receitasPeriodo;
@@ -66,6 +68,8 @@ public class DespesaControle {
     private MembroService serviceMembroService;
     @Autowired
     private ReceitaService serviceReceita;
+    @Autowired
+    FornecedorService serviceFornecedor;
 
     @PostConstruct
     private void init() {
@@ -81,25 +85,6 @@ public class DespesaControle {
         fluxoCaixa = false;
         inicio = false;
         return "form?faces-redirect=true";
-    }
-
-
-    public String novoVisaoGeral() {
-        despesa = new Despesa();
-        titulo = "Nova Despesa";
-        desabilitaParcela = false;
-        fluxoCaixa = false;
-        inicio = true;
-        return "/despesa/form.xhtml?faces-redirect=true";
-    }
-
-    public String novoFluxoCaixa() {
-        despesa = new Despesa();
-        titulo = "Nova Despesa";
-        fluxoCaixa = true;
-        desabilitaParcela = false;
-        inicio = false;
-        return "/despesa/form.xhtml?faces-redirect=true";
     }
 
     public String fluxoCaixa() {
@@ -142,6 +127,7 @@ public class DespesaControle {
                         service.salvar(despesaparcelada);
 
                     }
+                    despesa.setCongregacao(AplicacaoControle.getInstance().getUsuario().getCongregacao());
                     despesa.setTotalParcelar(teste);
                     despesa.setDescricao(despesa.getDescricao() + "(" + 1 + "/" + teste + ")");
                     despesa.setParcelas("" + 1 + "/" + teste + "");
@@ -150,6 +136,7 @@ public class DespesaControle {
                     adicionaMensagem("Despesa salva com sucesso!", FacesMessage.SEVERITY_INFO);
                     despesa = null;
                 } else {
+                    despesa.setCongregacao(AplicacaoControle.getInstance().getUsuario().getCongregacao());
                     despesa.setParcelas("1/1");
                     despesa.setTotalParcelar(teste);
                     service.salvar(despesa);
@@ -157,6 +144,7 @@ public class DespesaControle {
                     despesa = null;
                 }
             } else {
+                despesa.setCongregacao(AplicacaoControle.getInstance().getUsuario().getCongregacao());
                 service.salvar(despesa);
                 adicionaMensagem("Despesa salva com sucesso!", FacesMessage.SEVERITY_INFO);
             }
@@ -185,21 +173,14 @@ public class DespesaControle {
 
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (despesa == null) {
-                adicionaMensagem("Nenhuma Despesa foi selecionada para a exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoMe.show()");
-        }
-    }
-
-    public String deletar() {
+    public String deletar(Despesa despesa) {
         try {
-            service.deletar(despesa);
-            despesas = null;
-            adicionaMensagem("Despesa excluída com Sucesso!", FacesMessage.SEVERITY_INFO);
+            if (despesa != null) {
+                this.despesa = despesa;
+                service.deletar(despesa);
+                despesas = null;
+                adicionaMensagem("Despesa excluída com Sucesso!", FacesMessage.SEVERITY_INFO);
+            }
 
         } catch (PersistenceException ex) {
             adicionaMensagem("O Despesa está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
@@ -256,6 +237,11 @@ public class DespesaControle {
         });
 
         return despesaPagarVisaoGeral;
+    }
+
+    public List<Fornecedor> getFornecedores() {
+
+        return fornecedores = serviceFornecedor.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
     }
 
     public Boolean getInicio() {
@@ -325,21 +311,52 @@ public class DespesaControle {
 
     }
 
-//    public String getValorPrevistoPeriodo() {
-//        receitasPeriodo = serviceReceita.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
-//        despesasPeriodo = service.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
-//        String teste = null;
-//        if (receitasPeriodo == null) {
-//            receitasPeriodo = new BigDecimal(BigInteger.ZERO);
-//        }
-//        if (despesasPeriodo == null) {
-//            despesasPeriodo = new BigDecimal(BigInteger.ZERO);
-//        }
-//        valorPrevistoPeriodo = receitasPeriodo.subtract(despesasPeriodo);
-//
-//        DecimalFormat df = new DecimalFormat("###,###,##0.00", REAL);
-//        return teste = df.format(valorPrevistoPeriodo);
-//    }
+    public String despesasTotalMeasAnoCongregacao() {
+        Long idIgreja = null;
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+
+        valorTotal = service.despesasDespesaMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja);
+
+        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
+    }
+
+
+    public String despesasPagasMeasAnoCongregacao() {
+        Long idIgreja = null;
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+
+        valorTotal = service.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.TRUE);
+
+        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
+    }
+
+    public String despesasNaoPagasMeasAnoCongregacao() {
+        Long idIgreja = null;
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+
+        valorTotal = service.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.FALSE);
+
+        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
+    }
+
+
+
+
     public List<ClasseResumoFinanceiro> resumoFinanceiroTelaVisaoGerao() {
         listaResumoFinanceiro = new ArrayList<ClasseResumoFinanceiro>();
 

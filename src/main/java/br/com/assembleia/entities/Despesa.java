@@ -29,7 +29,11 @@ import java.util.Locale;
         @NamedQuery(name = "Despesa.listarDespesasPagas",
                 query = "SELECT sum(d.valor) FROM Despesa d where d.pago = true"),
         @NamedQuery(name = "Despesa.despesasPagarVisaoGeral",
-                query = "SELECT sum(d.valor) FROM Despesa d Where extract(MONTH FROM d.data) = :mes and extract(YEAR FROM d.data) = :ano AND d.pago = false ")
+                query = "SELECT sum(d.valor) FROM Despesa d Where extract(MONTH FROM d.data) = :mes and extract(YEAR FROM d.data) = :ano AND d.pago = false "),
+        @NamedQuery(name = "Despesa.despesasDespesaMeasAnoCongregacao",
+                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja "),
+        @NamedQuery(name = "Despesa.despesaParametroMeasAnoCongregacao",
+                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.pago=:pago ")
 })
 public class Despesa implements Serializable, Comparable<Despesa> {
 
@@ -47,6 +51,8 @@ public class Despesa implements Serializable, Comparable<Despesa> {
     private BigDecimal valor;
     @ManyToOne
     private Departamento departamento;
+    @ManyToOne
+    private Fornecedor fornecedor;
     @Column(nullable = true)
     private boolean pago;
     private String parcelas = "1";
@@ -137,6 +143,14 @@ public class Despesa implements Serializable, Comparable<Despesa> {
 
     public void setCongregacao(Congregacao congregacao) {
         this.congregacao = congregacao;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
     @Override

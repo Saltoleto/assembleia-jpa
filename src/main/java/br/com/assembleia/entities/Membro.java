@@ -34,7 +34,13 @@ import java.util.Date;
         @NamedQuery(name = "Membro.aniversariantesRelatorio",
                 query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) =:mes order by extract(DAY FROM m.dataNascimento) "),
         @NamedQuery(name = "Membro.listarPorIgreja",
-                query = "SELECT m FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja")
+                query = "SELECT m FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja"),
+        @NamedQuery(name = "Membro.totalMembrosAtivos",
+                query = "SELECT count(m) as total FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja"),
+        @NamedQuery(name = "Membro.totalMembrosPorSexo",
+                query = "SELECT count(m) as total FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja and m.sexo=:sexo"),
+        @NamedQuery(name = "Membro.totalDizimistasPorParametro",
+                query = "SELECT count(m) as total FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja and m.dizimista=:dizimista")
 })
 public class Membro implements Serializable {
 

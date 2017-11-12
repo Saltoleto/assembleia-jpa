@@ -57,9 +57,20 @@ public class MembroService {
         return membroRepository.aniversariantesRelatorio(mes);
     }
 
-
     public List<Membro> listarPorIgreja(Long idIgreja) {
         return membroRepository.listarPorIgreja(idIgreja);
+    }
+
+    public Integer totalMembrosAtivos(Long idIgreja){
+        return membroRepository.totalMembrosAtivos(idIgreja);
+    }
+
+    public Integer totalMembrosPorSexo(Long idIgreja,EnumSexo enumSexo){
+        return membroRepository.totalMembrosPorSexo(idIgreja,enumSexo);
+    }
+
+    public Integer totalDizimistasPorParametro(Long idIgreja, Boolean dizimista){
+        return membroRepository.totalDizimistasPorParametro(idIgreja, dizimista);
     }
 
 }

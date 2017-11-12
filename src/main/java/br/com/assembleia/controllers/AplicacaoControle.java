@@ -69,6 +69,16 @@ public class AplicacaoControle {
         return (!usuario.getCongregacao().getIsSede() && EnumAutorizacao.ADMIN.equals(usuario.getAutorizacao()));
     }
 
+    public boolean secretario() {
+        usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        return EnumAutorizacao.SECRETARIO.equals(usuario.getAutorizacao());
+    }
+
+    public boolean tesoureiro() {
+        usuario = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        return EnumAutorizacao.TESOUREIRO.equals(usuario.getAutorizacao());
+    }
+
     public static void adicionaMensagem(String message, FacesMessage.Severity tipo) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getFlash().setKeepMessages(true);
@@ -104,6 +114,7 @@ public class AplicacaoControle {
 
         return null;
     }
+
     public List<Congregacao> getCongregacoes() {
         return congregacoes = serviceCongregacao.listarTodos();
     }

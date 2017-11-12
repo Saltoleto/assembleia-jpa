@@ -27,7 +27,7 @@
                 <b:navbarLinks>
                     <b:navLink outcome="/index" value="Home" iconAwesome="home"/>
                 </b:navbarLinks>
-                <b:dropMenu value="#{msgs['menu.secretaria']}">
+                <b:dropMenu value="#{msgs['menu.secretaria']}" rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede() || aplicacaoControle.secretario()}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
 
                     <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-vcard-o"
@@ -46,10 +46,13 @@
                                outcome="/view/patrimonio/lista"/>
                 </b:dropMenu>
 
-                <b:dropMenu value="#{msgs['menu.financeiro']}">
+                <b:dropMenu value="#{msgs['menu.financeiro']}" rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede() || aplicacaoControle.tesoureiro()}">
 
                     <b:navLink value="#{msgs['menu.despesa']}" iconAwesome="fa-minus-square"
                                outcome="/view/despesa/lista"/>
+
+                    <b:navLink value="#{msgs['menu.fluxo.caixa']}" iconAwesome="fa-money"
+                               outcome="/view/fluxocaixa/lista"/>
 
                     <b:navLink value="#{msgs['menu.receita']}" iconAwesome="fa-plus-square"
                                outcome="/view/receita/lista"/>
@@ -83,11 +86,10 @@
                 <b:navLink active="true" value="#{aplicacaoControle.usuario.login}" iconAwesome="fa-user" tooltip="Usuário"/>
             </b:navbarLinks>
 
-            <b:navbarLinks style="background-image:linear-gradient(to bottom, #3c3c3c 0%, #222 100%);"
-                           rendered="#{aplicacaoControle.adminSede()}" tooltip="Igreja" pull="right">
+            <b:navbarLinks rendered="#{aplicacaoControle.adminSede()}" tooltip="Igreja" pull="right">
 
-                <h:form style="display:inline" styleClass="form-inline">
-                    <b:selectOneMenu value="#{aplicacaoControle.congregacao}" style="margin-top:8px"
+                <h:form style="margin-top:8px" styleClass="form-inline">
+                    <b:selectOneMenu value="#{aplicacaoControle.congregacao}"
                                      onchange="$('.theme-selector-button').click()">
                         <f:selectItem itemLabel="#{msgs['label.todas.igreja']}" itemValue=""
                                       noSelectionOption="true"/>
@@ -103,5 +105,4 @@
 
         </b:container>
     </b:navBar>
-
 </ui:fragment>

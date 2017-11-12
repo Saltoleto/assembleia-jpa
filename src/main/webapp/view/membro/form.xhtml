@@ -169,7 +169,9 @@
                                         <f:facet name="append">
                                             <b:button onclick="$('.modalCargos').modal()" iconAwesome="fa-plus-circle"
                                                       tooltip="#{msgs['btn.novo.integrante']}"
-                                                      class="pull-right" look="info"/>
+                                                      class="pull-right" look="info">
+                                                <f:ajax  event="click" listener="#{membroControle.novoCargo}"/>
+                                            </b:button>
                                         </f:facet>
                                     </b:selectOneMenu>
                                 </h:panelGroup>

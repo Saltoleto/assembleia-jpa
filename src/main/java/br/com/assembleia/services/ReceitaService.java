@@ -44,8 +44,8 @@ public class ReceitaService {
         return receitaRepository.buscarReceitaGrafico(mes,ano);
     }
     
-    public BigDecimal listarReceitasCategoriaMesAno(Long id,Integer mes, Integer ano){
-        return receitaRepository.listarReceitasCategoriaMesAno(id, mes, ano);
+    public BigDecimal listarReceitasTipoMesAno(Integer mes, Integer ano){
+        return receitaRepository.listarReceitasTipoMesAno(mes, ano);
     }
     
     public List<Receita> listarUltimasReceitasVisao(Integer mes, Integer ano){
@@ -58,6 +58,18 @@ public class ReceitaService {
 
     public List<Receita> listarPorIgreja(Long idIgreja) {
         return receitaRepository.listarPorIgreja(idIgreja);
+    }
+
+    public List<Receita> listarReceitasMesAnoCongregacao(Integer mes, Integer ano, Long id){
+        return receitaRepository.listarReceitasMesAnoCongregacao(mes,ano, id);
+    }
+
+    public BigDecimal receitasRecebidasMeasAnoCongregacao(Integer mes, Integer ano, Long id){
+        return receitaRepository.receitasRecebidasMeasAnoCongregacao(mes,ano,id);
+    }
+
+    public BigDecimal receitasParametroMeasAnoCongregacao(Integer mes, Integer ano, Long id, Boolean recebido){
+        return receitaRepository.receitasParametroMeasAnoCongregacao(mes,ano,id,recebido);
     }
 
 }

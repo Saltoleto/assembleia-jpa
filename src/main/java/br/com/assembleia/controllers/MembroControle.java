@@ -12,6 +12,7 @@ import br.com.assembleia.services.CargoService;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.MembroService;
 import br.com.assembleia.util.ReportsUtil;
+import br.com.assembleia.vo.DizimistaVO;
 import net.sf.jasperreports.engine.JRException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -96,6 +97,7 @@ public class MembroControle {
         return "form?faces-redirect=true";
     }
 
+
     public void novoCargo() {
         cargo = new Cargo();
     }
@@ -115,10 +117,9 @@ public class MembroControle {
         if (membro != null) {
             this.membro = membro;
             titulo = "Editar Membro";
-            if(membro.getFoto() !=null){
+            if (membro.getFoto() != null) {
                 fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(membro.getFoto()));
-            }
-            else{
+            } else {
                 arquivo = new File(semFotoResource);
                 InputStream f = new FileInputStream(arquivo);
                 StreamedContent img = new DefaultStreamedContent(f);
@@ -142,14 +143,14 @@ public class MembroControle {
                 membro = null;
                 fotoBanco = null;
                 arquivo = null;
-                tab =0;
+                tab = 0;
                 adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             } else if (file == null && membro.getId() != null) {
                 service.salvar(membro);
                 membro = null;
                 fotoBanco = null;
                 arquivo = null;
-                tab =0;
+                tab = 0;
                 adicionaMensagem("Membro salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             } else {
                 bimagem = file.getContents();
@@ -227,10 +228,10 @@ public class MembroControle {
         return "lista?faces-redirect=true";
     }
 
-    public void nextTab(){
-        if (this.tab == 1){
+    public void nextTab() {
+        if (this.tab == 1) {
             this.tab = 0;
-        }else{
+        } else {
             this.tab = 1;
         }
     }
@@ -337,7 +338,7 @@ public class MembroControle {
         } else {
             membros = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
-        return membros = service.listarTodos();
+        return membros ;
     }
 
     public void setMembros(List<Membro> membros) {
@@ -530,4 +531,52 @@ public class MembroControle {
     public void setCongregacoes(List<Congregacao> congregacoes) {
         this.congregacoes = congregacoes;
     }
+
+    public Integer getTotalMembrosAtivos() {
+        Long idIgreja = null;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+        return service.totalMembrosAtivos(idIgreja);
+    }
+
+    public Integer getTotalMembrosMulheres() {
+        Long idIgreja = null;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+        return service.totalMembrosPorSexo(idIgreja, EnumSexo.FEMININO);
+    }
+
+    public Integer getTotalMembrosHomens() {
+        Long idIgreja = null;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+        return service.totalMembrosPorSexo(idIgreja, EnumSexo.MASCULINO);
+    }
+
+    public List<DizimistaVO> getListaDizimistas() {
+        List<DizimistaVO> dizimistas = new ArrayList<>();
+        Long idIgreja = null;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+        Integer quantidadeDizimistas = service.totalDizimistasPorParametro(idIgreja, Boolean.TRUE);
+        Integer quantidadeNaoDizimistas = service.totalDizimistasPorParametro(idIgreja, Boolean.FALSE);
+
+        dizimistas.add(new DizimistaVO("Dizimistas", quantidadeDizimistas != null ? quantidadeDizimistas : 0));
+        dizimistas.add(new DizimistaVO("Não Dizimistas", quantidadeNaoDizimistas != null ? quantidadeNaoDizimistas : 0));
+
+        return dizimistas;
+    }
+
 }

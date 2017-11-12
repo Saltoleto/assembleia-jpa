@@ -56,4 +56,13 @@ public class DespesaService {
     public BigDecimal listarDespesasTipoMesAno(Integer mes, Integer ano, Long id) {
         return despesaRepository.listarDespesasTipoMesAno(mes, ano, id);
     }
+
+    public BigDecimal despesasDespesaMeasAnoCongregacao(Integer mes, Integer ano, Long id){
+        return despesaRepository.despesasDespesaMeasAnoCongregacao(mes,ano,id);
+    }
+
+    public BigDecimal despesaParametroMeasAnoCongregacao(Integer mes, Integer ano, Long id, Boolean pago){
+        return despesaRepository.despesaParametroMeasAnoCongregacao(mes,ano,id,pago);
+    }
+
 }

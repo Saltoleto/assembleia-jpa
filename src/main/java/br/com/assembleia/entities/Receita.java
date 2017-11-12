@@ -24,14 +24,20 @@ import java.util.Locale;
                 query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Receita.buscarReceitaGrafico",
                 query = "Select sum(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano"),
-        @NamedQuery(name = "Receita.listarReceitasCategoriaMesAno",
-                query = "Select sum(r.valor) from Receita r Where r.categoria.id =:id and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
+        @NamedQuery(name = "Receita.listarReceitasTipoMesAno",
+                query = "Select sum(r.valor) from Receita r JOIN r.tipoDeReceita tr Where  extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Receita.listarUltimasReceitasVisao",
                 query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano AND r.recebido = true"),
         @NamedQuery(name = "Receita.buscarReceitaMembroData",
                 query = "Select r FROM Receita r  JOIN r.membro m Where extract(MONTH FROM r.data) =:mes AND r.recebido = true order by m.nome "),
         @NamedQuery(name = "Receita.listarPorIgreja",
-                query = "SELECT r FROM Receita r JOIN r.congregacao i WHERE i.id = :idIgreja")
+                query = "SELECT r FROM Receita r JOIN r.congregacao i WHERE i.id = :idIgreja"),
+        @NamedQuery(name = "Receita.listarReceitasMesAnoCongregacao",
+                query = "Select r from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:id "),
+        @NamedQuery(name = "Receita.receitasRecebidasMeasAnoCongregacao",
+                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja "),
+        @NamedQuery(name = "Receita.receitasParametroMeasAnoCongregacao",
+                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.recebido=:recebido ")
 })
 public class Receita implements Serializable, Comparable<Receita> {
 
@@ -43,7 +49,7 @@ public class Receita implements Serializable, Comparable<Receita> {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date data;
     @ManyToOne
-    private TipoDeDespesa categoria;
+    private TipoDeReceita tipoDeReceita;
     private BigDecimal valor;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "membro_id")
@@ -55,6 +61,7 @@ public class Receita implements Serializable, Comparable<Receita> {
     @Column(nullable = true)
     private boolean recebido;
     private static final Locale BRASIL = new Locale("pt", "BR");
+    private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
 
     public Long getId() {
@@ -73,12 +80,12 @@ public class Receita implements Serializable, Comparable<Receita> {
         this.data = data;
     }
 
-    public TipoDeDespesa getCategoria() {
-        return categoria;
+    public TipoDeReceita getTipoDeReceita() {
+        return tipoDeReceita;
     }
 
-    public void setCategoria(TipoDeDespesa categoria) {
-        this.categoria = categoria;
+    public void setTipoDeReceita(TipoDeReceita tipoDeReceita) {
+        this.tipoDeReceita = tipoDeReceita;
     }
 
     public BigDecimal getValor() {
@@ -86,11 +93,7 @@ public class Receita implements Serializable, Comparable<Receita> {
     }
 
     public String getValorFormatado() {
-        String teste = null;
-        DecimalFormat df = new DecimalFormat("###,###,##0.00", REAL);
-        teste = df.format(valor);
-
-        return teste;
+        return df.format(valor);
     }
 
     public void setValor(BigDecimal valor) {

@@ -16,14 +16,20 @@ public interface ReceitaRepository extends JpaRepository<Receita, Integer> {
 
     List<Receita> listarReceitasMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
-    BigDecimal buscarReceitaGrafico(@Param("mes") Long mes,@Param("ano") Integer ano);
+    BigDecimal buscarReceitaGrafico(@Param("mes") Long mes, @Param("ano") Integer ano);
 
-    BigDecimal listarReceitasCategoriaMesAno(@Param("id") Long id, @Param("mes") Integer mes, @Param("ano") Integer ano);
+    BigDecimal listarReceitasTipoMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
-    List<Receita> listarUltimasReceitasVisao(@Param("mes")  Integer mes,@Param("ano") Integer ano);
+    List<Receita> listarUltimasReceitasVisao(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
     List<Receita> buscarReceitaMembroData(@Param("mes") Long mes);
 
     List<Receita> listarPorIgreja(@Param("idIgreja") Long idIgreja);
+
+    List<Receita> listarReceitasMesAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("id") Long id);
+
+    BigDecimal receitasRecebidasMeasAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id);
+
+    BigDecimal receitasParametroMeasAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id, @Param("recebido") Boolean recebido);
 }
 

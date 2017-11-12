@@ -32,6 +32,7 @@ public class ReceitaControle {
     private String titulo;
     private BigDecimal valorReceitaPeriodo;
     private static final Locale BRASIL = new Locale("pt", "BR");
+    private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
     private int mesPesquisa = Calendar.getInstance().get(Calendar.MONTH);
     private int anoPesquisa = Calendar.getInstance().get(Calendar.YEAR);
@@ -69,6 +70,7 @@ public class ReceitaControle {
     }
 
     public String novo() {
+        novoTipoReceita();
         receita = new Receita();
         titulo = "Nova Receita";
         inicio = false;
@@ -76,24 +78,14 @@ public class ReceitaControle {
         return "form?faces-redirect=true";
     }
 
-    public String novoVisaoGeral() {
-        receita = new Receita();
-        titulo = "Nova Receita";
-        fluxoCaixa = false;
-        inicio = true;
-        return "/receita/form.xhtml?faces-redirect=true";
+    public void novoTipoReceita() {
+        tipoDeReceita = new TipoDeReceita();
     }
 
-    public String novoFluxoCaixa() {
-        receita = new Receita();
-        titulo = "Nova Receita";
-        fluxoCaixa = true;
-        inicio = false;
-        return "/receita/form.xhtml?faces-redirect=true";
-    }
-
-    public String carregarCadastro() {
+    public String editar(Receita receita) {
         if (receita != null) {
+            novoTipoReceita();
+            this.receita = receita;
             titulo = "Editar Receita";
             inicio = false;
             return "form?faces-redirect=true";
@@ -119,6 +111,7 @@ public class ReceitaControle {
     public String salvar() {
 
         try {
+            receita.setCongregacao(AplicacaoControle.getInstance().getUsuario().getCongregacao());
             service.salvar(receita);
             adicionaMensagem("Receita salva com sucesso!", FacesMessage.SEVERITY_INFO);
             receita = null;
@@ -128,24 +121,17 @@ public class ReceitaControle {
         return "lista?faces-redirect=true";
     }
 
-    public void chamarExclusao() {
-        if (new AplicacaoControle().validaUsuario()) {
-            if (receita == null) {
-                adicionaMensagem("Nenhuma Receita foi selecionada para a exclusão!", FacesMessage.SEVERITY_INFO);
-                return;
-            }
-            org.primefaces.context.RequestContext.getCurrentInstance().execute("confirmacaoMe.show()");
-        }
-    }
-
-    public String deletar() {
+    public String deletar(Receita receita) {
         try {
-            service.deletar(receita);
-            receitas = null;
-            adicionaMensagem("Receita excluída com Sucesso!", FacesMessage.SEVERITY_INFO);
+            if (receita != null) {
+                this.receita = receita;
+                service.deletar(receita);
+                receitas = null;
+                adicionaMensagem("Receita excluída com Sucesso!", FacesMessage.SEVERITY_INFO);
+            }
 
         } catch (PersistenceException ex) {
-            adicionaMensagem("O Receita está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
+            adicionaMensagem("A Receita está emprestado, não pode ser exlcuído!", FacesMessage.SEVERITY_INFO);
             voltar();
         }
         return "lista?faces-redirect=true";
@@ -174,7 +160,7 @@ public class ReceitaControle {
         if (anoPesquisa < 2014) {
             voltar();
         } else {
-            receitas = service.listarReceitasMesAno(mesPesquisa, anoPesquisa);
+            receitas = service.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
             Collections.sort(receitas, new Comparator<Receita>() {
                 @Override
                 public int compare(Receita o1, Receita o2) {
@@ -189,19 +175,6 @@ public class ReceitaControle {
 
     public String listar() {
         return "lista?faces-redirect=true";
-    }
-
-    public List<Receita> getUltimasReceitasVisaoGeral() {
-        ultimasReceitasVisaoGeral = service.listarUltimasReceitasVisao(mesPesquisa, anoPesquisa);
-
-        Collections.sort(ultimasReceitasVisaoGeral, new Comparator<Receita>() {
-            @Override
-            public int compare(Receita o1, Receita o2) {
-                return o2.getData().compareTo(o1.getData());
-            }
-        });
-
-        return ultimasReceitasVisaoGeral;
     }
 
     public void setReceitas(List<Receita> receitas) {
@@ -241,6 +214,49 @@ public class ReceitaControle {
             return teste;
         }
 
+    }
+
+    public String receitasTotalMeasAnoCongregacao() {
+        Long idIgreja = null;
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+
+        valorTotal = service.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja);
+
+        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
+    }
+
+
+    public String receitasRecebidasMeasAnoCongregacao() {
+        Long idIgreja = null;
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+
+        valorTotal = service.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.TRUE);
+
+        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
+    }
+
+    public String receitasNaoRecebidasMeasAnoCongregacao() {
+        Long idIgreja = null;
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
+        } else {
+            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
+        }
+
+        valorTotal = service.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.FALSE);
+
+        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
     }
 
     public String getSaldoAtual() {
@@ -324,5 +340,11 @@ public class ReceitaControle {
         this.fluxoCaixa = fluxoCaixa;
     }
 
+    public TipoDeReceita getTipoDeReceita() {
+        return tipoDeReceita;
+    }
 
+    public void setTipoDeReceita(TipoDeReceita tipoDeReceita) {
+        this.tipoDeReceita = tipoDeReceita;
+    }
 }
