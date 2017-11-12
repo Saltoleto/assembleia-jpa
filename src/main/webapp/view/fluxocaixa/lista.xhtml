@@ -15,7 +15,7 @@
             <b:panel collapsible="false">
                 <b:panelGrid columns="3" colSm="6">
                     <b:selectOneMenu tooltip="#{msgs['label.mes']}"
-                                     value="#{despesaControle.mesPesquisa}">
+                                     value="#{fluxoCaixaControle.mesPesquisa}">
                         <f:selectItem itemLabel="JANEIRO" itemValue="#{1}"/>
                         <f:selectItem itemLabel="FEVEREIRO" itemValue="#{2}"/>
                         <f:selectItem itemLabel="MARÇO" itemValue="#{3}"/>
@@ -29,15 +29,15 @@
                         <f:selectItem itemLabel="NOVEMBRO" itemValue="#{11}"/>
                         <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
                     </b:selectOneMenu>
-                    <b:inputText value="#{despesaControle.anoPesquisa}" placeholder="Ano"
+                    <b:inputText value="#{fluxoCaixaControle.anoPesquisa}" placeholder="Ano"
                                  tooltip="#{msgs['label.ano']}"/>
-                    <b:commandButton value="Listar" action="#{despesaControle.listar()}"
+                    <b:commandButton value="Listar" action="#{fluxoCaixaControle.listar()}"
                                      tooltip="#{msgs['label.listar']}"/>
                 </b:panelGrid>
 
                 <h:outputText title="#{msgs['titulo.saldo.atual']}"
                               style="float: right; font-family: fantasy; font-size: x-large;margin-right: 2px"
-                              value="R$#{receitaControle.saldoAtual}"/>
+                              value="#{fluxoCaixaControle.saldoAtual}"/>
 
                 <b:dataTable
                         scroll-x="false" fixedHeader="true" info="false" selectionMode="false" responsive="true"
@@ -79,7 +79,7 @@
 
                 </b:dataTable>
                 <f:facet name="footer">
-                    <h:outputText style="color: #8a6d3b;" value="Saldo previsto do período: R$ #{(fluxoCaixaControle.valorPrevistoPeriodo)}"/>
+                    <h:outputText style="color: #8a6d3b;" value="Saldo previsto do período: #{(fluxoCaixaControle.valorPrevistoPeriodo)}"/>
                 </f:facet>
             </b:panel>
         </h:form>

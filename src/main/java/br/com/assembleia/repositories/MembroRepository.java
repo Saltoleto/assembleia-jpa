@@ -33,4 +33,8 @@ public interface MembroRepository extends JpaRepository<Membro, Integer> {
     Integer totalMembrosPorSexo(@Param("idIgreja") Long idIgreja, @Param("sexo") EnumSexo enumSexo);
 
     Integer totalDizimistasPorParametro(@Param("idIgreja") Long idIgreja,@Param("dizimista") Boolean dizimista);
+
+    Integer totalMembrosPorSexoGeral(@Param("sexo") EnumSexo sexo);
+
+    Integer totalDizimistas(@Param("dizimista") Boolean dizimista);
 }

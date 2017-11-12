@@ -32,26 +32,18 @@ public class ReceitaService {
         return receitaRepository.valorReceitaPeriodo(mes, ano);
     }
 
-    public BigDecimal listarReceitasRecebidas() {
-        return receitaRepository.listarReceitasRecebidas();
+    public BigDecimal listarReceitasParametro(Boolean recebido) {
+        return receitaRepository.listarReceitasParametro(recebido);
+    }
+
+    public BigDecimal listarReceitasTipoMesAno(Integer mes, Integer ano) {
+        return receitaRepository.listarReceitasTipoMesAno(mes, ano);
     }
 
     public List<Receita> listarReceitasMesAno(Integer mes, Integer ano) {
         return receitaRepository.listarReceitasMesAno(mes, ano);
     }
-    
-    public BigDecimal buscarReceitaGrafico(Long mes, Integer ano){
-        return receitaRepository.buscarReceitaGrafico(mes,ano);
-    }
-    
-    public BigDecimal listarReceitasTipoMesAno(Integer mes, Integer ano){
-        return receitaRepository.listarReceitasTipoMesAno(mes, ano);
-    }
-    
-    public List<Receita> listarUltimasReceitasVisao(Integer mes, Integer ano){
-        return receitaRepository.listarUltimasReceitasVisao(mes, ano);
-    }
-    
+
     public List<Receita> buscarReceitaMembroData(Long mes) {
         return receitaRepository.buscarReceitaMembroData(mes);
     }
@@ -60,16 +52,27 @@ public class ReceitaService {
         return receitaRepository.listarPorIgreja(idIgreja);
     }
 
-    public List<Receita> listarReceitasMesAnoCongregacao(Integer mes, Integer ano, Long id){
-        return receitaRepository.listarReceitasMesAnoCongregacao(mes,ano, id);
+    public List<Receita> listarReceitasMesAnoCongregacao(Integer mes, Integer ano, Long id) {
+        return receitaRepository.listarReceitasMesAnoCongregacao(mes, ano, id);
     }
 
-    public BigDecimal receitasRecebidasMeasAnoCongregacao(Integer mes, Integer ano, Long id){
-        return receitaRepository.receitasRecebidasMeasAnoCongregacao(mes,ano,id);
+    public BigDecimal receitasRecebidasMeasAnoCongregacao(Integer mes, Integer ano, Long id) {
+        return receitaRepository.receitasRecebidasMeasAnoCongregacao(mes, ano, id);
     }
 
-    public BigDecimal receitasParametroMeasAnoCongregacao(Integer mes, Integer ano, Long id, Boolean recebido){
-        return receitaRepository.receitasParametroMeasAnoCongregacao(mes,ano,id,recebido);
+    public BigDecimal receitasParametroMeasAnoCongregacao(Integer mes, Integer ano, Long id, Boolean recebido) {
+        return receitaRepository.receitasParametroMeasAnoCongregacao(mes, ano, id, recebido);
     }
 
+    public BigDecimal valorTotalReceitas(Long id) {
+        return receitaRepository.valorTotalReceitas(id);
+    }
+
+    public BigDecimal receitasParametroMeasAno(Integer mes, Integer ano, Boolean recebido) {
+        return receitaRepository.receitasParametroMeasAno(mes, ano, recebido);
+    }
+
+    public BigDecimal listarReceitas(){
+        return receitaRepository.listarReceitas();
+    }
 }

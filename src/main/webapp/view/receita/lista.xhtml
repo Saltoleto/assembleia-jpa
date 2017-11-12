@@ -41,6 +41,7 @@
                 <b:dataTable scroll-x="false"   fixedHeader="true" responsive="true" paginated="false" searching="false" info="false"
                              value="#{receitaControle.receitas}" var="receita">
 
+                    <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{receita.congregacao.nome}"/>
                     <b:dataTableColumn  value="#{receita.descricao}"/>
                     <b:dataTableColumn label="#{msgs['label.tipo']}" value="#{receita.tipoDeReceita.descricao}"/>
                     <b:dataTableColumn label="#{msgs['label.valor']}"  value="#{receita.valorFormatado}"/>

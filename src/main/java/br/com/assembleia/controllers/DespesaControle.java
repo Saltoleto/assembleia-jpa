@@ -209,20 +209,35 @@ public class DespesaControle {
     }
 
     public List<Despesa> getDespesas() {
-        if (anoPesquisa < 2014) {
-            voltar();
-        } else {
-            despesas = service.listarDespesasMesAno(mesPesquisa, anoPesquisa);
-            Collections.sort(despesas, new Comparator<Despesa>() {
-                @Override
-                public int compare(Despesa o1, Despesa o2) {
-                    return o1.getData().compareTo(o2.getData());
-                }
-            });
 
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            despesas = service.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+            despesas = service.listarTodos();
+        } else {
+            despesas = service.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+        Collections.sort(despesas, new Comparator<Despesa>() {
+            @Override
+            public int compare(Despesa o1, Despesa o2) {
+                return o1.getData().compareTo(o2.getData());
+            }
+        });
+
 
         return despesas;
+    }
+
+    public String getValorTotalDespesa() {
+
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null)  {
+            valorDespesaPeriodo = service.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
+        } else if(AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+            valorDespesaPeriodo = service.valorDespesaPeriodo(mesPesquisa,anoPesquisa);
+        }else{
+            valorDespesaPeriodo = service.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+        return df.format(valorDespesaPeriodo !=null ? valorDespesaPeriodo : BigDecimal.ZERO);
     }
 
     public List<Despesa> getDespesaPagarVisaoGeral() {
@@ -296,115 +311,6 @@ public class DespesaControle {
         return tipoDeDespesas = serviceTipoDeDespesa.listarTodos();
     }
 
-    public String getValorTotalDespesa() {
-        valorDespesaPeriodo = service.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
-        if (valorDespesaPeriodo == null) {
-            valorDespesaPeriodo = new BigDecimal(BigInteger.ZERO);
-        }
-        String teste = null;
-        if (valorDespesaPeriodo != null) {
-            DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
-            return teste = df.format(valorDespesaPeriodo);
-        } else {
-            return teste;
-        }
-
-    }
-
-    public String despesasTotalMeasAnoCongregacao() {
-        Long idIgreja = null;
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-
-        valorTotal = service.despesasDespesaMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja);
-
-        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
-    }
-
-
-    public String despesasPagasMeasAnoCongregacao() {
-        Long idIgreja = null;
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-
-        valorTotal = service.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.TRUE);
-
-        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
-    }
-
-    public String despesasNaoPagasMeasAnoCongregacao() {
-        Long idIgreja = null;
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-
-        valorTotal = service.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.FALSE);
-
-        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
-    }
-
-
-
-
-    public List<ClasseResumoFinanceiro> resumoFinanceiroTelaVisaoGerao() {
-        listaResumoFinanceiro = new ArrayList<ClasseResumoFinanceiro>();
-
-        receitasPeriodo = serviceReceita.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
-        despesasPeriodo = service.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
-
-        totalReceitasRecebidas = serviceReceita.listarReceitasRecebidas();
-        totalDespesasPagas = service.listarDespesasPagas();
-
-        if (receitasPeriodo == null) {
-            receitasPeriodo = new BigDecimal(BigInteger.ZERO);
-        }
-        if (despesasPeriodo == null) {
-            despesasPeriodo = new BigDecimal(BigInteger.ZERO);
-        }
-
-        if (totalReceitasRecebidas == null) {
-            totalReceitasRecebidas = new BigDecimal(BigInteger.ZERO);
-        }
-        if (totalDespesasPagas == null) {
-            totalDespesasPagas = new BigDecimal(BigInteger.ZERO);
-        }
-        saldoAtual = totalReceitasRecebidas.subtract(totalDespesasPagas);
-        ClasseResumoFinanceiro resumo = new ClasseResumoFinanceiro();
-        resumo.setDescricao("Saldo Atual");
-        resumo.setValor(saldoAtual);
-        listaResumoFinanceiro.add(resumo);
-        ClasseResumoFinanceiro resumo2 = new ClasseResumoFinanceiro();
-        resumo2.setDescricao("Total de Receitas");
-        resumo2.setValor(receitasPeriodo);
-        listaResumoFinanceiro.add(resumo2);
-        ClasseResumoFinanceiro resumo3 = new ClasseResumoFinanceiro();
-        resumo3.setDescricao("Total de Despesas");
-        resumo3.setValor(despesasPeriodo);
-        listaResumoFinanceiro.add(resumo3);
-        ClasseResumoFinanceiro resumo4 = new ClasseResumoFinanceiro();
-        resumo4.setDescricao("Saldo Previsto");
-        resumo4.setValor(receitasPeriodo.subtract(despesasPeriodo));
-        listaResumoFinanceiro.add(resumo4);
-
-        return listaResumoFinanceiro;
-
-    }
-
-    public List<ClasseResumoFinanceiro> getListaResumoFinanceiro() {
-        return listaResumoFinanceiro = resumoFinanceiroTelaVisaoGerao();
-    }
-
     public BigDecimal getSaldoAtual() {
         return saldoAtual;
     }
@@ -457,16 +363,16 @@ public class DespesaControle {
         this.mesPesquisa = mesPesquisa;
     }
 
+    public void setAnoPesquisa(int anoPesquisa) {
+        this.anoPesquisa = anoPesquisa;
+    }
+
     public List<EnumMes> getListaMes() {
         return Arrays.asList(EnumMes.values());
     }
 
     public int getAnoPesquisa() {
         return anoPesquisa;
-    }
-
-    public void setAnoPesquisa(int anoPesquisa) {
-        this.anoPesquisa = anoPesquisa;
     }
 
     public List<Membro> getMembros() {

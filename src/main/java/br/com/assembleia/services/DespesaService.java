@@ -57,12 +57,36 @@ public class DespesaService {
         return despesaRepository.listarDespesasTipoMesAno(mes, ano, id);
     }
 
-    public BigDecimal despesasDespesaMeasAnoCongregacao(Integer mes, Integer ano, Long id){
-        return despesaRepository.despesasDespesaMeasAnoCongregacao(mes,ano,id);
+    public BigDecimal valorDespesasMesAnoCongregacao(Integer mes, Integer ano, Long id){
+        return despesaRepository.valorDespesasMesAnoCongregacao(mes,ano,id);
     }
 
     public BigDecimal despesaParametroMeasAnoCongregacao(Integer mes, Integer ano, Long id, Boolean pago){
         return despesaRepository.despesaParametroMeasAnoCongregacao(mes,ano,id,pago);
     }
 
+    public BigDecimal despesaParametroMeasAno(Integer mes, Integer ano,  Boolean pago){
+        return despesaRepository.despesaParametroMeasAno(mes,ano,pago);
+    }
+
+
+    public List<Despesa> despesasMesAnoCongregacao(Integer mes, Integer ano, Long id){
+        return despesaRepository.despesasMesAnoCongregacao(mes,ano,id);
+    }
+
+    public BigDecimal valorTotalDespesasCongregacao(Long id){
+        return despesaRepository.valorTotalDespesasCongregacao(id);
+    }
+
+    public BigDecimal valorTotalDespesas(){
+        return despesaRepository.valorTotalDespesas();
+    }
+
+    public BigDecimal listarDespesas(){
+        return despesaRepository.listarDespesas();
+    }
+
+    public BigDecimal listarDespesasParametro(Boolean pago){
+        return despesaRepository.listarDespesasParametro(pago);
+    }
 }

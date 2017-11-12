@@ -11,7 +11,7 @@
         <title>#{msgs['titulo.aplicacao']}</title>
         <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/resources/img/icone.png"/>
     </h:head>
-    <h:body style="padding-top: 75px;padding-bottom: 75px;">
+    <h:body style="padding-top: 75px;padding-bottom: 75px;background-color: #ecf0f5">
         <b:scrollUp distance="50" animation="fade" text="" scrollTitle="false" name="scrollUpCustom"/>
 
         <ui:insert name="nbtop">
@@ -28,23 +28,23 @@
                                 <b:row style="margin-top:15px">
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-group" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosAtivos}</h3>
+                                        <h3>#{dashBoardControle.totalMembrosAtivos}</h3>
                                         <h5 style="color: #333333">Membros Ativos</h5>
                                     </b:column>
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-male" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosHomens}</h3>
+                                        <h3>#{dashBoardControle.totalMembrosHomens}</h3>
                                         <h5 style="color: #333333">Homens</h5>
                                     </b:column>
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-female" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosMulheres}</h3>
+                                        <h3>#{dashBoardControle.totalMembrosMulheres}</h3>
                                         <h5 style="color: #333333">Mulheres</h5>
                                     </b:column>
                                 </b:row>
                                 <b:row>
                                     <hf:chart type="pie" height="195">
-                                        <hf:chartSerie name="Quantidade" value="#{membroControle.listaDizimistas}"
+                                        <hf:chartSerie name="Quantidade" value="#{dashBoardControle.listaDizimistas}"
                                                        var="point"
                                                        point="#{point.quantidade}" tickLabel="#{point.label}"
                                                        dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
@@ -53,40 +53,40 @@
                             </b:panel>
                         </b:column>
                         <b:column colMd="6">
-                            <b:panel collapsible="false" title="Receitas" look="success">
+                            <b:panel collapsible="false" title="Receitas #{dashBoardControle.nomeMes}" look="success">
                                 <b:row style="margin-top:15px;">
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-money" size="2x" large-screen="full-width"/>
-                                        <h3>#{receitaControle.receitasTotalMeasAnoCongregacao()}</h3>
+                                        <h3>#{dashBoardControle.receitasTotalMeasAnoCongregacao()}</h3>
                                         <h5 style="color: #333333">Total</h5>
                                     </b:column>
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-thumbs-o-up" size="2x" large-screen="full-width"/>
-                                        <h3>#{receitaControle.receitasRecebidasMeasAnoCongregacao()}</h3>
+                                        <h3>#{dashBoardControle.receitasRecebidasMeasAnoCongregacao()}</h3>
                                         <h5 style="color: #333333">Recebidas</h5>
                                     </b:column>
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-thumbs-o-down" size="2x" large-screen="full-width"/>
-                                        <h3>#{receitaControle.receitasNaoRecebidasMeasAnoCongregacao()}</h3>
+                                        <h3>#{dashBoardControle.receitasNaoRecebidasMeasAnoCongregacao()}</h3>
                                         <h5 style="color: #333333">Não Recebidas</h5>
                                     </b:column>
                                 </b:row>
                             </b:panel>
-                            <b:panel collapsible="false" title="Despesas" look="danger">
+                            <b:panel collapsible="false" title="Despesas #{dashBoardControle.nomeMes}" look="danger">
                                 <b:row style="margin-top:15px;">
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-money" size="2x" large-screen="full-width"/>
-                                        <h3>#{despesaControle.despesasTotalMeasAnoCongregacao()}</h3>
+                                        <h3>#{dashBoardControle.despesasTotalMeasAnoCongregacao()}</h3>
                                         <h5 style="color: #333333">Total</h5>
                                     </b:column>
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-thumbs-o-up" size="2x" large-screen="full-width"/>
-                                        <h3>#{despesaControle.despesasPagasMeasAnoCongregacao()}</h3>
+                                        <h3>#{dashBoardControle.despesasPagasMeasAnoCongregacao()}</h3>
                                         <h5 style="color: #333333">Pagas</h5>
                                     </b:column>
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-thumbs-o-down" size="2x" large-screen="full-width"/>
-                                        <h3>#{despesaControle.despesasNaoPagasMeasAnoCongregacao()}</h3>
+                                        <h3>#{dashBoardControle.despesasNaoPagasMeasAnoCongregacao()}</h3>
                                         <h5 style="color: #333333">Não Pagas</h5>
                                     </b:column>
                                 </b:row>
@@ -98,65 +98,42 @@
                         <b:column colMd="12">
                             <b:panel collapsible="false" title="Resumo Financeiro" look="warning">
                                 <b:row style="margin-top:15px">
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-group" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosAtivos}</h3>
-                                        <h5 style="color: #333333">Membros Ativos</h5>
+                                    <b:column colMd="3" style="text-align: center">
+                                        <b:iconAwesome name="fa-plus-square" size="2x" large-screen="full-width"/>
+                                        <h3>#{dashBoardControle.valorTotalReceitas()}</h3>
+                                        <h5 style="color: #333333">Total de Receitas</h5>
                                     </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-male" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosHomens}</h3>
-                                        <h5 style="color: #333333">Homens</h5>
+                                    <b:column colMd="3" style="text-align: center">
+                                        <b:iconAwesome name="fa-minus-square" size="2x" large-screen="full-width"/>
+                                        <h3>#{dashBoardControle.valorTotalDespesas()}</h3>
+                                        <h5 style="color: #333333">Total de Despesas</h5>
                                     </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-female" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosMulheres}</h3>
-                                        <h5 style="color: #333333">Mulheres</h5>
+
+                                    <b:column colMd="3" style="text-align: center">
+                                        <b:iconAwesome name="fa-dollar" size="2x" large-screen="full-width"/>
+                                        <h3>#{dashBoardControle.saldoPrevisto}</h3>
+                                        <h5 style="color: #333333">Saldo Previsto</h5>
+                                    </b:column>
+
+                                    <b:column colMd="3" style="text-align: center">
+                                        <b:iconAwesome name="fa-dollar" size="2x" large-screen="full-width"/>
+                                        <h3>#{dashBoardControle.saldoAtual}</h3>
+                                        <h5 style="color: #333333">Saldo atual</h5>
                                     </b:column>
                                 </b:row>
                                 <b:row>
-                                    <hf:chart type="pie" height="195">
-                                        <hf:chartSerie name="Quantidade" value="#{membroControle.listaDizimistas}"
-                                                       var="point"
-                                                       point="#{point.quantidade}" tickLabel="#{point.label}"
-                                                       dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
+                                    <hf:chart type="column" height="195" xaxisLabel="Meses" yaxisLabel="R$" >
+                                        <hf:chartSerie  name="Receitas" value="#{dashBoardControle.resumoFinanceiroReceitasGrafico}"
+                                                       var="point2"
+                                                       point="#{point2.valor}"
+                                                       tickLabel="#{point2.mes}"/>
+                                        <hf:chartSerie name="Despesas" value="#{dashBoardControle.resumoFinanceiroDespesasGrafico}"
+                                                       var="point2" point="#{point2.valor}"
+                                        />
                                     </hf:chart>
                                 </b:row>
                             </b:panel>
                         </b:column>
-                    </b:row>
-
-                    <b:row>
-                        <b:column colMd="12">
-                            <b:panel collapsible="false" title="Membros" look="success">
-                                <b:row style="margin-top:15px">
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-group" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosAtivos}</h3>
-                                        <h5 style="color: #333333">Membros Ativos</h5>
-                                    </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-male" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosHomens}</h3>
-                                        <h5 style="color: #333333">Homens</h5>
-                                    </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-female" size="2x" large-screen="full-width"/>
-                                        <h3>#{membroControle.totalMembrosMulheres}</h3>
-                                        <h5 style="color: #333333">Mulheres</h5>
-                                    </b:column>
-                                </b:row>
-                                <b:row>
-                                    <hf:chart type="pie" height="195">
-                                        <hf:chartSerie name="Quantidade" value="#{membroControle.listaDizimistas}"
-                                                       var="point"
-                                                       point="#{point.quantidade}" tickLabel="#{point.label}"
-                                                       dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
-                                    </hf:chart>
-                                </b:row>
-                            </b:panel>
-                        </b:column>
-
                     </b:row>
                 </b:form>
             </ui:insert>

@@ -73,4 +73,12 @@ public class MembroService {
         return membroRepository.totalDizimistasPorParametro(idIgreja, dizimista);
     }
 
+    public Integer totalMembrosPorSexoGeral(EnumSexo sexo){
+        return membroRepository.totalMembrosPorSexoGeral(sexo);
+    }
+
+    public Integer totalDizimistas(Boolean dizimista){
+        return membroRepository.totalDizimistas(dizimista);
+    }
+
 }

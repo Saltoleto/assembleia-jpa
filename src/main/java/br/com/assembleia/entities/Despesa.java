@@ -30,10 +30,23 @@ import java.util.Locale;
                 query = "SELECT sum(d.valor) FROM Despesa d where d.pago = true"),
         @NamedQuery(name = "Despesa.despesasPagarVisaoGeral",
                 query = "SELECT sum(d.valor) FROM Despesa d Where extract(MONTH FROM d.data) = :mes and extract(YEAR FROM d.data) = :ano AND d.pago = false "),
-        @NamedQuery(name = "Despesa.despesasDespesaMeasAnoCongregacao",
+        @NamedQuery(name = "Despesa.valorDespesasMesAnoCongregacao",
                 query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja "),
         @NamedQuery(name = "Despesa.despesaParametroMeasAnoCongregacao",
-                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.pago=:pago ")
+                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.pago=:pago "),
+        @NamedQuery(name = "Despesa.despesasMesAnoCongregacao",
+                query = "Select r as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja "),
+        @NamedQuery(name = "Despesa.valorTotalDespesasCongregacao",
+                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where  c.id =:idIgreja "),
+        @NamedQuery(name = "Despesa.valorTotalDespesas",
+                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c"),
+        @NamedQuery(name = "Despesa.despesaParametroMeasAno",
+                query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and r.pago=:pago "),
+        @NamedQuery(name = "Despesa.listarDespesas",
+                query = "Select sum(r.valor) from Despesa r "),
+        @NamedQuery(name = "Despesa.listarDespesasParametro",
+                query = "Select sum(r.valor) from Despesa r where r.pago = :pago "),
+
 })
 public class Despesa implements Serializable, Comparable<Despesa> {
 

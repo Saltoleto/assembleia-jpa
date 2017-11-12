@@ -18,8 +18,8 @@ import java.util.Locale;
 @NamedQueries({
         @NamedQuery(name = "Receita.valorReceitaPeriodo",
                 query = "Select SUM(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
-        @NamedQuery(name = "Receita.listarReceitasRecebidas",
-                query = "Select sum(r.valor) from Receita r where r.recebido = true "),
+        @NamedQuery(name = "Receita.listarReceitasParametro",
+                query = "Select sum(r.valor) from Receita r where r.recebido = :recebido "),
         @NamedQuery(name = "Receita.listarReceitasMesAno",
                 query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Receita.buscarReceitaGrafico",
@@ -37,7 +37,13 @@ import java.util.Locale;
         @NamedQuery(name = "Receita.receitasRecebidasMeasAnoCongregacao",
                 query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja "),
         @NamedQuery(name = "Receita.receitasParametroMeasAnoCongregacao",
-                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.recebido=:recebido ")
+                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.recebido=:recebido "),
+        @NamedQuery(name = "Receita.valorTotalReceitas",
+                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where  c.id =:idIgreja "),
+        @NamedQuery(name = "Receita.receitasParametroMeasAno",
+                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and r.recebido=:recebido "),
+        @NamedQuery(name = "Receita.listarReceitas",
+                query = "Select sum(r.valor) from Receita r ")
 })
 public class Receita implements Serializable, Comparable<Receita> {
 

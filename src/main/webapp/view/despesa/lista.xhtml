@@ -42,6 +42,7 @@
                              searching="false"
                              value="#{despesaControle.despesas}" var="despesa">
 
+                    <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{despesa.congregacao.nome}"/>
                     <b:dataTableColumn  value="#{despesa.descricao}"/>
                     <b:dataTableColumn  label="#{msgs['label.fornecedor']}" value="#{despesa.fornecedor.nome}"/>
                     <b:dataTableColumn label="#{msgs['label.tipo']}" value="#{despesa.tipoDeDespesa.descricao}"/>

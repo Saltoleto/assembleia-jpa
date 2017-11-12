@@ -12,7 +12,7 @@ import java.util.List;
 public interface ReceitaRepository extends JpaRepository<Receita, Integer> {
     BigDecimal valorReceitaPeriodo(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
-    BigDecimal listarReceitasRecebidas();
+    BigDecimal listarReceitasParametro(@Param("recebido") Boolean recebido);
 
     List<Receita> listarReceitasMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
@@ -31,5 +31,11 @@ public interface ReceitaRepository extends JpaRepository<Receita, Integer> {
     BigDecimal receitasRecebidasMeasAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id);
 
     BigDecimal receitasParametroMeasAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id, @Param("recebido") Boolean recebido);
+
+    BigDecimal valorTotalReceitas(@Param("idIgreja") Long id);
+
+    BigDecimal receitasParametroMeasAno(@Param("mes") Integer mes,@Param("ano") Integer ano, @Param("recebido") Boolean recebido);
+
+    BigDecimal listarReceitas();
 }
 

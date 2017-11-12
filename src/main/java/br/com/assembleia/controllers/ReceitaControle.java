@@ -17,7 +17,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -157,21 +156,37 @@ public class ReceitaControle {
     }
 
     public List<Receita> getReceitas() {
-        if (anoPesquisa < 2014) {
-            voltar();
+
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+            receitas = service.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+            receitas = service.listarTodos();
         } else {
             receitas = service.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
-            Collections.sort(receitas, new Comparator<Receita>() {
-                @Override
-                public int compare(Receita o1, Receita o2) {
-                    return o1.getData().compareTo(o2.getData());
-                }
-            });
-
         }
+
+        Collections.sort(receitas, new Comparator<Receita>() {
+            @Override
+            public int compare(Receita o1, Receita o2) {
+                return o1.getData().compareTo(o2.getData());
+            }
+        });
 
         return receitas;
     }
+
+    public String getValorTotalReceita() {
+
+        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null)  {
+            valorReceitaPeriodo = service.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
+        } else if(AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+            valorReceitaPeriodo = service.valorReceitaPeriodo(mesPesquisa,anoPesquisa);
+        }else{
+            valorReceitaPeriodo = service.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+        return df.format(valorReceitaPeriodo !=null ? valorReceitaPeriodo : BigDecimal.ZERO);
+    }
+
 
     public String listar() {
         return "lista?faces-redirect=true";
@@ -199,85 +214,6 @@ public class ReceitaControle {
 
     public List<TipoDeReceita> getTipoDeReceitas() {
         return tipoDeReceitas = serviceTipoDeReceita.listarTodos();
-    }
-
-    public String getValorTotalReceita() {
-        valorReceitaPeriodo = service.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
-        if (valorReceitaPeriodo == null) {
-            valorReceitaPeriodo = new BigDecimal(BigInteger.ZERO);
-        }
-        String teste = null;
-        if (valorReceitaPeriodo != null) {
-            DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
-            return teste = df.format(valorReceitaPeriodo);
-        } else {
-            return teste;
-        }
-
-    }
-
-    public String receitasTotalMeasAnoCongregacao() {
-        Long idIgreja = null;
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-
-        valorTotal = service.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja);
-
-        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
-    }
-
-
-    public String receitasRecebidasMeasAnoCongregacao() {
-        Long idIgreja = null;
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-
-        valorTotal = service.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.TRUE);
-
-        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
-    }
-
-    public String receitasNaoRecebidasMeasAnoCongregacao() {
-        Long idIgreja = null;
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-
-        valorTotal = service.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, idIgreja,Boolean.FALSE);
-
-        return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
-    }
-
-    public String getSaldoAtual() {
-        totalReceitasRecebidas = service.listarReceitasRecebidas();
-        totalDespesasPagas = serviceDespesa.listarDespesasPagas();
-        if (totalReceitasRecebidas == null) {
-            totalReceitasRecebidas = new BigDecimal(BigInteger.ZERO);
-        }
-        if (totalDespesasPagas == null) {
-            totalDespesasPagas = new BigDecimal(BigInteger.ZERO);
-        }
-
-        saldoAtual = totalReceitasRecebidas.subtract(totalDespesasPagas);
-        String teste = null;
-        if (saldoAtual != null) {
-            DecimalFormat df = new DecimalFormat("###,###,##0.00");
-            return teste = df.format(saldoAtual);
-        } else {
-            return teste;
-        }
-
     }
 
     public void setSaldoAtual(BigDecimal saldoAtual) {

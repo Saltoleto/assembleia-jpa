@@ -12,7 +12,6 @@ import br.com.assembleia.services.CargoService;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.MembroService;
 import br.com.assembleia.util.ReportsUtil;
-import br.com.assembleia.vo.DizimistaVO;
 import net.sf.jasperreports.engine.JRException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -530,53 +529,6 @@ public class MembroControle {
 
     public void setCongregacoes(List<Congregacao> congregacoes) {
         this.congregacoes = congregacoes;
-    }
-
-    public Integer getTotalMembrosAtivos() {
-        Long idIgreja = null;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-        return service.totalMembrosAtivos(idIgreja);
-    }
-
-    public Integer getTotalMembrosMulheres() {
-        Long idIgreja = null;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-        return service.totalMembrosPorSexo(idIgreja, EnumSexo.FEMININO);
-    }
-
-    public Integer getTotalMembrosHomens() {
-        Long idIgreja = null;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-        return service.totalMembrosPorSexo(idIgreja, EnumSexo.MASCULINO);
-    }
-
-    public List<DizimistaVO> getListaDizimistas() {
-        List<DizimistaVO> dizimistas = new ArrayList<>();
-        Long idIgreja = null;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
-            idIgreja = AplicacaoControle.getInstance().getIdIgreja();
-        } else {
-            idIgreja = AplicacaoControle.getInstance().getIdIgrejaPorUsuario();
-        }
-        Integer quantidadeDizimistas = service.totalDizimistasPorParametro(idIgreja, Boolean.TRUE);
-        Integer quantidadeNaoDizimistas = service.totalDizimistasPorParametro(idIgreja, Boolean.FALSE);
-
-        dizimistas.add(new DizimistaVO("Dizimistas", quantidadeDizimistas != null ? quantidadeDizimistas : 0));
-        dizimistas.add(new DizimistaVO("Não Dizimistas", quantidadeNaoDizimistas != null ? quantidadeNaoDizimistas : 0));
-
-        return dizimistas;
     }
 
 }
