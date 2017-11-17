@@ -1,9 +1,6 @@
 package br.com.assembleia.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -21,6 +18,8 @@ public class Professor implements Serializable, Comparable<Professor> {
     private String telefone;
     private String celular;
     private String email;
+    @ManyToOne
+    private Congregacao congregacao;
 
     public Long getId() {
         return id;
@@ -90,5 +89,13 @@ public class Professor implements Serializable, Comparable<Professor> {
     @Override
     public int compareTo(Professor t) {
         return this.nome.compareTo(t.nome);
+    }
+
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
     }
 }

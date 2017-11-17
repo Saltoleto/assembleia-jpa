@@ -52,7 +52,7 @@
                         <f:selectItems value="#{receitaControle.departamentos}" var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.nome}" />
                     </b:selectOneMenu>
 
-                    <b:selectBooleanCheckbox label="#{msgs['label.recebido']}" value="#{receitaControle.receita.recebido}" />
+                    <b:switch value="#{receitaControle.receita.recebido}"  off-text="Não" on-text="Sim" label="#{msgs['label.recebido']}" offColor="success" onColor="info"  />
 
                 </b:panelGrid>
                 <h:panelGrid columns="2" class="pull-right" style="margin-top: 20px">

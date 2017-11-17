@@ -18,7 +18,7 @@
 
 
     <b:navBar brand="#{msgs['menu.assembleia']}"
-              brandHref="http://www.bootsfaces.net/" inverse="true"
+              brandHref="/" inverse="true"
               fixed="top">
         <b:container>
             <b:navbarLinks>
@@ -29,6 +29,12 @@
                 </b:navbarLinks>
                 <b:dropMenu value="#{msgs['menu.secretaria']}" rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede() || aplicacaoControle.secretario()}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
+
+                    <b:dropMenu value="#{msgs['menu.curso']}" iconAwesome="fa-book">
+                        <b:navLink value="#{msgs['menu.aluno']}"  outcome="/view/aluno/lista"  iconAwesome="fa-graduation-cap"/>
+                        <b:navLink value="#{msgs['menu.professor']}"  outcome="/view/professor/lista" iconAwesome="fa-user-circle-o"/>
+                        <b:navLink value="#{msgs['menu.turma']}" outcome="/view/turma/lista" iconAwesome="fa-weixin"/>
+                    </b:dropMenu>
 
                     <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-vcard-o"
                                outcome="/view/departamento/lista"/>
@@ -77,7 +83,7 @@
                 </b:dropMenu>
             </b:navbarLinks>
 
-            <b:navbarLinks pull="right">
+            <b:navbarLinks pull="right" style="margin-right: 15px">
                 <b:navLink tooltip="Sair" active="true" href="#{request.contextPath}/logout"
                            iconAwesome="fa-power-off"/>
             </b:navbarLinks>
@@ -88,7 +94,7 @@
 
             <b:navbarLinks rendered="#{aplicacaoControle.adminSede()}" tooltip="Igreja" pull="right">
 
-                <h:form style="margin-top:8px" styleClass="form-inline">
+                <h:form style="margin-top:8px" styleClass="form-inline" >
                     <b:selectOneMenu value="#{aplicacaoControle.congregacao}"
                                      onchange="$('.theme-selector-button').click()">
                         <f:selectItem itemLabel="#{msgs['label.todas.igreja']}" itemValue=""
