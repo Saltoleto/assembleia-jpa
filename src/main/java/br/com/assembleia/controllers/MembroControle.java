@@ -4,15 +4,13 @@ import br.com.assembleia.entities.Cargo;
 import br.com.assembleia.entities.Congregacao;
 import br.com.assembleia.entities.Membro;
 import br.com.assembleia.entities.ModeloClassesVisao;
-import br.com.assembleia.enums.EnumEstado;
-import br.com.assembleia.enums.EnumEstadoCivil;
-import br.com.assembleia.enums.EnumSexo;
-import br.com.assembleia.enums.EnumSituacao;
+import br.com.assembleia.enums.*;
 import br.com.assembleia.services.CargoService;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.MembroService;
 import br.com.assembleia.util.ReportsUtil;
 import net.sf.jasperreports.engine.JRException;
+import org.hibernate.Hibernate;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -68,6 +66,8 @@ public class MembroControle {
     private String str;
     private ReportsUtil report = new ReportsUtil();
     private int tab = 0;
+    private EnumAtividades atividade;
+    private List<EnumAtividades> atividades;
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
     ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
@@ -115,6 +115,7 @@ public class MembroControle {
     public String editar(Membro membro) throws FileNotFoundException {
         if (membro != null) {
             this.membro = membro;
+            Hibernate.initialize(this.membro.getAtividades());
             titulo = "Editar Membro";
             if (membro.getFoto() != null) {
                 fotoBanco = new DefaultStreamedContent(new ByteArrayInputStream(membro.getFoto()));
@@ -337,7 +338,7 @@ public class MembroControle {
         } else {
             membros = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
-        return membros ;
+        return membros;
     }
 
     public void setMembros(List<Membro> membros) {
@@ -354,6 +355,10 @@ public class MembroControle {
 
     public List<EnumEstadoCivil> getListaEstadoCivil() {
         return Arrays.asList(EnumEstadoCivil.values());
+    }
+
+    public List<EnumAtividades> getListaAtividades() {
+        return Arrays.asList(EnumAtividades.values());
     }
 
     public List<EnumSexo> getListaSexo() {
@@ -531,4 +536,19 @@ public class MembroControle {
         this.congregacoes = congregacoes;
     }
 
+    public EnumAtividades getAtividade() {
+        return atividade;
+    }
+
+    public void setAtividade(EnumAtividades atividade) {
+        this.atividade = atividade;
+    }
+
+    public List<EnumAtividades> getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(List<EnumAtividades> atividades) {
+        this.atividades = atividades;
+    }
 }

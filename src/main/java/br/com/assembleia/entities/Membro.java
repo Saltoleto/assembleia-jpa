@@ -1,9 +1,6 @@
 package br.com.assembleia.entities;
 
-import br.com.assembleia.enums.EnumEstado;
-import br.com.assembleia.enums.EnumEstadoCivil;
-import br.com.assembleia.enums.EnumSexo;
-import br.com.assembleia.enums.EnumSituacao;
+import br.com.assembleia.enums.*;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,6 +8,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author fernandosaltoleto
@@ -95,6 +93,11 @@ public class Membro implements Serializable {
     private String codigoMembro;
     @ManyToOne
     private Congregacao congregacao;
+    @ElementCollection(targetClass = EnumAtividades.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "MembroAtividades", joinColumns = @JoinColumn(name = "membroAtividadeid"))
+    @Column(name = "atividade", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private List<EnumAtividades> atividades;
 
     //    ------------------FOTO-------------------
     private byte[] foto;
@@ -418,5 +421,13 @@ public class Membro implements Serializable {
 
     public void setCongregacao(Congregacao congregacao) {
         this.congregacao = congregacao;
+    }
+
+    public List<EnumAtividades> getAtividades() {
+        return atividades;
+    }
+
+    public void setAtividades(List<EnumAtividades> atividades) {
+        this.atividades = atividades;
     }
 }

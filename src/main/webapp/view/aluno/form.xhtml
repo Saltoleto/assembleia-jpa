@@ -180,6 +180,14 @@
                                                    itemValue="#{cl}"/>
                                 </b:selectOneMenu>
 
+                                <b:selectOneMenu label="#{msgs['label.atividades']}"
+                                                 id="atividades" value="#{membroControle.membro.atividades}">
+                                    <f:selectItem itemLabel="Selecione o Estado Civil" itemValue="Teste"/>
+                                    <f:converter converterId="enumAtividadesConverter"/>
+                                    <f:selectItems value="#{membroControle.listaAtividades}" var="cl"
+                                                   itemLabel="#{cl.descricao}" itemValue="#{cl}"/>
+                                </b:selectOneMenu>
+
                                 <b:selectOneMenu label="#{msgs['label.selecione.lider']}" id="membro"
                                                  value="#{membroControle.membro.lider}">
                                     <f:selectItem itemLabel="#{msgs['label.selecione.lider']}" itemValue=""/>

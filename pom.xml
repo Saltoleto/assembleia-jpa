@@ -27,7 +27,7 @@
         <primefaces-theme.version>1.0.10</primefaces-theme.version>
         <taglibs-standard.version>1.1.2</taglibs-standard.version>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -212,6 +212,7 @@
 
 
         <!-- JPA -->
+
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
