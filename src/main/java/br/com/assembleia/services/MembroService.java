@@ -1,6 +1,7 @@
 package br.com.assembleia.services;
 
 import br.com.assembleia.entities.Membro;
+import br.com.assembleia.enums.EnumAtividades;
 import br.com.assembleia.enums.EnumSexo;
 import br.com.assembleia.enums.EnumSituacao;
 import br.com.assembleia.repositories.MembroRepository;
@@ -16,6 +17,10 @@ public class MembroService {
 
     @Autowired
     private MembroRepository membroRepository;
+
+    public  Membro getById(Integer id){
+        return membroRepository.getOne(id);
+    }
 
     public void salvar(Membro cargo) {
         membroRepository.save(cargo);
@@ -79,6 +84,10 @@ public class MembroService {
 
     public Integer totalDizimistas(Boolean dizimista){
         return membroRepository.totalDizimistas(dizimista);
+    }
+
+    public List<Membro> listarPorAtividadeCongregacao(EnumAtividades atividade, Long idIgreja){
+        return membroRepository.listarPorAtividadeCongregacao(atividade,idIgreja);
     }
 
 }

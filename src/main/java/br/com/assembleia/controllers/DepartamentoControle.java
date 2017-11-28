@@ -70,7 +70,6 @@ public class DepartamentoControle {
             tab = 0;
             return "form?faces-redirect=true";
         }
-        adicionaMensagem("Nenhum Departamento foi selecionado para a alteração!", FacesMessage.SEVERITY_INFO);
         return "lista?faces-redirect=true";
 
     }

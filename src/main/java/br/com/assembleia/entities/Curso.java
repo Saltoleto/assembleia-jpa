@@ -1,21 +1,24 @@
-package br.assembleia.entidades;
+package br.com.assembleia.entities;
 
-import br.com.assembleia.entities.Aluno;
-import br.com.assembleia.entities.Professor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author fernandosaltoleto
  */
 @Entity
+@XmlRootElement
+@NamedQueries({
+        @NamedQuery(name = "Curso.listarPorIgreja",
+                query = "SELECT d FROM Curso d JOIN d.congregacao i WHERE i.id = :idIgreja")
+})
 public class Curso implements Comparable<Curso>, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,25 +26,25 @@ public class Curso implements Comparable<Curso>, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private String turma;
-    private String descricao;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataInicio;
     @Temporal(TemporalType.DATE)
     private Date dataEncerramento;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<Aluno> alunos;
+    private List<Membro> alunos;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<Professor> professores;
+    private List<Membro> professores;
+    @ManyToOne
+    private Congregacao congregacao;
+    private int quantidadeAlunos;
 
     public Curso() {
-        alunos = new ArrayList<Aluno>();
-        professores = new ArrayList<Professor>();
+        alunos = new ArrayList<Membro>();
+        professores = new ArrayList<Membro>();
     }
-    
-    
+
 
     public Long getId() {
         return id;
@@ -53,22 +56,6 @@ public class Curso implements Comparable<Curso>, Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getTurma() {
-        return turma;
-    }
-
-    public void setTurma(String turma) {
-        this.turma = turma;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     public Date getDataInicio() {
@@ -87,19 +74,19 @@ public class Curso implements Comparable<Curso>, Serializable {
         this.dataEncerramento = dataEncerramento;
     }
 
-    public List<Aluno> getAlunos() {
+    public List<Membro> getAlunos() {
         return alunos;
     }
 
-    public void setAlunos(List<Aluno> alunos) {
+    public void setAlunos(List<Membro> alunos) {
         this.alunos = alunos;
     }
 
-    public List<Professor> getProfessores() {
+    public List<Membro> getProfessores() {
         return professores;
     }
 
-    public void setProfessores(List<Professor> professores) {
+    public void setProfessores(List<Membro> professores) {
         this.professores = professores;
     }
 
@@ -130,7 +117,22 @@ public class Curso implements Comparable<Curso>, Serializable {
 
     @Override
     public int compareTo(Curso t) {
-        return this.descricao.compareToIgnoreCase(t.getDescricao());
+        return this.nome.compareToIgnoreCase(t.getNome());
     }
 
+    public Congregacao getCongregacao() {
+        return congregacao;
+    }
+
+    public void setCongregacao(Congregacao congregacao) {
+        this.congregacao = congregacao;
+    }
+
+    public int getQuantidadeAlunos() {
+        return quantidadeAlunos;
+    }
+
+    public void setQuantidadeAlunos(int quantidadeAlunos) {
+        this.quantidadeAlunos = quantidadeAlunos;
+    }
 }

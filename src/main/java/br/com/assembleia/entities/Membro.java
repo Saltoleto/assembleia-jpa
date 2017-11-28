@@ -42,7 +42,10 @@ import java.util.List;
         @NamedQuery(name = "Membro.totalMembrosPorSexoGeral",
                 query = "SELECT count(m) as total FROM Membro m JOIN m.congregacao i WHERE m.sexo=:sexo"),
         @NamedQuery(name = "Membro.totalDizimistas",
-                query = "SELECT count(m) as total FROM Membro m JOIN m.congregacao i WHERE m.dizimista=:dizimista")
+                query = "SELECT count(m) as total FROM Membro m JOIN m.congregacao i WHERE m.dizimista=:dizimista"),
+        @NamedQuery(name = "Membro.listarPorAtividadeCongregacao",
+                query = "SELECT m from Membro m  JOIN m.congregacao i JOIN m.atividades ati WHERE ati=:atividade and  i.id = :idIgreja ")
+
 })
 public class Membro implements Serializable {
 

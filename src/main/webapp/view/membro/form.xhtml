@@ -43,7 +43,7 @@
                                 <b:inputText mask="999.999.999-99" value="#{membroControle.membro.cpf}"
                                              label="#{msgs['label.cpf']}"/>
 
-                                <b:inputText mask="integer"  value="#{membroControle.membro.rg}"
+                                <b:inputText mask="integer" value="#{membroControle.membro.rg}"
                                              label="#{msgs['label.rg']}"/>
 
                                 <b:selectOneMenu label="#{msgs['label.estado.civil']}" required="true"
@@ -137,7 +137,8 @@
                                              value="#{membroControle.membro.codigoMembro}"
                                              label="#{msgs['label.codigo.membro']}"/>
 
-                                <b:selectOneMenu label="#{msgs['label.selecione.igreja']}" value="#{membroControle.membro.congregacao}">
+                                <b:selectOneMenu label="#{msgs['label.selecione.igreja']}"
+                                                 value="#{membroControle.membro.congregacao}">
                                     <f:selectItem itemLabel="#{msgs['label.selecione.igreja']}" itemValue=""
                                                   noSelectionOption="true"/>
                                     <f:selectItems value="#{membroControle.congregacoes}" var="congregacao"
@@ -170,7 +171,7 @@
                                             <b:button onclick="$('.modalCargos').modal()" iconAwesome="fa-plus-circle"
                                                       tooltip="#{msgs['btn.novo.integrante']}"
                                                       class="pull-right" look="info">
-                                                <f:ajax  event="click" listener="#{membroControle.novoCargo}"/>
+                                                <f:ajax event="click" listener="#{membroControle.novoCargo}"/>
                                             </b:button>
                                         </f:facet>
                                     </b:selectOneMenu>
@@ -178,7 +179,8 @@
                                 <b:dateTimePicker showTime="false" value="#{membroControle.membro.dataConsagracao}"
                                                   label="#{msgs['label.data.consagracao']}"/>
 
-                                <b:selectOneMenu required="true" requiredMessage="#{msgs['label.selecione.situacao']}" label="#{msgs['label.selecione.situacao']}" id="situacao"
+                                <b:selectOneMenu required="true" requiredMessage="#{msgs['label.selecione.situacao']}"
+                                                 label="#{msgs['label.selecione.situacao']}" id="situacao"
                                                  value="#{membroControle.membro.situacao}">
                                     <f:selectItem itemLabel="#{msgs['label.selecione.situacao']}" itemValue=""/>
                                     <f:converter converterId="enumSituacaoConverter"/>
@@ -187,16 +189,21 @@
                                                    itemValue="#{cl}"/>
                                 </b:selectOneMenu>
 
-                                <p:outputLabel  value="Basic:" />
-                                <p:selectManyMenu collectionType="java.util.ArrayList" label="#{msgs['label.atividades']}" id="advanced"
-                                                  value="#{membroControle.membro.atividades}" converter="enumAtividadesConverter"
-                                                  var="t" showCheckbox="true">
-                                    <f:selectItems value="#{membroControle.listaAtividades}" var="atividade" itemLabel="#{atividade.descricao}" itemValue="#{atividade}" />
+                                <h:form>
+                                    <h:outputText style="font-weight:bold" value="#{msgs['label.atividades']}"/>
+                                    <p:selectManyMenu style="margin-top: 6px;"
+                                                      collectionType="java.util.ArrayList" id="advanced"
+                                                      value="#{membroControle.membro.atividades}"
+                                                      converter="enumAtividadesConverter"
+                                                      var="t" showCheckbox="true">
+                                        <f:selectItems value="#{membroControle.listaAtividades}" var="atividade"
+                                                       itemLabel="#{atividade.descricao}" itemValue="#{atividade}"/>
 
-                                    <p:column>
-                                        <h:outputText value="#{t.descricao}" />
-                                    </p:column>
-                                </p:selectManyMenu>
+                                        <p:column>
+                                            <h:outputText value="#{t.descricao}"/>
+                                        </p:column>
+                                    </p:selectManyMenu>
+                                </h:form>
 
                                 <b:selectOneMenu label="#{msgs['label.selecione.lider']}" id="membro"
                                                  value="#{membroControle.membro.lider}">
@@ -205,8 +212,9 @@
                                                    itemValue="#{lider}"/>
                                 </b:selectOneMenu>
 
-                                <b:switch value="#{membroControle.membro.dizimista}" label="#{msgs['label.dizimista']}"  off-text="Não" on-text="Sim"
-                                          offColor="danger" onColor="success"  />
+                                <b:switch value="#{membroControle.membro.dizimista}" label="#{msgs['label.dizimista']}"
+                                          off-text="Não" on-text="Sim"
+                                          offColor="danger" onColor="success"/>
 
                             </b:panelGrid>
 

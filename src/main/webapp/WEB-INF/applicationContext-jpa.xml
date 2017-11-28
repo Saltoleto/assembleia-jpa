@@ -18,6 +18,9 @@
         <security:intercept-url pattern="/view/congregacao/lista.jsf" access="hasAnyRole('ADMIN')"/>
         <security:intercept-url pattern="/view/congregacao/form.jsf" access="hasAnyRole('ADMIN')"/>
 
+        <security:intercept-url pattern="/view/curso/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/curso/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
+
         <security:intercept-url pattern="/view/despesa/lista.jsf" access="hasAnyRole('ADMIN','TESOUREIRO')"/>
         <security:intercept-url pattern="/view/despesa/form.jsf" access="hasAnyRole('ADMIN','TESOUREIRO')"/>
 

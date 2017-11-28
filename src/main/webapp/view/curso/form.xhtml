@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="cadastro">
+
+            <b:messages/>
+
+            <b:panel title="#{cursoControle.titulo}" collapsible="false">
+
+                <b:panelGrid columns="2">
+                    <b:inputText value="#{departamentoControle.departamento.nome}" label="#{msgs['label.nome']}"
+                                 required="true"
+                                 required-message="#{msgs['label.informe.nome']}"/>
+
+                    <b:dateTimePicker value="#{cursoControle.curso.dataInicio}"
+                                      label="#{msgs['label.data.inicio']}"
+                                      required="true" required-message="#{msgs['label.data.inicio']}"/>
+
+                    <b:dateTimePicker value="#{cursoControle.curso.dataEncerramento}"
+                                      label="#{msgs['label.data.encerramento']}"
+                                      required="true" required-message="#{msgs['label.data.encerramento']}"/>
+
+                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}" value="#{eventoControle.congregacao}"
+                                     process="@form" >
+                        <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue=""
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{eventoControle.congregacoes}" var="congregacao"
+                                       itemLabel="#{congregacao.nome}"
+                                       itemValue="#{congregacao}"/>
+                    </b:selectOneMenu>
+
+                </b:panelGrid>
+                <h:form id="formTabs" >
+
+                    <b:tabView style="margin-top: 20px" id="tabCursos" activeIndex="#{cursoControle.tab}">
+
+                        <b:tab id="tab" title="#{msgs['label.alunos']}">
+                            <b:form>
+
+
+                                <p:autoComplete style="margin-top: 10px;width: 93%" id="itemTip"
+                                                value="#{cursoControle.alunoTransiente}"
+                                                placeholder="Digite o nome do aluno..."
+                                                completeMethod="#{cursoControle.completeAluno}"
+                                                var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
+                                                converter="alunoConverter"/>
+
+                                    <b:commandButton value="Incluir" style="margin-left:5px"
+                                                     actionListener="#{cursoControle.adicionarAlunos}"
+                                                     update="cadastro:formTabs" ajax="true"/>
+
+                            </b:form>
+
+
+                            <b:dataTable scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
+                                         scroll-size="400px" fixedHeader="true" responsive="true"
+                                         id="tabelaConvidado" searching="false" paginated="false"
+                                         value="#{cursoControle.curso.alunos}" var="alunoTabela">
+
+                                <b:dataTableColumn style="width:50%" value="#{alunoTabela.nome}"/>
+                                <b:dataTableColumn style="width:50%" value="#{alunoTabela.email}"/>
+                                <b:dataTableColumn style="width:50%" value="#{alunoTabela.celular}"/>
+
+                                <b:dataTableColumn label="#{msgs['label.acoes']}">
+                                    <b:commandButton action="#{cursoControle.retirarAluno}"
+                                                     tooltip="#{msgs['btn.excluir']}"
+                                                     class="fa fa-trash pull-right" look="danger"
+                                                     update="cadastro:formTabs">
+                                        <f:setPropertyActionListener value="#{convidado}"
+                                                                     target="#{departamentoControle.funcaoFinal}"/>
+                                    </b:commandButton>
+                                </b:dataTableColumn>
+
+                            </b:dataTable>
+                        </b:tab>
+
+                        <b:tab title="#{msgs['label.professores']}">
+
+
+                            <p:autoComplete style="margin-top: 10px;width: 93%" id="itemTip2"
+                                            value="#{cursoControle.alunoTransiente}"
+                                            placeholder="Digite o nome do professor..."
+                                            completeMethod="#{cursoControle.completeAluno}"
+                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
+                                            converter="alunoConverter" forceSelection="true"/>
+
+                            <b:commandButton value="Incluir" style="margin-left:5px"
+                                             actionListener="#{departamentoControle.adicionarIntegrantes}"
+                                             update="cadastro:formTabs" ajax="true"/>
+                            <b:dataTable scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
+                                         scroll-size="400px" fixedHeader="true" responsive="true"
+                                         id="tabelaIntegrante" searching="false" paginated="false"
+                                         value="#{departamentoControle.departamento.integrantes}" var="participante">
+
+                                <b:dataTableColumn value="#{participante.nome}"/>
+
+                                <b:dataTableColumn label="#{msgs['label.acoes']}">
+                                    <b:commandButton action="#{departamentoControle.retirarIntegranteLista()}"
+                                                     immediate="true"
+                                                     tooltip="#{msgs['btn.excluir']}"
+                                                     class="fa fa-trash pull-right" look="danger"
+                                                     update="cadastro:formTabs">
+                                        <f:setPropertyActionListener value="#{participante}"
+                                                                     target="#{departamentoControle.membroFinal}"/>
+                                    </b:commandButton>
+                                </b:dataTableColumn>
+
+                            </b:dataTable>
+
+                        </b:tab>
+                    </b:tabView>
+                </h:form>
+
+                <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
+                    <b:commandButton look="warning" value="Cancelar" action="#{departamentoControle.voltar()}"
+                                     immediate="true"/>
+                    <b:commandButton look="success" value="Salvar" action="#{departamentoControle.salvar()}"
+                                     ajax="false"/>
+                </h:panelGrid>
+            </b:panel>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

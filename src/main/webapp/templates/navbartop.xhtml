@@ -30,11 +30,8 @@
                 <b:dropMenu value="#{msgs['menu.secretaria']}" rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede() || aplicacaoControle.secretario()}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
 
-                    <b:dropMenu value="#{msgs['menu.curso']}" iconAwesome="fa-book">
-                        <b:navLink value="#{msgs['menu.aluno']}"  outcome="/view/aluno/lista"  iconAwesome="fa-graduation-cap"/>
-                        <b:navLink value="#{msgs['menu.professor']}"  outcome="/view/professor/lista" iconAwesome="fa-user-circle-o"/>
-                        <b:navLink value="#{msgs['menu.turma']}" outcome="/view/turma/lista" iconAwesome="fa-weixin"/>
-                    </b:dropMenu>
+                    <b:navLink value="#{msgs['menu.curso']}" iconAwesome="fa-book"
+                               outcome="/view/curso/lista"/>
 
                     <b:navLink value="#{msgs['menu.departamentos']}" iconAwesome="fa-vcard-o"
                                outcome="/view/departamento/lista"/>

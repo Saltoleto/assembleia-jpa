@@ -2,6 +2,7 @@
 package br.com.assembleia.repositories;
 
 import br.com.assembleia.entities.Membro;
+import br.com.assembleia.enums.EnumAtividades;
 import br.com.assembleia.enums.EnumSexo;
 import br.com.assembleia.enums.EnumSituacao;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,6 @@ public interface MembroRepository extends JpaRepository<Membro, Integer> {
     Integer totalMembrosPorSexoGeral(@Param("sexo") EnumSexo sexo);
 
     Integer totalDizimistas(@Param("dizimista") Boolean dizimista);
+
+    List<Membro> listarPorAtividadeCongregacao(@Param("atividade") EnumAtividades atividade, @Param("idIgreja") Long idIgreja);
 }
