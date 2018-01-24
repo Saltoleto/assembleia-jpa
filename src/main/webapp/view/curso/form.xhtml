@@ -66,11 +66,11 @@
                                 <b:dataTableColumn style="width:50%" value="#{alunoTabela.celular}"/>
 
                                 <b:dataTableColumn label="#{msgs['label.acoes']}">
-                                    <p:commandButton action="#{cursoControle.retirarAluno(alunoTabela)}"
+                                    <b:commandButton action="#{cursoControle.retirarAluno(alunoTabela)}"
                                                      tooltip="#{msgs['btn.excluir']}"
                                                      class="fa fa-trash pull-right" look="danger"
                                                      update="cadastro:formTabs">
-                                    </p:commandButton>
+                                    </b:commandButton>
                                 </b:dataTableColumn>
 
                             </b:dataTable>
