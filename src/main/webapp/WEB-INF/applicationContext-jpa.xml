@@ -67,7 +67,7 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <jpa:repositories base-package="br.com.assembleia.repositories"/>
+    <jpa:repositories base-package="br.com.assembleia.repositories" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -95,8 +95,6 @@
             <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
         </property>
     </bean>
-
-
 
    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"></property>

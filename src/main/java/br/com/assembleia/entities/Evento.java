@@ -137,11 +137,6 @@ public class Evento implements Serializable, Comparable<Evento> {
     }
 
     @Override
-    public String toString() {
-        return id.toString();
-    }
-
-    @Override
     public int compareTo(Evento t) {
         return this.nome.compareTo(t.nome);
     }

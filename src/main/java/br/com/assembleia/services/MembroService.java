@@ -18,7 +18,7 @@ public class MembroService {
     @Autowired
     private MembroRepository membroRepository;
 
-    public  Membro getById(Integer id){
+    public  Membro getById(Long id){
         return membroRepository.getOne(id);
     }
 

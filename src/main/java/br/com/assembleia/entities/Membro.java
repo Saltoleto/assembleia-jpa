@@ -391,11 +391,6 @@ public class Membro implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return id.toString();
-    }
-
     public String getProcedencia() {
         return procedencia;
     }

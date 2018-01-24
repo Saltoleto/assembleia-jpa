@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 
-public interface MembroRepository extends JpaRepository<Membro, Integer> {
+public interface MembroRepository extends JpaRepository<Membro, Long> {
 
     Integer buscarQtdTotalMembros();
 

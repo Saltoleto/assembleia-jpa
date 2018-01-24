@@ -3,47 +3,42 @@ package br.com.assembleia.converter;
 
 import br.com.assembleia.entities.Membro;
 import br.com.assembleia.services.MembroService;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
-import java.util.Map;
 
-
-@FacesConverter("alunoConverter")
+@Component("alunoConverter")
+@Transactional
 public class AlunoConverter implements Converter {
 
     @Autowired
-    private MembroService serviceMembro;
+    private MembroService service;
 
-
-    @Override
-    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value) {
-        if (value != null && !value.isEmpty()) {
-            return this.getAttributesFrom(uiComponent).get(value);
+    public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
+        if (value != null && value.trim().length() > 0) {
+            try {
+               Membro membro = service.getById(Long.valueOf(value));
+                Hibernate.initialize(membro);
+                return membro  ;
+            } catch (NumberFormatException e) {
+                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
+            }
+        } else {
+            return null;
         }
-        return null;
-    }
-
-    protected void addAttribute(UIComponent component, Membro o) {
-        String key = o.getId().toString(); // codigo da empresa como chave neste caso
-        this.getAttributesFrom(component).put(key, o);
-    }
-
-    protected Map<String, Object> getAttributesFrom(UIComponent component) {
-        return component.getAttributes();
     }
 
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
-        if(object != null) {
+        if (object != null) {
             return String.valueOf(((Membro) object).getId());
-        }
-        else {
+        } else {
             return null;
         }
     }

@@ -1,16 +1,17 @@
 package br.com.assembleia.controllers;
 
-import br.com.assembleia.entities.*;
+import br.com.assembleia.entities.Congregacao;
+import br.com.assembleia.entities.Curso;
+import br.com.assembleia.entities.Membro;
 import br.com.assembleia.enums.EnumAtividades;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.CursoService;
-import br.com.assembleia.services.DepartamentoService;
 import br.com.assembleia.services.MembroService;
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -104,7 +105,7 @@ public class CursoControle {
         if (this.alunoTransiente != null) {
             this.curso.getAlunos().add(this.alunoTransiente);
             tab = 0;
-            this.alunoTransiente = null;
+            alunoTransiente = null;
         }
     }
 
@@ -162,6 +163,15 @@ public class CursoControle {
         }
         return professores;
     }
+
+    public void onItemSelect(SelectEvent event) {
+        if (this.alunoTransiente != null) {
+            this.curso.getAlunos().add((Membro) event.getObject());
+            tab = 0;
+            alunoTransiente = null;
+        }
+    }
+
 
     public List<Membro> completeAluno(String query) {
         List<Membro> alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.ALUNO,AplicacaoControle.getInstance().getIdIgrejaPorUsuario());

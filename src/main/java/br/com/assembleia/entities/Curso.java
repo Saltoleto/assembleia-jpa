@@ -111,11 +111,6 @@ public class Curso implements Comparable<Curso>, Serializable {
     }
 
     @Override
-    public String toString() {
-        return id.toString();
-    }
-
-    @Override
     public int compareTo(Curso t) {
         return this.nome.compareToIgnoreCase(t.getNome());
     }

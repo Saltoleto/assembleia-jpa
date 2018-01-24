@@ -107,11 +107,6 @@ public class Departamento implements Serializable, Comparable<Departamento> {
     }
 
     @Override
-    public String toString() {
-        return id.toString();
-    }
-
-    @Override
     public int compareTo(Departamento t) {
         return this.nome.compareTo(t.nome);
     }

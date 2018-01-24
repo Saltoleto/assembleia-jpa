@@ -13,7 +13,7 @@
 
             <b:messages/>
 
-            <b:panel title="#{cursoControle.titulo}" collapsible="false">
+            <b:panel id="panel" title="#{cursoControle.titulo}" collapsible="false">
 
                 <b:panelGrid columns="2">
                     <b:inputText value="#{departamentoControle.departamento.nome}" label="#{msgs['label.nome']}"
@@ -38,31 +38,27 @@
                     </b:selectOneMenu>
 
                 </b:panelGrid>
+
                 <h:form id="formTabs" >
 
                     <b:tabView style="margin-top: 20px" id="tabCursos" activeIndex="#{cursoControle.tab}">
 
                         <b:tab id="tab" title="#{msgs['label.alunos']}">
-                            <b:form>
 
 
-                                <p:autoComplete style="margin-top: 10px;width: 93%" id="itemTip"
-                                                value="#{cursoControle.alunoTransiente}"
-                                                placeholder="Digite o nome do aluno..."
+                            <h:form>
+                                <p:autoComplete id="event" style="margin-top: 10px;width: 100%" value="#{cursoControle.alunoTransiente}"
                                                 completeMethod="#{cursoControle.completeAluno}"
+                                                placeholder="Digite o nome do aluno..."
                                                 var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
-                                                converter="alunoConverter"/>
+                                                converter="#{alunoConverter}">
+                                    <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}" update="cadastro" />
+                                </p:autoComplete>
+                            </h:form>
 
-                                    <b:commandButton value="Incluir" style="margin-left:5px"
-                                                     actionListener="#{cursoControle.adicionarAlunos}"
-                                                     update="cadastro:formTabs" ajax="true"/>
-
-                            </b:form>
-
-
-                            <b:dataTable scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
+                            <b:dataTable  scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
                                          scroll-size="400px" fixedHeader="true" responsive="true"
-                                         id="tabelaConvidado" searching="false" paginated="false"
+                                         id="tabelaAluno" searching="false" paginated="false"
                                          value="#{cursoControle.curso.alunos}" var="alunoTabela">
 
                                 <b:dataTableColumn style="width:50%" value="#{alunoTabela.nome}"/>
@@ -70,13 +66,11 @@
                                 <b:dataTableColumn style="width:50%" value="#{alunoTabela.celular}"/>
 
                                 <b:dataTableColumn label="#{msgs['label.acoes']}">
-                                    <b:commandButton action="#{cursoControle.retirarAluno}"
+                                    <p:commandButton action="#{cursoControle.retirarAluno(alunoTabela)}"
                                                      tooltip="#{msgs['btn.excluir']}"
                                                      class="fa fa-trash pull-right" look="danger"
                                                      update="cadastro:formTabs">
-                                        <f:setPropertyActionListener value="#{convidado}"
-                                                                     target="#{departamentoControle.funcaoFinal}"/>
-                                    </b:commandButton>
+                                    </p:commandButton>
                                 </b:dataTableColumn>
 
                             </b:dataTable>
@@ -90,7 +84,7 @@
                                             placeholder="Digite o nome do professor..."
                                             completeMethod="#{cursoControle.completeAluno}"
                                             var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
-                                            converter="alunoConverter" forceSelection="true"/>
+                                            converter="#{alunoConverter}" forceSelection="true"/>
 
                             <b:commandButton value="Incluir" style="margin-left:5px"
                                              actionListener="#{departamentoControle.adicionarIntegrantes}"
