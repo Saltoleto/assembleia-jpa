@@ -47,12 +47,12 @@
 
 
                             <h:form>
-                                <p:autoComplete id="event" style="margin-top: 10px;width: 100%" value="#{cursoControle.alunoTransiente}"
+                                <p:autoComplete id="event" onkeypress="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()" onchange="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()" style="margin-top: 10px;width: 100%" value="#{cursoControle.alunoTransiente}"
                                                 completeMethod="#{cursoControle.completeAluno}"
                                                 placeholder="Digite o nome do aluno..."
                                                 var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
                                                 converter="#{alunoConverter}">
-                                    <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}" update="cadastro" />
+                                    <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}" update="cadastro:formTabs:tabelaAluno,event" />
                                 </p:autoComplete>
                             </h:form>
 
