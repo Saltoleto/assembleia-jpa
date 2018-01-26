@@ -28,8 +28,9 @@
                                       label="#{msgs['label.data.encerramento']}"
                                       required="true" required-message="#{msgs['label.data.encerramento']}"/>
 
-                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}" value="#{eventoControle.congregacao}"
-                                     process="@form" >
+                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}"
+                                     value="#{eventoControle.congregacao}"
+                                     process="@form">
                         <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue=""
                                       noSelectionOption="true"/>
                         <f:selectItems value="#{eventoControle.congregacoes}" var="congregacao"
@@ -39,48 +40,49 @@
 
                 </b:panelGrid>
 
-                <h:form id="formTabs" >
+                <h:form id="formTabs">
 
                     <b:tabView style="margin-top: 20px" id="tabCursos" activeIndex="#{cursoControle.tab}">
 
                         <b:tab id="tab" title="#{msgs['label.alunos']}">
 
-
-                            <h:form>
-                                <p:autoComplete id="event" onkeypress="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()" onchange="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()" style="margin-top: 10px;width: 100%" value="#{cursoControle.alunoTransiente}"
+                                <p:autoComplete id="autoCompleteAluno"
+                                                onkeypress="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()"
+                                                onchange="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()"
+                                                style="margin-top: 10px;width: 100%"
                                                 completeMethod="#{cursoControle.completeAluno}"
                                                 placeholder="Digite o nome do aluno..."
                                                 var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
-                                                converter="#{alunoConverter}">
-                                    <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}" update="cadastro:formTabs:tabelaAluno,event" />
+                                                converter="#{alunoConverter}" onfocus="this.value=''">
+                                    <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}"
+                                            update="cadastro:formTabs:tabelaAluno"/>
                                 </p:autoComplete>
-                            </h:form>
 
-                            <b:dataTable  scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
-                                         scroll-size="400px" fixedHeader="true" responsive="true"
-                                         id="tabelaAluno" searching="false" paginated="false"
-                                         value="#{cursoControle.curso.alunos}" var="alunoTabela">
+                                <b:dataTable class="editableCarTable" scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
+                                             scroll-size="400px" fixedHeader="true" responsive="true"
+                                             id="tabelaAluno" searching="false" paginated="false"
+                                             value="#{cursoControle.curso.alunos}" var="alunoTabela">
 
-                                <b:dataTableColumn style="width:50%" value="#{alunoTabela.nome}"/>
-                                <b:dataTableColumn style="width:50%" value="#{alunoTabela.email}"/>
-                                <b:dataTableColumn style="width:50%" value="#{alunoTabela.celular}"/>
+                                    <b:dataTableColumn style="width:50%" value="#{alunoTabela.nome}"/>
+                                    <b:dataTableColumn style="width:50%" value="#{alunoTabela.email}"/>
+                                    <b:dataTableColumn style="width:50%" value="#{alunoTabela.celular}"/>
 
-                                <b:dataTableColumn label="#{msgs['label.acoes']}">
-                                    <b:commandButton action="#{cursoControle.retirarAluno(alunoTabela)}"
-                                                     tooltip="#{msgs['btn.excluir']}"
-                                                     class="fa fa-trash pull-right" look="danger"
-                                                     update="cadastro:formTabs">
-                                    </b:commandButton>
-                                </b:dataTableColumn>
+                                    <b:dataTableColumn label="#{msgs['label.acoes']}" >
+                                        <b:commandButton id="btnExcluir" onsuccess="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()"
+                                                         action="#{cursoControle.retirarAluno(alunoTabela)}"
+                                                         tooltip="#{msgs['btn.excluir']}" ajax="true"
+                                                         update="@(.editableCarTable)"
+                                                         class="fa fa-trash pull-right" look="danger">
+                                        </b:commandButton>
+                                    </b:dataTableColumn>
 
-                            </b:dataTable>
+                                </b:dataTable>
                         </b:tab>
 
                         <b:tab title="#{msgs['label.professores']}">
 
 
                             <p:autoComplete style="margin-top: 10px;width: 93%" id="itemTip2"
-                                            value="#{cursoControle.alunoTransiente}"
                                             placeholder="Digite o nome do professor..."
                                             completeMethod="#{cursoControle.completeAluno}"
                                             var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"

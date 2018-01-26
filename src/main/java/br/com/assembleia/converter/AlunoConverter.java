@@ -3,7 +3,6 @@ package br.com.assembleia.converter;
 
 import br.com.assembleia.entities.Membro;
 import br.com.assembleia.services.MembroService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +23,9 @@ public class AlunoConverter implements Converter {
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
             try {
-               Membro membro = service.getById(Long.valueOf(value));
-                Hibernate.initialize(membro);
+
+               Membro membro = service.findOne(Long.valueOf(value));
+
                 return membro  ;
             } catch (NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));

@@ -22,6 +22,10 @@ public class MembroService {
         return membroRepository.getOne(id);
     }
 
+    public  Membro findOne(Long id){
+        return membroRepository.findOne(id);
+    }
+
     public void salvar(Membro cargo) {
         membroRepository.save(cargo);
     }

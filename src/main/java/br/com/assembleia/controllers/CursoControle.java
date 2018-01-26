@@ -26,7 +26,6 @@ import java.util.List;
 public class CursoControle {
 
     private Curso curso;
-    private Membro alunoTransiente;
     private Congregacao congregacao;
     private List<Curso> cursos;
     private List<Membro> alunos;
@@ -101,17 +100,11 @@ public class CursoControle {
         context.addMessage(null, new FacesMessage(tipo, message, null));
     }
 
-    public void adicionarAlunos() {
-        if (this.alunoTransiente != null) {
-            this.curso.getAlunos().add(this.alunoTransiente);
-            tab = 0;
-            alunoTransiente = null;
-        }
-    }
 
     public void retirarAluno(Membro aluno) {
         if (aluno != null) {
             this.curso.getAlunos().remove(aluno);
+
             tab = 0;
         }
     }
@@ -165,11 +158,8 @@ public class CursoControle {
     }
 
     public void onItemSelect(SelectEvent event) {
-        if (this.alunoTransiente != null) {
             this.curso.getAlunos().add((Membro) event.getObject());
             tab = 0;
-            alunoTransiente = null;
-        }
     }
 
 
@@ -214,13 +204,5 @@ public class CursoControle {
 
     public void setCurso(Curso curso) {
         this.curso = curso;
-    }
-
-    public Membro getAlunoTransiente() {
-        return alunoTransiente;
-    }
-
-    public void setAlunoTransiente(Membro alunoTransiente) {
-        this.alunoTransiente = alunoTransiente;
     }
 }
