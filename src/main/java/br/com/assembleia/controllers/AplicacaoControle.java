@@ -97,6 +97,14 @@ public class AplicacaoControle {
         return ano;
     }
 
+    public boolean adminSedeSelecionouIgreja(){
+       return AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null;
+    }
+
+    public boolean adminSedeNaoSelecionouIgreja(){
+        return AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null;
+    }
+
     public Long getIdIgreja() {
         congregacaoSelecionada = (Congregacao) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("congregacao");
         if (congregacaoSelecionada != null) {

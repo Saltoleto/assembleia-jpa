@@ -16,7 +16,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class CursoControle {
             service.salvar(curso);
             adicionaMensagem("Curso salvo com sucesso!", FacesMessage.SEVERITY_INFO);
             curso = null;
-        } catch (PersistenceException ex) {
+        } catch (Exception ex) {
             adicionaMensagem(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
         return "lista?faces-redirect=true";
@@ -90,7 +89,6 @@ public class CursoControle {
 
     public String voltar() {
         curso = null;
-
         return "lista?faces-redirect=true";
     }
 
@@ -104,21 +102,13 @@ public class CursoControle {
     public void retirarAluno(Membro aluno) {
         if (aluno != null) {
             this.curso.getAlunos().remove(aluno);
-
             tab = 0;
-        }
-    }
-
-    public void adicionarProfessores() {
-        if (professores.size() > 0) {
-            curso.setProfessores(professores);
-            tab = 1;
         }
     }
 
     public void retirarProfessor(Membro professor) {
         if (professor != null) {
-            this.curso.getProfessores().remove(professor);
+                this.curso.getProfessores().remove(professor);
             tab = 1;
         }
     }
@@ -134,42 +124,35 @@ public class CursoControle {
     }
 
     public List<Curso> getCursos() {
-        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             cursos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             cursos = service.listarTodos();
-        } else {
+        }else {
             cursos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
         return cursos;
     }
 
-    public List<Membro> getAlunos() {
-
-            alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.ALUNO,11L);
-        return alunos;
-    }
-
-    public List<Membro> getProfessores() {
-        if(this.congregacao!= null){
-            professores = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.PROFESSOR,congregacao.getId());
-        }
-        return professores;
-    }
-
     public void onItemSelect(SelectEvent event) {
+        Membro membro = (Membro) event.getObject();
+        if (membro.getAtividades().contains(EnumAtividades.ALUNO)) {
             this.curso.getAlunos().add((Membro) event.getObject());
             tab = 0;
+        } else {
+            this.curso.getProfessores().add((Membro) event.getObject());
+            tab = 1;
+        }
     }
 
 
     public List<Membro> completeAluno(String query) {
-        List<Membro> alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.ALUNO,AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        List<Membro> alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.ALUNO, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         List<Membro> alunosFiltrados = new ArrayList<Membro>();
 
         for (int i = 0; i < alunos.size(); i++) {
             Membro skin = alunos.get(i);
-            if(skin.getNome().toLowerCase().startsWith(query) ) {
+            if (skin.getNome().toLowerCase().startsWith(query)) {
                 alunosFiltrados.add(skin);
             }
         }
@@ -177,15 +160,31 @@ public class CursoControle {
         return alunosFiltrados;
     }
 
+    public List<Membro> completeProfessor(String query) {
+        List<Membro> alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.PROFESSOR, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        List<Membro> professoresFiltrados = new ArrayList<Membro>();
+
+        for (int i = 0; i < alunos.size(); i++) {
+            Membro skin = alunos.get(i);
+            if (skin.getNome().toLowerCase().startsWith(query)) {
+                professoresFiltrados.add(skin);
+            }
+        }
+        return professoresFiltrados;
+    }
+
     public int getTab() {
         return tab;
     }
+
     public void setTab(int tab) {
         this.tab = tab;
     }
+
     public String getTitulo() {
         return titulo;
     }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }

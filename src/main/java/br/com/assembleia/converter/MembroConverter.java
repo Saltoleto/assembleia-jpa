@@ -13,9 +13,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-@Component("alunoConverter")
+@Component("membroConverter")
 @Transactional
-public class AlunoConverter implements Converter {
+public class MembroConverter implements Converter {
 
     @Autowired
     private MembroService service;

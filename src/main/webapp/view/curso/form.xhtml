@@ -16,7 +16,7 @@
             <b:panel id="panel" title="#{cursoControle.titulo}" collapsible="false">
 
                 <b:panelGrid columns="2">
-                    <b:inputText value="#{departamentoControle.departamento.nome}" label="#{msgs['label.nome']}"
+                    <b:inputText value="#{cursoControle.curso.nome}" label="#{msgs['label.nome']}"
                                  required="true"
                                  required-message="#{msgs['label.informe.nome']}"/>
 
@@ -28,12 +28,10 @@
                                       label="#{msgs['label.data.encerramento']}"
                                       required="true" required-message="#{msgs['label.data.encerramento']}"/>
 
-                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}"
-                                     value="#{eventoControle.congregacao}"
-                                     process="@form">
-                        <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue=""
+                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}" value="#{cursoControle.curso.congregacao}" process="@form">
+                        <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue="#{cursoControle.curso.congregacao}"
                                       noSelectionOption="true"/>
-                        <f:selectItems value="#{eventoControle.congregacoes}" var="congregacao"
+                        <f:selectItems value="#{cursoControle.congregacoes}" var="congregacao"
                                        itemLabel="#{congregacao.nome}"
                                        itemValue="#{congregacao}"/>
                     </b:selectOneMenu>
@@ -53,25 +51,25 @@
                                                 completeMethod="#{cursoControle.completeAluno}"
                                                 placeholder="Digite o nome do aluno..."
                                                 var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
-                                                converter="#{alunoConverter}" onfocus="this.value=''">
+                                                converter="#{membroConverter}" onfocus="this.value=''">
                                     <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}"
                                             update="cadastro:formTabs:tabelaAluno"/>
                                 </p:autoComplete>
 
-                                <b:dataTable class="editableCarTable" scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
+                                <b:dataTable class="alunoTable" scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
                                              scroll-size="400px" fixedHeader="true" responsive="true"
                                              id="tabelaAluno" searching="false" paginated="false"
                                              value="#{cursoControle.curso.alunos}" var="alunoTabela">
 
-                                    <b:dataTableColumn style="width:50%" value="#{alunoTabela.nome}"/>
-                                    <b:dataTableColumn style="width:50%" value="#{alunoTabela.email}"/>
-                                    <b:dataTableColumn style="width:50%" value="#{alunoTabela.celular}"/>
+                                    <b:dataTableColumn  value="#{alunoTabela.nome}"/>
+                                    <b:dataTableColumn  value="#{alunoTabela.email}"/>
+                                    <b:dataTableColumn  value="#{alunoTabela.celular}"/>
 
                                     <b:dataTableColumn label="#{msgs['label.acoes']}" >
                                         <b:commandButton id="btnExcluir" onsuccess="cadastroFormTabsTabelaAlunoWidget.DataTable().destroy()"
                                                          action="#{cursoControle.retirarAluno(alunoTabela)}"
                                                          tooltip="#{msgs['btn.excluir']}" ajax="true"
-                                                         update="@(.editableCarTable)"
+                                                         update="@(.alunoTable)"
                                                          class="fa fa-trash pull-right" look="danger">
                                         </b:commandButton>
                                     </b:dataTableColumn>
@@ -81,31 +79,33 @@
 
                         <b:tab title="#{msgs['label.professores']}">
 
-
-                            <p:autoComplete style="margin-top: 10px;width: 93%" id="itemTip2"
+                            <p:autoComplete id="autoCompleteProfessor"
+                                            onkeypress="cadastroFormTabsTabelaProfessorWidget.DataTable().destroy()"
+                                            onchange="cadastroFormTabsTabelaProfessorWidget.DataTable().destroy()"
+                                            style="margin-top: 10px;width: 100%"
+                                            completeMethod="#{cursoControle.completeProfessor}"
                                             placeholder="Digite o nome do professor..."
-                                            completeMethod="#{cursoControle.completeAluno}"
-                                            var="aluno" itemLabel="#{aluno.nome}" itemValue="#{aluno}"
-                                            converter="#{alunoConverter}" forceSelection="true"/>
+                                            var="professorTabela" itemLabel="#{professorTabela.nome}" itemValue="#{professorTabela}"
+                                            converter="#{membroConverter}" onfocus="this.value=''">
+                                <p:ajax event="itemSelect" listener="#{cursoControle.onItemSelect}"
+                                        update="cadastro:formTabs:tabelaProfessor"/>
+                            </p:autoComplete>
 
-                            <b:commandButton value="Incluir" style="margin-left:5px"
-                                             actionListener="#{departamentoControle.adicionarIntegrantes}"
-                                             update="cadastro:formTabs" ajax="true"/>
-                            <b:dataTable scroll-x="false" customLangUrl="#{resource['js/pt-br.json']}"
+                            <b:dataTable scroll-x="false" class="professorTabela" customLangUrl="#{resource['js/pt-br.json']}"
                                          scroll-size="400px" fixedHeader="true" responsive="true"
-                                         id="tabelaIntegrante" searching="false" paginated="false"
-                                         value="#{departamentoControle.departamento.integrantes}" var="participante">
+                                         id="tabelaProfessor" searching="false" paginated="false"
+                                         value="#{cursoControle.curso.professores}" var="professorTabela">
 
-                                <b:dataTableColumn value="#{participante.nome}"/>
+                                <b:dataTableColumn  value="#{professorTabela.nome}"/>
+                                <b:dataTableColumn  value="#{professorTabela.email}"/>
+                                <b:dataTableColumn  value="#{professorTabela.celular}"/>
 
-                                <b:dataTableColumn label="#{msgs['label.acoes']}">
-                                    <b:commandButton action="#{departamentoControle.retirarIntegranteLista()}"
-                                                     immediate="true"
-                                                     tooltip="#{msgs['btn.excluir']}"
-                                                     class="fa fa-trash pull-right" look="danger"
-                                                     update="cadastro:formTabs">
-                                        <f:setPropertyActionListener value="#{participante}"
-                                                                     target="#{departamentoControle.membroFinal}"/>
+                                <b:dataTableColumn  label="#{msgs['label.acoes']}">
+                                    <b:commandButton id="btnExcluir" onsuccess="cadastroFormTabsTabelaProfessorWidget.DataTable().destroy()"
+                                                     action="#{cursoControle.retirarProfessor(professorTabela)}"
+                                                     tooltip="#{msgs['btn.excluir']}" ajax="true"
+                                                     update="@(.professorTabela)"
+                                                     class="fa fa-trash pull-right" look="danger">
                                     </b:commandButton>
                                 </b:dataTableColumn>
 
@@ -116,9 +116,9 @@
                 </h:form>
 
                 <h:panelGrid columns="2" style="margin-top: 40px;" class="pull-right">
-                    <b:commandButton look="warning" value="Cancelar" action="#{departamentoControle.voltar()}"
+                    <b:commandButton look="warning" value="Cancelar" action="#{cursoControle.voltar()}"
                                      immediate="true"/>
-                    <b:commandButton look="success" value="Salvar" action="#{departamentoControle.salvar()}"
+                    <b:commandButton look="success" value="Salvar" action="#{cursoControle.salvar()}"
                                      ajax="false"/>
                 </h:panelGrid>
             </b:panel>

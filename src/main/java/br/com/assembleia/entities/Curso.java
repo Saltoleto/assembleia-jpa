@@ -1,8 +1,5 @@
 package br.com.assembleia.entities;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -24,17 +21,18 @@ public class Curso implements Comparable<Curso>, Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Id_Curso")
     private Long id;
     private String nome;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dataInicio;
-    @Temporal(TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date dataEncerramento;
     @ManyToMany(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name="curso_aluno", joinColumns=@JoinColumn(name="aluno_id"), inverseJoinColumns=@JoinColumn(name="id"))
     private List<Membro> alunos;
     @ManyToMany(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name="curso_professor", joinColumns=@JoinColumn(name="professor_id"), inverseJoinColumns=@JoinColumn(name="id"))
     private List<Membro> professores;
     @ManyToOne
     private Congregacao congregacao;
