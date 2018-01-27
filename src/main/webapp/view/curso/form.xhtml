@@ -28,7 +28,8 @@
                                       label="#{msgs['label.data.encerramento']}"
                                       required="true" required-message="#{msgs['label.data.encerramento']}"/>
 
-                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}" value="#{cursoControle.curso.congregacao}" process="@form">
+                    <b:selectOneMenu label="#{msgs['label.selecione.congregacao']}" value="#{cursoControle.curso.congregacao}"
+                                      update="@this">
                         <f:selectItem itemLabel="#{msgs['label.selecione.congregacao']}" itemValue="#{cursoControle.curso.congregacao}"
                                       noSelectionOption="true"/>
                         <f:selectItems value="#{cursoControle.congregacoes}" var="congregacao"

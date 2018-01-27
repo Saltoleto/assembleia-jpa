@@ -108,7 +108,7 @@ public class CursoControle {
 
     public void retirarProfessor(Membro professor) {
         if (professor != null) {
-                this.curso.getProfessores().remove(professor);
+            this.curso.getProfessores().remove(professor);
             tab = 1;
         }
     }
@@ -147,29 +147,34 @@ public class CursoControle {
 
 
     public List<Membro> completeAluno(String query) {
-        List<Membro> alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.ALUNO, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        List<Membro> alunos = new ArrayList<>();
         List<Membro> alunosFiltrados = new ArrayList<Membro>();
-
+        if(this.curso.getCongregacao().getId() !=null){
+            alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.ALUNO,this.curso.getCongregacao().getId());
+        }
         for (int i = 0; i < alunos.size(); i++) {
             Membro skin = alunos.get(i);
             if (skin.getNome().toLowerCase().startsWith(query)) {
                 alunosFiltrados.add(skin);
             }
         }
-
+        alunos = null;
         return alunosFiltrados;
     }
 
     public List<Membro> completeProfessor(String query) {
-        List<Membro> alunos = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.PROFESSOR, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        List<Membro> professores = new ArrayList<>();
         List<Membro> professoresFiltrados = new ArrayList<Membro>();
-
-        for (int i = 0; i < alunos.size(); i++) {
-            Membro skin = alunos.get(i);
+        if(this.curso.getCongregacao().getId() !=null){
+            professores = serviceMembro.listarPorAtividadeCongregacao(EnumAtividades.PROFESSOR,this.curso.getCongregacao().getId());
+        }
+        for (int i = 0; i < professores.size(); i++) {
+            Membro skin = professores.get(i);
             if (skin.getNome().toLowerCase().startsWith(query)) {
                 professoresFiltrados.add(skin);
             }
         }
+        professores = null;
         return professoresFiltrados;
     }
 
