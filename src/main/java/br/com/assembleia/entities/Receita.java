@@ -49,7 +49,7 @@ public class Receita implements Serializable, Comparable<Receita> {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descricao;
     @Temporal(javax.persistence.TemporalType.DATE)

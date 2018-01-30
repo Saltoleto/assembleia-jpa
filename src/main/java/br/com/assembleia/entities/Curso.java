@@ -20,7 +20,7 @@ public class Curso implements Comparable<Curso>, Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_Curso")
     private Long id;
     private String nome;
