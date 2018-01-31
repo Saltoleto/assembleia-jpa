@@ -207,6 +207,7 @@
 
                                 <b:selectOneMenu label="#{msgs['label.selecione.lider']}" id="membro"
                                                  value="#{membroControle.membro.lider}">
+                                    <f:selectItem itemLabel="Selecione o Lider" itemValue=""/>
                                     <f:selectItems value="#{membroControle.listaLider}" var="lider"
                                                    itemLabel="#{lider.nome}"
                                                    itemValue="#{lider}"/>

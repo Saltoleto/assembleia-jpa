@@ -89,7 +89,8 @@ public class Membro implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataConsagracao;
     private EnumSituacao situacao;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name="lider_id")
     private Membro lider;
     private String procedencia;
     @Transient
