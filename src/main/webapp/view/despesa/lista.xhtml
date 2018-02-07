@@ -40,6 +40,7 @@
 
                 <b:dataTable scroll-x="false"   fixedHeader="true" responsive="true" paginated="false" info="false"
                              searching="false"
+                             customLangUrl="#{resource['js/pt-br.json']}"
                              value="#{despesaControle.despesas}" var="despesa">
 
                     <b:dataTableColumn label="#{msgs['label.igreja']}" value="#{despesa.congregacao.nome}"/>

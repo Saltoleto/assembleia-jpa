@@ -218,13 +218,15 @@ public class DepartamentoControle {
     }
 
     public List<Departamento> getDepartamentos() {
-        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             departamentos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             departamentos = service.listarTodos();
         } else {
             departamentos = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+
         return departamentos;
     }
 

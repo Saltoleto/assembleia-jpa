@@ -45,7 +45,7 @@ import java.util.Locale;
         @NamedQuery(name = "Despesa.listarDespesas",
                 query = "Select sum(r.valor) from Despesa r "),
         @NamedQuery(name = "Despesa.listarDespesasParametro",
-                query = "Select sum(r.valor) from Despesa r where r.pago = :pago "),
+                query = "Select sum(r.valor) from Despesa r where r.pago = :pago ")
 
 })
 public class Despesa implements Serializable, Comparable<Despesa> {

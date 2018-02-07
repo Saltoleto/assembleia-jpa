@@ -157,10 +157,10 @@ public class ReceitaControle {
 
     public List<Receita> getReceitas() {
 
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             receitas = service.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            receitas = service.listarTodos();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            receitas = service.listarReceitasMesAno(mesPesquisa,anoPesquisa);
         } else {
             receitas = service.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }

@@ -99,9 +99,10 @@ public class UsuarioControle {
 
     public List<Usuario> getUsuarios() {
 
-        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             usuarios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             usuarios = service.listarTodos();
         } else {
             usuarios = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());

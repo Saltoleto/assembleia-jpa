@@ -13,4 +13,7 @@ public interface EventoRepository extends JpaRepository<Evento, Integer>
 
     List<Evento> listarPorIgreja(@Param("idIgreja") Long idIgreja);
 
+    List<Evento> proximosEventosIgreja(@Param("mes") Integer mes, @Param("ano") Integer ano,@Param("idIgreja") Long idIgreja);
+
+    List<Evento> proximosEventos(@Param("mes") Integer mes,@Param("ano") Integer ano);
 }

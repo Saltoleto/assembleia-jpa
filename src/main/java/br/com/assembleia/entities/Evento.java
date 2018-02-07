@@ -5,18 +5,22 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author fernandosaltoleto
  */
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Evento.listarPorIgreja",
-                query = "SELECT d FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja")
+                query = "SELECT d FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja"),
+        @NamedQuery(name = "Evento.proximosEventosIgreja",
+                query = "SELECT evento FROM Evento evento JOIN evento.congregacao congre Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja "),
+        @NamedQuery(name = "Evento.proximosEventos",
+                query = "SELECT evento FROM Evento evento WHERE extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano ")
 })
 public class Evento implements Serializable, Comparable<Evento> {
 
@@ -31,7 +35,7 @@ public class Evento implements Serializable, Comparable<Evento> {
     private Date dataEncerramento;
     private String localEvento;
     private String telefone;
-    @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)
     private List<Convidado> convidados;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -62,6 +66,10 @@ public class Evento implements Serializable, Comparable<Evento> {
 
     public Date getDataInicio() {
         return dataInicio;
+    }
+
+    public String dataInicioFormatada(){
+        return new SimpleDateFormat("dd/MM/yyyy").format(this.dataInicio);
     }
 
     public void setDataInicio(Date dataInicio) {

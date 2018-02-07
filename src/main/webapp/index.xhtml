@@ -24,7 +24,7 @@
 
                     <b:row>
                         <b:column colMd="6">
-                            <b:panel collapsible="false" title="Receitas #{dashBoardControle.nomeMes}" >
+                            <b:panel collapsible="false" title="Receitas #{dashBoardControle.nomeMes}">
                                 <b:row style="margin-top:15px;">
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-money" size="2x" large-screen="full-width"/>
@@ -46,7 +46,7 @@
                         </b:column>
 
                         <b:column colMd="6">
-                            <b:panel collapsible="false" title="Despesas #{dashBoardControle.nomeMes}" >
+                            <b:panel collapsible="false" title="Despesas #{dashBoardControle.nomeMes}">
                                 <b:row style="margin-top:15px;">
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-money" size="2x" large-screen="full-width"/>
@@ -70,7 +70,7 @@
 
                     <b:row>
                         <b:column colMd="12">
-                            <b:panel collapsible="false" title="Resumo Financeiro" >
+                            <b:panel collapsible="false" title="Resumo Financeiro">
                                 <b:row style="margin-top:15px">
                                     <b:column colMd="3" style="text-align: center">
                                         <b:iconAwesome name="fa-plus-square" size="2x" large-screen="full-width"/>
@@ -111,10 +111,10 @@
                             </b:panel>
                         </b:column>
                     </b:row>
+
                     <b:row>
                         <b:column colMd="6">
-
-                            <b:panel collapsible="false" title="Membros" >
+                            <b:panel collapsible="false" title="Membros">
                                 <b:row style="margin-top:15px">
                                     <b:column colMd="4" style="text-align: center">
                                         <b:iconAwesome name="fa-group" size="2x" large-screen="full-width"/>
@@ -133,8 +133,8 @@
                                     </b:column>
                                 </b:row>
                                 <b:row>
-                                    <hf:chart type="pie" height="195">
-                                        <hf:chartSerie name="Quantidade" value="#{dashBoardControle.listaDizimistas}"
+                                    <hf:chart type="pie" height="284">
+                                        <hf:chartSerie  name="Quantidade" value="#{dashBoardControle.listaDizimistas}"
                                                        var="point"
                                                        point="#{point.quantidade}" tickLabel="#{point.label}"
                                                        dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
@@ -142,47 +142,37 @@
                                 </b:row>
                             </b:panel>
                         </b:column>
-                        <b:column colMd="6">
-                            <b:panel collapsible="false" title="Eventos #{dashBoardControle.nomeMes}" >
-                                <b:row style="margin-top:15px;">
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-money" size="2x" large-screen="full-width"/>
-                                        <h3>#{dashBoardControle.receitasTotalMeasAnoCongregacao()}</h3>
-                                        <h5 style="color: #333333">Total</h5>
-                                    </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-thumbs-o-up" size="2x" large-screen="full-width"/>
-                                        <h3>#{dashBoardControle.receitasRecebidasMeasAnoCongregacao()}</h3>
-                                        <h5 style="color: #333333">Recebidas</h5>
-                                    </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-thumbs-o-down" size="2x" large-screen="full-width"/>
-                                        <h3>#{dashBoardControle.receitasNaoRecebidasMeasAnoCongregacao()}</h3>
-                                        <h5 style="color: #333333">Não Recebidas</h5>
-                                    </b:column>
-                                </b:row>
-                            </b:panel>
-                        </b:column>
 
-                        <b:column colMd="6">
-                            <b:panel collapsible="false" title="Aniversariantes #{dashBoardControle.nomeMes}" >
-                                <b:row style="margin-top:15px;">
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-money" size="2x" large-screen="full-width"/>
-                                        <h3>#{dashBoardControle.despesasTotalMeasAnoCongregacao()}</h3>
-                                        <h5 style="color: #333333">Total</h5>
-                                    </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-thumbs-o-up" size="2x" large-screen="full-width"/>
-                                        <h3>#{dashBoardControle.despesasPagasMeasAnoCongregacao()}</h3>
-                                        <h5 style="color: #333333">Pagas</h5>
-                                    </b:column>
-                                    <b:column colMd="4" style="text-align: center">
-                                        <b:iconAwesome name="fa-thumbs-o-down" size="2x" large-screen="full-width"/>
-                                        <h3>#{dashBoardControle.despesasNaoPagasMeasAnoCongregacao()}</h3>
-                                        <h5 style="color: #333333">Não Pagas</h5>
-                                    </b:column>
-                                </b:row>
+                        <b:column colMd="6" >
+
+                            <b:panel  collapsible="false"  title="Eventos #{dashBoardControle.nomeMes}">
+                                <h:dataTable style="margin-bottom: 0px" value="#{dashBoardControle.eventos}" var="evento"
+                                             styleClass="table" rows="5" >
+                                    <h:column>
+                                       #{evento.nome}
+                                    </h:column>
+                                    <h:column>
+                                        #{evento.dataInicioFormatada()}
+                                    </h:column>
+                                    <h:column>
+                                        #{evento.telefone}
+                                    </h:column>
+                                </h:dataTable>
+                            </b:panel>
+
+                            <b:panel collapsible="false" title="Aniversariantes #{dashBoardControle.nomeMes}">
+                                <h:dataTable style="margin-bottom: 0px;margin-top: 0px"  value="#{dashBoardControle.eventos}" var="evento"
+                                             styleClass="table col-md-12" rows="5">
+                                    <h:column headerClass="text-left">
+                                        #{evento.nome}
+                                    </h:column>
+                                    <h:column>
+                                        #{evento.dataInicioFormatada()}
+                                    </h:column>
+                                    <h:column headerClass="text-right">
+                                        #{evento.telefone}
+                                    </h:column>
+                                </h:dataTable>
                             </b:panel>
                         </b:column>
                     </b:row>

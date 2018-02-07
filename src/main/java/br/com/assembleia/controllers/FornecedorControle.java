@@ -90,16 +90,17 @@ public class FornecedorControle {
         if (AplicacaoControle.getInstance().adminSede()) {
             congregacoes = congregacaoService.listarTodos();
         } else {
-            congregacoes =  new ArrayList();
+            congregacoes = new ArrayList();
             congregacoes.add(congregacaoService.getById(AplicacaoControle.getInstance().getIdIgrejaPorUsuario()));
         }
         return congregacoes;
     }
 
     public List<Fornecedor> getFornecedores() {
-        if (AplicacaoControle.getInstance().getUsuario().isAdmin() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             fornecedores = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().getUsuario().isAdmin()) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             fornecedores = service.listarTodos();
         } else {
             fornecedores = service.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());

@@ -1,6 +1,7 @@
 package br.com.assembleia.controllers;
 
 
+import br.com.assembleia.entities.Evento;
 import br.com.assembleia.enums.EnumMes;
 import br.com.assembleia.enums.EnumSexo;
 import br.com.assembleia.services.*;
@@ -44,6 +45,8 @@ public class DashBoardControle {
     private ReceitaService serviceReceita;
     @Autowired
     FornecedorService serviceFornecedor;
+    @Autowired
+    EventoService serviceEvento;
 
     @PostConstruct
     private void init() {
@@ -52,9 +55,10 @@ public class DashBoardControle {
 
     public Integer getTotalMembrosHomens() {
         Integer totalMembros;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             totalMembros = serviceMembroService.totalMembrosPorSexo(AplicacaoControle.getInstance().getIdIgreja(), EnumSexo.MASCULINO);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             totalMembros = serviceMembroService.totalMembrosPorSexoGeral(EnumSexo.MASCULINO);
         } else {
             totalMembros = serviceMembroService.totalMembrosPorSexo(AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), EnumSexo.MASCULINO);
@@ -66,9 +70,10 @@ public class DashBoardControle {
     public Integer getTotalMembrosAtivos() {
 
         Integer totalMembros;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             totalMembros = serviceMembroService.totalMembrosAtivos(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             totalMembros = serviceMembroService.buscarQtdTotalMembros();
         } else {
             totalMembros = serviceMembroService.totalMembrosAtivos(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
@@ -79,23 +84,24 @@ public class DashBoardControle {
 
     public Integer getTotalMembrosMulheres() {
         Integer totalMembros;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             totalMembros = serviceMembroService.totalMembrosPorSexo(AplicacaoControle.getInstance().getIdIgreja(), EnumSexo.FEMININO);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             totalMembros = serviceMembroService.totalMembrosPorSexoGeral(EnumSexo.FEMININO);
         } else {
             totalMembros = serviceMembroService.totalMembrosPorSexo(AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), EnumSexo.FEMININO);
         }
+
         return totalMembros != null ? totalMembros : 0;
     }
 
     public String receitasTotalMeasAnoCongregacao() {
-
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceReceita.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceReceita.listarReceitas();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceReceita.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             valorTotal = serviceReceita.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
@@ -105,10 +111,10 @@ public class DashBoardControle {
 
     public String receitasRecebidasMeasAnoCongregacao() {
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceReceita.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceReceita.listarReceitasParametro(Boolean.TRUE);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceReceita.receitasParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.TRUE);
         } else {
             valorTotal = serviceReceita.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), Boolean.TRUE);
         }
@@ -117,11 +123,12 @@ public class DashBoardControle {
     }
 
     public String receitasNaoRecebidasMeasAnoCongregacao() {
+
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceReceita.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.FALSE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceReceita.listarReceitasParametro(Boolean.FALSE);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceReceita.receitasParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.FALSE);
         } else {
             valorTotal = serviceReceita.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), Boolean.FALSE);
         }
@@ -131,23 +138,26 @@ public class DashBoardControle {
 
     public String despesasTotalMeasAnoCongregacao() {
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceDespesa.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceDespesa.listarDespesas();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceDespesa.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             valorTotal = serviceDespesa.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+
         return df.format(valorTotal != null ? valorTotal : BigDecimal.ZERO);
     }
 
     public String despesasPagasMeasAnoCongregacao() {
 
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceDespesa.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceDespesa.listarDespesasParametro(Boolean.TRUE);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceDespesa.despesaParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.TRUE);
         } else {
             valorTotal = serviceDespesa.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), Boolean.TRUE);
         }
@@ -156,11 +166,13 @@ public class DashBoardControle {
     }
 
     public String despesasNaoPagasMeasAnoCongregacao() {
+
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceDespesa.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.FALSE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceDespesa.listarDespesasParametro(Boolean.FALSE);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceDespesa.despesaParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.FALSE);
         } else {
             valorTotal = serviceDespesa.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), Boolean.FALSE);
         }
@@ -170,10 +182,11 @@ public class DashBoardControle {
 
     public String valorTotalReceitas() {
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceReceita.valorTotalReceitas(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceReceita.listarReceitas();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceReceita.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             valorTotal = serviceReceita.valorTotalReceitas(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
@@ -183,10 +196,11 @@ public class DashBoardControle {
 
     public String valorTotalDespesas() {
         BigDecimal valorTotal = BigDecimal.ZERO;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             valorTotal = serviceDespesa.valorTotalDespesasCongregacao(AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            valorTotal = serviceDespesa.listarDespesas();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            valorTotal = serviceDespesa.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             valorTotal = serviceDespesa.valorTotalDespesasCongregacao(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
@@ -202,16 +216,18 @@ public class DashBoardControle {
         BigDecimal receitasPeriodo;
         BigDecimal despesasPeriodo;
         BigDecimal valorPrevistoPeriodo;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             receitasPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
             despesasPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             receitasPeriodo = serviceReceita.listarReceitasTipoMesAno(mesPesquisa, anoPesquisa);
             despesasPeriodo = serviceDespesa.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             receitasPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
             despesasPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+
         if (receitasPeriodo == null) {
             receitasPeriodo = new BigDecimal(BigInteger.ZERO);
         }
@@ -227,10 +243,11 @@ public class DashBoardControle {
         BigDecimal totalReceitasRecebidas;
         BigDecimal totalDespesasPagas;
         BigDecimal saldoAtual;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             totalReceitasRecebidas = serviceReceita.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
             totalDespesasPagas = serviceDespesa.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             totalReceitasRecebidas = serviceReceita.receitasParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.TRUE);
             totalDespesasPagas = serviceDespesa.despesaParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.TRUE);
         } else {
@@ -255,10 +272,12 @@ public class DashBoardControle {
         List<DizimistaVO> dizimistas = new ArrayList<>();
         Integer quantidadeDizimistas;
         Integer quantidadeNaoDizimistas;
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             quantidadeDizimistas = serviceMembroService.totalDizimistasPorParametro(AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
             quantidadeNaoDizimistas = serviceMembroService.totalDizimistasPorParametro(AplicacaoControle.getInstance().getIdIgreja(), Boolean.FALSE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             quantidadeDizimistas = serviceMembroService.totalDizimistas(Boolean.TRUE);
             quantidadeNaoDizimistas = serviceMembroService.totalDizimistas(Boolean.FALSE);
         } else {
@@ -276,15 +295,17 @@ public class DashBoardControle {
         List<ResumoFinanceiroVO> resumoFinanceiroVOS = new ArrayList<>();
         BigDecimal valorReceitaPeriodo;
 
-        for (EnumMes mes : EnumMes.values()){
-            if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null)  {
-                valorReceitaPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mes.ordinal() +1, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-            } else if(AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-                valorReceitaPeriodo = serviceReceita.valorReceitaPeriodo(mes.ordinal()+1,anoPesquisa);
-            }else{
-                valorReceitaPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mes.ordinal()+1, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        for (EnumMes mes : EnumMes.values()) {
+
+            if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+                valorReceitaPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mes.ordinal() + 1, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
+            } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+                valorReceitaPeriodo = serviceReceita.valorReceitaPeriodo(mes.ordinal() + 1, anoPesquisa);
+            } else {
+                valorReceitaPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mes.ordinal() + 1, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
             }
-            resumoFinanceiroVOS.add(new ResumoFinanceiroVO(mes.getDescricao(), valorReceitaPeriodo !=null ? valorReceitaPeriodo : BigDecimal.ZERO));
+
+            resumoFinanceiroVOS.add(new ResumoFinanceiroVO(mes.getDescricao(), valorReceitaPeriodo != null ? valorReceitaPeriodo : BigDecimal.ZERO));
         }
 
         return resumoFinanceiroVOS;
@@ -294,17 +315,33 @@ public class DashBoardControle {
         List<ResumoFinanceiroVO> resumoFinanceiroVOS = new ArrayList<>();
         BigDecimal valorDespesaPeriodo;
 
-        for (EnumMes mes : EnumMes.values()){
-            if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null)  {
-                valorDespesaPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mes.ordinal() +1, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-            } else if(AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-                valorDespesaPeriodo = serviceDespesa.valorDespesaPeriodo(mes.ordinal()+1,anoPesquisa);
-            }else{
-                valorDespesaPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mes.ordinal()+1, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        for (EnumMes mes : EnumMes.values()) {
+
+            if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+                valorDespesaPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mes.ordinal() + 1, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
+            } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+                valorDespesaPeriodo = serviceDespesa.valorDespesaPeriodo(mes.ordinal() + 1, anoPesquisa);
+            } else {
+                valorDespesaPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mes.ordinal() + 1, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
             }
-            resumoFinanceiroVOS.add(new ResumoFinanceiroVO(mes.getDescricao(), valorDespesaPeriodo !=null ? valorDespesaPeriodo : BigDecimal.ZERO));
+
+            resumoFinanceiroVOS.add(new ResumoFinanceiroVO(mes.getDescricao(), valorDespesaPeriodo != null ? valorDespesaPeriodo : BigDecimal.ZERO));
         }
 
         return resumoFinanceiroVOS;
+    }
+
+    public List<Evento> getEventos() {
+        List<Evento> eventos = new ArrayList<>();
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            eventos =  serviceEvento.proximosEventosIgreja(mesPesquisa, anoPesquisa,AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            eventos = serviceEvento.proximosEventos(mesPesquisa, anoPesquisa);
+        } else {
+            eventos = serviceEvento.proximosEventosIgreja(mesPesquisa, anoPesquisa,AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+
+        return eventos;
     }
 }

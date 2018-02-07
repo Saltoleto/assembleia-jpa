@@ -15,6 +15,14 @@ public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
 
+    public List<Evento> proximosEventosIgreja(Integer mes, Integer ano,Long idIgreja) {
+        return eventoRepository.proximosEventosIgreja(mes, ano, idIgreja);
+    }
+
+    public List<Evento> proximosEventos(Integer mes, Integer ano) {
+        return eventoRepository.proximosEventos(mes, ano);
+    }
+
     public void salvar(Evento evento) {
         eventoRepository.save(evento);
     }

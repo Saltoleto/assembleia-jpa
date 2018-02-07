@@ -209,14 +209,14 @@ public class DespesaControle {
     }
 
     public List<Despesa> getDespesas() {
-
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             despesas = service.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            despesas = service.listarTodos();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            despesas = service.listarDespesasMesAno(mesPesquisa,anoPesquisa);
         } else {
             despesas = service.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+
         Collections.sort(despesas, new Comparator<Despesa>() {
             @Override
             public int compare(Despesa o1, Despesa o2) {

@@ -78,12 +78,12 @@ public class FluxoCaixaControle {
 
         List<Receita> listReceita = new ArrayList<Receita>();
         List<Despesa> listDespesa = new ArrayList<Despesa>();
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             listReceita = receitaService.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
             listDespesa = despesaService.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            listReceita = receitaService.listarTodos();
-            listDespesa = despesaService.listarTodos();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            listReceita = receitaService.listarReceitasMesAno(mesPesquisa,anoPesquisa);
+            listDespesa = despesaService.listarDespesasMesAno(mesPesquisa,anoPesquisa);
         } else {
             listReceita = receitaService.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
             listDespesa = despesaService.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
