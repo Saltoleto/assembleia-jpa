@@ -54,6 +54,11 @@ public class MembroService {
         return membroRepository.aniversariantesMes();
     }
 
+    public List<Membro> aniversariantesMesIgreja(Long idIgreja) {
+        return membroRepository.aniversariantesMesIgreja(idIgreja);
+    }
+
+
     public List<Membro> listarObreiros(EnumSexo sexo) {
         return membroRepository.listarObreiros(sexo);
     }

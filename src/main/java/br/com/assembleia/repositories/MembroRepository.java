@@ -40,4 +40,6 @@ public interface MembroRepository extends JpaRepository<Membro, Long> {
     Integer totalDizimistas(@Param("dizimista") Boolean dizimista);
 
     List<Membro> listarPorAtividadeCongregacao(@Param("atividade") EnumAtividades atividade, @Param("idIgreja") Long idIgreja);
+
+    List<Membro> aniversariantesMesIgreja(@Param("idIgreja") Long idIgreja);
 }

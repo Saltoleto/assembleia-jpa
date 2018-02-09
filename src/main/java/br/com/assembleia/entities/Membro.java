@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,9 @@ import java.util.List;
         @NamedQuery(name = "Membro.buscarQtdMembrosDizimistas",
                 query = "Select Count(*) from Membro m Where m.dizimista = true "),
         @NamedQuery(name = "Membro.aniversariantesMes",
-                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now())"),
+                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) order by m.dataNascimento asc"),
+        @NamedQuery(name = "Membro.aniversariantesMesIgreja",
+                query = "SELECT m FROM Membro m join m.congregacao i Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) and i.id = :idIgreja"),
         @NamedQuery(name = "Membro.listarObreiros",
                 query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao != 'Membro' Order By m.nome "),
         @NamedQuery(name = "Membro.listarPorSexoCargo",
@@ -126,6 +129,10 @@ public class Membro implements Serializable {
 
     public Date getDataNascimento() {
         return dataNascimento;
+    }
+
+    public String getDataNascimentoFormatada(){
+        return new SimpleDateFormat("dd/MM").format(this.dataNascimento);
     }
 
     public void setDataNascimento(Date dataNascimento) {

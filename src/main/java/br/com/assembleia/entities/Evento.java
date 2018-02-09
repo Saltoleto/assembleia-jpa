@@ -18,9 +18,9 @@ import java.util.List;
         @NamedQuery(name = "Evento.listarPorIgreja",
                 query = "SELECT d FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja"),
         @NamedQuery(name = "Evento.proximosEventosIgreja",
-                query = "SELECT evento FROM Evento evento JOIN evento.congregacao congre Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja "),
+                query = "SELECT evento FROM Evento evento JOIN evento.congregacao congre Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja"),
         @NamedQuery(name = "Evento.proximosEventos",
-                query = "SELECT evento FROM Evento evento WHERE extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano ")
+                query = "SELECT evento FROM Evento evento WHERE extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano")
 })
 public class Evento implements Serializable, Comparable<Evento> {
 

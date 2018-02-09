@@ -134,7 +134,7 @@
                                 </b:row>
                                 <b:row>
                                     <hf:chart type="pie" height="284">
-                                        <hf:chartSerie  name="Quantidade" value="#{dashBoardControle.listaDizimistas}"
+                                        <hf:chartSerie name="Quantidade" value="#{dashBoardControle.listaDizimistas}"
                                                        var="point"
                                                        point="#{point.quantidade}" tickLabel="#{point.label}"
                                                        dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
@@ -143,36 +143,30 @@
                             </b:panel>
                         </b:column>
 
-                        <b:column colMd="6" >
+                        <b:column colMd="6">
 
-                            <b:panel  collapsible="false"  title="Eventos #{dashBoardControle.nomeMes}">
-                                <h:dataTable style="margin-bottom: 0px" value="#{dashBoardControle.eventos}" var="evento"
-                                             styleClass="table" rows="5" >
-                                    <h:column>
-                                       #{evento.nome}
-                                    </h:column>
-                                    <h:column>
-                                        #{evento.dataInicioFormatada()}
-                                    </h:column>
-                                    <h:column>
-                                        #{evento.telefone}
-                                    </h:column>
-                                </h:dataTable>
+                            <b:panel collapsible="false" title="Eventos #{dashBoardControle.nomeMes}">
+                                <table class="table" >
+                                    <ui:repeat var="o" value="#{dashBoardControle.eventos}" varStatus="status">
+                                        <tr>
+                                            <td class="text-left col-md-4">#{o.nome}</td>
+                                            <td class="text-center col-md-6">#{o.dataInicioFormatada()}</td>
+                                            <td class="text-left col-md-2">#{o.localEvento}</td>
+                                        </tr>
+                                    </ui:repeat>
+                                </table>
                             </b:panel>
 
                             <b:panel collapsible="false" title="Aniversariantes #{dashBoardControle.nomeMes}">
-                                <h:dataTable style="margin-bottom: 0px;margin-top: 0px"  value="#{dashBoardControle.eventos}" var="evento"
-                                             styleClass="table col-md-12" rows="5">
-                                    <h:column headerClass="text-left">
-                                        #{evento.nome}
-                                    </h:column>
-                                    <h:column>
-                                        #{evento.dataInicioFormatada()}
-                                    </h:column>
-                                    <h:column headerClass="text-right">
-                                        #{evento.telefone}
-                                    </h:column>
-                                </h:dataTable>
+                                <table class="table" >
+                                    <ui:repeat var="ani" value="#{dashBoardControle.aniversariantes}" varStatus="status">
+                                        <tr>
+                                            <td class="text-left col-md-5">#{ani.nome}</td>
+                                            <td class="text-center col-md-5">#{ani.celular}</td>
+                                            <td class="text-left col-md-2">#{ani.dataNascimentoFormatada}</td>
+                                        </tr>
+                                    </ui:repeat>
+                                </table>
                             </b:panel>
                         </b:column>
                     </b:row>

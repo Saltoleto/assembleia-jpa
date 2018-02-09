@@ -23,7 +23,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
-        <primefaces.version>5.2</primefaces.version>
+            <primefaces.version>5.2</primefaces.version>
         <primefaces-theme.version>1.0.10</primefaces-theme.version>
         <taglibs-standard.version>1.1.2</taglibs-standard.version>
     </properties>
@@ -263,9 +263,9 @@
 
         <!--PostgreSql-->
         <dependency>
-            <groupId>postgresql</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901.jdbc4</version>
+            <version>9.2-1004-jdbc41</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->

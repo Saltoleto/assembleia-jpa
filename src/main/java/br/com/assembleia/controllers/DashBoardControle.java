@@ -2,6 +2,7 @@ package br.com.assembleia.controllers;
 
 
 import br.com.assembleia.entities.Evento;
+import br.com.assembleia.entities.Membro;
 import br.com.assembleia.enums.EnumMes;
 import br.com.assembleia.enums.EnumSexo;
 import br.com.assembleia.services.*;
@@ -335,13 +336,27 @@ public class DashBoardControle {
         List<Evento> eventos = new ArrayList<>();
 
         if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
-            eventos =  serviceEvento.proximosEventosIgreja(mesPesquisa, anoPesquisa,AplicacaoControle.getInstance().getIdIgreja());
+            eventos = serviceEvento.proximosEventosIgreja(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
         } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             eventos = serviceEvento.proximosEventos(mesPesquisa, anoPesquisa);
         } else {
-            eventos = serviceEvento.proximosEventosIgreja(mesPesquisa, anoPesquisa,AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+            eventos = serviceEvento.proximosEventosIgreja(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
 
         return eventos;
+    }
+
+    public List<Membro> getAniversariantes() {
+        List<Membro> aniversariantes = new ArrayList<>();
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            aniversariantes = serviceMembroService.aniversariantesMesIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            aniversariantes = serviceMembroService.aniversariantesMes();
+        } else {
+            aniversariantes = serviceMembroService.aniversariantesMesIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
+        }
+
+        return aniversariantes;
     }
 }
