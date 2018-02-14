@@ -24,10 +24,6 @@ import java.util.List;
                 query = "Select Count(*) from Membro Where situacao =:situacao"),
         @NamedQuery(name = "Membro.buscarQtdMembrosDizimistas",
                 query = "Select Count(*) from Membro m Where m.dizimista = true "),
-        @NamedQuery(name = "Membro.aniversariantesMes",
-                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) order by m.dataNascimento asc"),
-        @NamedQuery(name = "Membro.aniversariantesMesIgreja",
-                query = "SELECT m FROM Membro m join m.congregacao i Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) and i.id = :idIgreja"),
         @NamedQuery(name = "Membro.listarObreiros",
                 query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao != 'Membro' Order By m.nome "),
         @NamedQuery(name = "Membro.listarPorSexoCargo",
@@ -49,6 +45,12 @@ import java.util.List;
         @NamedQuery(name = "Membro.listarPorAtividadeCongregacao",
                 query = "SELECT m from Membro m  JOIN m.congregacao i JOIN m.atividades ati WHERE ati=:atividade and  i.id = :idIgreja ")
 
+})
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "Membro.aniversariantesMesIgreja",
+                query = "SELECT m.* FROM Membro m join m.congregacao i Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) and i.id = :idIgreja LIMIT 5", resultClass = Membro.class),
+        @NamedNativeQuery(name = "Membro.aniversariantesMes",
+                query = "SELECT m.* FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) order by m.dataNascimento asc LIMIT 5", resultClass = Membro.class)
 })
 public class Membro implements Serializable {
 

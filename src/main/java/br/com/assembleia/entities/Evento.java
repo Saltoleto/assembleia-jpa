@@ -14,14 +14,17 @@ import java.util.List;
  * @author fernandosaltoleto
  */
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Evento.listarPorIgreja",
-                query = "SELECT d FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja"),
-        @NamedQuery(name = "Evento.proximosEventosIgreja",
-                query = "SELECT evento FROM Evento evento JOIN evento.congregacao congre Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja"),
-        @NamedQuery(name = "Evento.proximosEventos",
-                query = "SELECT evento FROM Evento evento WHERE extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano")
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "Evento.proximosEventos", query = "SELECT evento.* FROM Evento evento WHERE extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano order by evento.datainicio LIMIT 5",
+                resultClass = Evento.class),
+
+        @NamedNativeQuery(name = "Evento.listarPorIgreja",
+                query = "SELECT d.* FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja", resultClass = Evento.class),
+
+        @NamedNativeQuery(name = "Evento.proximosEventosIgreja",
+                query = "SELECT evento.* FROM Evento evento JOIN evento.congregacao congre Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja order by evento.datainicio LIMIT 5")
 })
+
 public class Evento implements Serializable, Comparable<Evento> {
 
     private static final long serialVersionUID = 1L;
@@ -68,7 +71,7 @@ public class Evento implements Serializable, Comparable<Evento> {
         return dataInicio;
     }
 
-    public String dataInicioFormatada(){
+    public String dataInicioFormatada() {
         return new SimpleDateFormat("dd/MM/yyyy").format(this.dataInicio);
     }
 

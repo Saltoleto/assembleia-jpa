@@ -9,9 +9,9 @@
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/font-awesome.min.css"/>
-        <h:outputScript library="js" name="bootstrap.js" />
-        <h:outputScript library="js" name="bootstrap.min.js" />
-        <h:outputScript library="js" name="jquery.maskMoney.js" />
+        <h:outputScript library="js" name="bootstrap.js"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+        <h:outputScript library="js" name="jquery.maskMoney.js"/>
         <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/default.css"/>
         <h:outputStylesheet library="css" name="bootstrap.css"/>
     </h:head>
@@ -27,7 +27,8 @@
                 <b:navbarLinks>
                     <b:navLink outcome="/index" value="Home" iconAwesome="home"/>
                 </b:navbarLinks>
-                <b:dropMenu value="#{msgs['menu.secretaria']}" rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede() || aplicacaoControle.secretario()}">
+                <b:dropMenu value="#{msgs['menu.secretaria']}" rendered="#{aplicacaoControle.adminCongregacao() ||
+                aplicacaoControle.adminSede() || aplicacaoControle.secretario()}">
                     <b:navLink value="#{msgs['menu.cargos']}" iconAwesome="fa-briefcase" outcome="/view/cargo/lista"/>
 
                     <b:navLink value="#{msgs['menu.curso']}" iconAwesome="fa-book"
@@ -49,7 +50,9 @@
                                outcome="/view/patrimonio/lista"/>
                 </b:dropMenu>
 
-                <b:dropMenu value="#{msgs['menu.financeiro']}" rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede() || aplicacaoControle.tesoureiro()}">
+                <b:dropMenu value="#{msgs['menu.financeiro']}"
+                            rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede()
+                             || aplicacaoControle.tesoureiro()}">
 
                     <b:navLink value="#{msgs['menu.despesa']}" iconAwesome="fa-minus-square"
                                outcome="/view/despesa/lista"/>
@@ -68,14 +71,20 @@
 
                 </b:dropMenu>
 
-                <b:dropMenu value="#{msgs['menu.configuracoes']}" rendered="#{aplicacaoControle.adminSede() || aplicacaoControle.adminCongregacao()}">
+                    <b:navLink value="#{msgs['menu.relatorios']}"
+                               rendered="#{aplicacaoControle.adminCongregacao() || aplicacaoControle.adminSede()}"
+                               outcome="/view/relatorios/lista"/>
+
+                <b:dropMenu value="#{msgs['menu.configuracoes']}"
+                            rendered="#{aplicacaoControle.adminSede() || aplicacaoControle.adminCongregacao()}">
 
                     <b:navLink value="#{msgs['menu.congregacoes']}" iconAwesome="fa-sitemap"
                                outcome="/view/congregacao/lista"/>
 
-                    <b:navLink value="#{msgs['menu.sede']}" rendered="#{aplicacaoControle.adminSede()}" iconAwesome="fa-institution" outcome="/view/sede/lista"/>
+                    <b:navLink value="#{msgs['menu.sede']}" rendered="#{aplicacaoControle.adminSede()}"
+                               iconAwesome="fa-institution" outcome="/view/sede/lista"/>
 
-                    <b:navLink  value="#{msgs['menu.usuarios']}"  iconAwesome="fa-user-plus"
+                    <b:navLink value="#{msgs['menu.usuarios']}" iconAwesome="fa-user-plus"
                                outcome="/view/usuario/lista"/>
                 </b:dropMenu>
             </b:navbarLinks>
@@ -86,12 +95,13 @@
             </b:navbarLinks>
 
             <b:navbarLinks pull="right">
-                <b:navLink active="true" value="#{aplicacaoControle.usuario.login}" iconAwesome="fa-user" tooltip="Usuário"/>
+                <b:navLink active="true" value="#{aplicacaoControle.usuario.login}" iconAwesome="fa-user"
+                           tooltip="Usuário"/>
             </b:navbarLinks>
 
             <b:navbarLinks rendered="#{aplicacaoControle.adminSede()}" tooltip="Igreja" pull="right">
 
-                <h:form style="margin-top:8px" styleClass="form-inline" >
+                <h:form style="margin-top:8px" styleClass="form-inline">
                     <b:selectOneMenu value="#{aplicacaoControle.congregacao}"
                                      onchange="$('.theme-selector-button').click()">
                         <f:selectItem itemLabel="#{msgs['label.todas.igreja']}" itemValue=""
