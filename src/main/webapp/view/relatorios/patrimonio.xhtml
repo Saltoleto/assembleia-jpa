@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="Relatório de Patrimônio"/>
+
+                <b:commandButton look="info" class="pull-right" tooltip="#{msgs['btn.imprimir']}"
+                                 value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{relatorioControle.printPatrimonio()}"/>
+                </b:commandButton>
+            </b:formGroup>
+
+            <b:panel collapsible="false">
+                <b:dataTable scroll-x="false" fixedHeader="true" info="false" selectionMode="false" responsive="true"
+                             searching="false" paginated="false"
+                             customLangUrl="#{resource['js/pt-br.json']}"
+                             value="#{patrimonioControle.patrimonios}" var="patrimonio">
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.codigo']}">
+                        <h:outputText value="#{patrimonio.codigo}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.nome']}">
+                        <h:outputText value="#{patrimonio.nome}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.situacao']}">
+                        <h:outputText value="#{patrimonio.situacaoPatrimonio}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.valor']}">
+                        <h:outputText value="R$ #{patrimonio.valorUnitarioFormatado}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.quantidade']}">
+                        <h:outputText value="#{patrimonio.quantidade}">
+                            <f:convertNumber maxFractionDigits="0" minFractionDigits="0"/>
+                        </h:outputText>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.data.aquisicao']}">
+                        <h:outputText value="#{patrimonio.dataAquisicao}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.valor.total']}">
+                        <h:outputText value="#{patrimonio.valorTotal}"/>
+                    </b:dataTableColumn>
+
+                </b:dataTable>
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

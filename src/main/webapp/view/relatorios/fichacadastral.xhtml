@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+        <h:form style="text-align: center">
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="Ficha Cadastral de Membro"/>
+                <b:commandButton look="info" tooltip="#{msgs['btn.imprimir']}"
+                                 class="pull-right" value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{relatorioControle.fichaCadastralMembro()}"  />
+                </b:commandButton>
+            </b:formGroup>
+
+
+                <p:graphicImage  id="fotoMembro" cache="true" value="#{relatorioControle.imagemFicha}"
+                                 style=" align-content: center;border: 1px solid #E1E1E1; border-radius: 4px"
+                                 height="30%"
+                                 width="60%"/><br/>
+
+        </h:form>
+    </ui:define>
+</ui:composition> 

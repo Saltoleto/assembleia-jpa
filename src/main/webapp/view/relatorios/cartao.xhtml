@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form>
+            <b:messages/>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="Cartão ou Credencial"/>
+                <b:commandButton class="pull-right" look="info" tooltip="#{msgs['btn.imprimir']}"  value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{relatorioControle.printCartao()}"  />
+                </b:commandButton>
+            </b:formGroup>
+
+            <b:panel collapsible="false" >
+
+                <div class="form-inline">
+
+                        <b:selectOneMenu id="selectCargos" value="#{relatorioControle.cargo}">
+                            <f:selectItem itemLabel="#{msgs['label.selecione.cargo']}" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{membroControle.cargos}" var="cargo"
+                                           itemLabel="#{cargo.descricao}"
+                                           itemValue="#{cargo}"/>
+                        </b:selectOneMenu>
+
+                        <b:selectOneMenu style="margin-left:10px" required="true"
+                                         requiredMessage="#{msgs['label.informe.sexo']}"
+                                         id="sexo" value="#{relatorioControle.sexo}">
+                            <f:selectItem itemLabel="Selecione o Sexo" itemValue="Teste"/>
+                            <f:converter converterId="enumSexoConverter"/>
+                            <f:selectItems value="#{relatorioControle.listaSexo}" var="sexo"
+                                           itemLabel="#{sexo.descricao}"
+                                           itemValue="#{sexo}"/>
+                        </b:selectOneMenu>
+
+                    <b:selectOneMenu style="margin-left:10px" required="true"
+                                     requiredMessage="#{msgs['label.tipo']}"
+                                     id="tipo" value="#{relatorioControle.tipoCartao}">
+                        <f:selectItem itemLabel="Selecione o Tipo" itemValue="Tipo"/>
+                        <f:converter converterId="enumTipoCartaoConverter"/>
+                        <f:selectItems value="#{relatorioControle.listaTiposCartao}" var="cl"
+                                       itemLabel="#{cl.descricao}"
+                                       itemValue="#{cl}"/>
+                    </b:selectOneMenu>
+
+                    <b:commandButton style="margin-left:10px" value="Listar" action="#{relatorioControle.listarCartao()}" tooltip="#{msgs['label.listar']}"/>
+
+                </div><br/><br/>
+
+                <b:dataTable croll-x="false" responsive="true"
+                             info="false"
+                             select="true"
+                             selectionMode="multiple"
+                             customLangUrl="#{resource['js/pt-br.json']}"
+                             value="#{relatorioControle.listaMembrosCartao}"
+                             onselect="ajax:relatorioControle.selectMembro(membro)"
+                             ondeselect="ajax:relatorioControle.deselectMembro(membro)"
+                             var="membro">
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.nome']}">
+                        <h:outputText value="#{membro.nome}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.cargo']}">
+                        <h:outputText value="#{membro.cargo.descricao}"/>
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
