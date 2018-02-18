@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:hf="http://highfaces.org"
+                xmlns:b="http://bootsfaces.net/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form>
+            <b:messages/>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="Despesas por Titpo"/>
+                <b:commandButton class="pull-right" look="info" tooltip="#{msgs['btn.imprimir']}"
+                                 value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{relatorioControle.aniversariantes()}"/>
+                </b:commandButton>
+            </b:formGroup>
+            <b:panel collapsible="false" >
+
+                <div class="form-inline" style="height: 300px">
+
+                    <h:panelGroup>
+                        <b:selectOneMenu tooltip="#{msgs['label.mes']}" value="#{graficoControle.mesPesquisa}">
+                            <f:selectItem itemLabel="JANEIRO" itemValue="#{1}"/>
+                            <f:selectItem itemLabel="FEVEREIRO" itemValue="#{2}"/>
+                            <f:selectItem itemLabel="MARÇO" itemValue="#{3}"/>
+                            <f:selectItem itemLabel="ABRIL" itemValue="#{4}"/>
+                            <f:selectItem itemLabel="MAIO" itemValue="#{5}"/>
+                            <f:selectItem itemLabel="JUNHO" itemValue="#{6}"/>
+                            <f:selectItem itemLabel="JULHO" itemValue="#{7}"/>
+                            <f:selectItem itemLabel="AGOSTO" itemValue="#{8}"/>
+                            <f:selectItem itemLabel="SETEMBRO" itemValue="#{9}"/>
+                            <f:selectItem itemLabel="OUTUBRO" itemValue="#{10}"/>
+                            <f:selectItem itemLabel="NOVEMBRO" itemValue="#{11}"/>
+                            <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
+                        </b:selectOneMenu>
+                    </h:panelGroup>
+
+                    <b:inputText style="margin-left:10px" value="#{graficoControle.anoPesquisa}" placeholder="Ano"
+                                 tooltip="#{msgs['label.ano']}"/>
+                    <b:commandButton id="btnGerar" value="Gerar" action="#{graficoControle.listarDespesasCategoria()}"/>
+
+
+                    <hf:chart type="pie" height="235"  credits="false">
+                        <hf:chartSerie name="valor" value="#{graficoControle.listarDepesasTipoDto}"
+                                       var="point"
+                                       point="#{point.valorDespesa}"  tickLabel="#{point.descricao}"
+                                       dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
+                    </hf:chart>
+                </div>
+
+            </b:panel>
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>

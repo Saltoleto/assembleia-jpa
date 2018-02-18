@@ -16,6 +16,7 @@
                     <p:fileDownload value="#{relatorioControle.aniversariantes()}"  />
                 </b:commandButton>
             </b:formGroup>
+
             <b:panel collapsible="false">
 
                 <div class="form-inline">
@@ -34,8 +35,7 @@
                         <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
                     </b:selectOneMenu>
 
-                    <b:inputText style="margin-left:10px"  value="#{relatorioControle.anoPesquisaAniversario}" placeholder="Ano"
-                                 tooltip="#{msgs['label.ano']}"/>
+                    <b:inputText style="margin-left:10px"  value="#{relatorioControle.anoPesquisaAniversario}" placeholder="Ano" tooltip="#{msgs['label.ano']}"/>
 
                     <b:commandButton style="margin-left:10px"   value="Listar" action="#{relatorioControle.listar()}" tooltip="#{msgs['label.listar']}"/>
 

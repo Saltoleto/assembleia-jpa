@@ -2,6 +2,7 @@ package br.com.assembleia.services;
 
 
 import br.com.assembleia.entities.Despesa;
+import br.com.assembleia.entities.DespesasTipoDTO;
 import br.com.assembleia.repositories.DespesaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,10 +42,6 @@ public class DespesaService {
         return despesaRepository.listarDespesasMesAno(mes, ano);
     }
 
-    public List<Despesa> despesasPagarVisaoGeral(Integer mes, Integer ano) {
-        return despesaRepository.despesasPagarVisaoGeral(mes, ano);
-    }
-
     public BigDecimal listarDespesasPagas() {
         return despesaRepository.listarDespesasPagas();
     }
@@ -53,8 +50,8 @@ public class DespesaService {
         return despesaRepository.buscarDespesaGrafico(mes, ano);
     }
 
-    public BigDecimal listarDespesasTipoMesAno(Integer mes, Integer ano, Long id) {
-        return despesaRepository.listarDespesasTipoMesAno(mes, ano, id);
+    public List<DespesasTipoDTO> listarDespesasTipoMesAno(Integer mes, Integer ano) {
+        return despesaRepository.listarDespesasTipoMesAno(mes, ano);
     }
 
     public BigDecimal valorDespesasMesAnoCongregacao(Integer mes, Integer ano, Long id){

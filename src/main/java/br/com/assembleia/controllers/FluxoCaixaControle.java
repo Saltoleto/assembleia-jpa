@@ -197,7 +197,7 @@ public class FluxoCaixaControle {
             receitasPeriodo = receitaService.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
             despesasPeriodo = despesaService.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
         } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
-            receitasPeriodo = receitaService.listarReceitasTipoMesAno(mesPesquisa, anoPesquisa);
+            receitasPeriodo = receitaService.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
             despesasPeriodo = despesaService.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             receitasPeriodo = receitaService.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());

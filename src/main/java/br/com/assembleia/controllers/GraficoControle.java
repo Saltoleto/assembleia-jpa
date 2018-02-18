@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.assembleia.controle;
 
-import br.assembleia.entidades.*;
-import br.assembleia.service.CategoriaService;
-import br.assembleia.service.DespesaService;
-import br.assembleia.service.ReceitaService;
-import com.google.gson.Gson;
-import org.primefaces.context.RequestContext;
+package br.com.assembleia.controllers;
+
+
+import br.com.assembleia.entities.*;
+import br.com.assembleia.services.DespesaService;
+import br.com.assembleia.services.ReceitaService;
+import br.com.assembleia.services.TipoDeDespesaService;
+import br.com.assembleia.services.TipoDeReceitaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -24,11 +21,11 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *
  * @author fernandosaltoleto
  */
-@Controller
-@Scope("session")
+@ManagedBean
+@SessionScoped
+@Component
 public class GraficoControle {
 
     private static final Locale BRASIL = new Locale("pt", "BR");
@@ -38,18 +35,20 @@ public class GraficoControle {
 
     private List<BigDecimal> receitas;
     private List<BigDecimal> despesas;
-    private List<Categoria> categorias;
-    private List<Despesa> despesasCategoria;
+    private List<TipoDeDespesa> tipoDeDespesas;
+    private List<TipoDeReceita> tipoDeReceitas;
     private List<Receita> listaReceita;
-    private List<ReceitasCatoriaDTO> receitasCatoriaDTOs;
-    private List<DespesasCatoriaDTO> depesasCatoriaDTOs;
+    private List<ReceitasTipoDTO> receitasTipoDTOS;
 
     @Autowired
     private ReceitaService receitaService;
     @Autowired
     private DespesaService despesaService;
     @Autowired
-    private CategoriaService categoriaService;
+    private TipoDeDespesaService tipoDeDespesaService;
+    @Autowired
+    private TipoDeReceitaService tipoDeReceitaService;
+
 
     @PostConstruct
     private void init() {
@@ -57,33 +56,13 @@ public class GraficoControle {
         mesPesquisa = Calendar.getInstance().get(Calendar.MONTH) + 1;
     }
 
-    public void receitasDespesas() {
-        List<BigDecimal> receitasTela = getReceitas();
-        List<BigDecimal> despesasTela = getDespesas();
-        RequestContext reqCtx = RequestContext.getCurrentInstance();
-        reqCtx.addCallbackParam("receitas", new Gson().toJson(receitasTela));
-        reqCtx.addCallbackParam("despesas", new Gson().toJson(despesasTela));
-
-    }
-
-    public void receitasCategoria() {
-        List<ReceitasCatoriaDTO> receitasCategoria = getCatoriaDTOs();
-        RequestContext reqCtx = RequestContext.getCurrentInstance();
-        reqCtx.addCallbackParam("receitasCategoria", new Gson().toJson(receitasCategoria));
-    }
-    
-      public void despesasCategoria() {
-        List<DespesasCatoriaDTO> despesasCategoria = getDepesasCatoriaDTOs();
-        RequestContext reqCtx = RequestContext.getCurrentInstance();
-        reqCtx.addCallbackParam("despesasCategoria", new Gson().toJson(despesasCategoria));
-    }
 
     public List<BigDecimal> getReceitas() {
 
         receitas = new ArrayList<BigDecimal>();
         for (int i = 1; i <= 12; i++) {
             BigDecimal receita;
-            receita = receitaService.buscarReceitaGrafico(new Long(i), new Integer(anoPesquisa));
+            receita = receitaService.buscarReceitaGrafico(i, new Integer(anoPesquisa));
             if (receita == null) {
                 receita = new BigDecimal(0);
             }
@@ -114,49 +93,31 @@ public class GraficoControle {
         return listaReceita;
     }
 
-    public List<ReceitasCatoriaDTO> getCatoriaDTOs() {
+    public List<ReceitasTipoDTO> getCatoriaDTOs() {
 
-        receitasCatoriaDTOs = new ArrayList<ReceitasCatoriaDTO>();
-        categorias = new ArrayList<Categoria>();
-        categorias = categoriaService.listarTodos();
-        for (Categoria categoria : categorias) {
-            ReceitasCatoriaDTO receitaCat = new ReceitasCatoriaDTO();
+        receitasTipoDTOS = new ArrayList<ReceitasTipoDTO>();
+        tipoDeReceitas = new ArrayList<TipoDeReceita>();
+        tipoDeReceitas = tipoDeReceitaService.listarTodos();
+        for (TipoDeReceita categoria : tipoDeReceitas) {
+            ReceitasTipoDTO receitaCat = new ReceitasTipoDTO();
             receitaCat.setDescricao(categoria.getDescricao());
-            receitaCat.setValorReceita(receitaService.listarReceitasCategoriaMesAno(mesPesquisa, anoPesquisa, categoria.getId()));
+            receitaCat.setValorReceita(receitaService.listarReceitasTipoMesAno(categoria.getId(), mesPesquisa, anoPesquisa));
             if (receitaCat.getValorReceita() != null) {
-                receitasCatoriaDTOs.add(receitaCat);
+                receitasTipoDTOS.add(receitaCat);
             }
-            
+
         }
-        return receitasCatoriaDTOs;
+        return receitasTipoDTOS;
     }
 
-    public List<DespesasCatoriaDTO> getDepesasCatoriaDTOs() {
-        depesasCatoriaDTOs = new ArrayList<DespesasCatoriaDTO>();
-        categorias = new ArrayList<Categoria>();
-        categorias = categoriaService.listarTodos();
-        for (Categoria categoria : categorias) {
-            DespesasCatoriaDTO despesa = new DespesasCatoriaDTO();
-            despesa.setDescricao(categoria.getDescricao());
-            despesa.setValorDespesa(despesaService.listarDespesasCategoriaMesAno(mesPesquisa, anoPesquisa, categoria.getId()));
-            if (despesa.getValorDespesa() !=null) {
-                depesasCatoriaDTOs.add(despesa);
-            }
-            
-        }
-        return depesasCatoriaDTOs;
+    public List<DespesasTipoDTO> getListarDepesasTipoDto() {
+        List<DespesasTipoDTO> despesasTipoDTOS = new ArrayList<>();
+        despesasTipoDTOS = despesaService.listarDespesasTipoMesAno(mesPesquisa, anoPesquisa);
+        return despesasTipoDTOS;
     }
 
-    public List<Despesa> getDespesasCategoria() {
-        return despesasCategoria;
-    }
-
-    public void setDespesasCategoria(List<Despesa> despesasCategoria) {
-        this.despesasCategoria = despesasCategoria;
-    }
-
-    public void setReceitas(List<BigDecimal> receitas) {
-        this.receitas = receitas;
+    public String listarDespesasCategoria(){
+        return "despesascategoria?faces-redirect=true";
     }
 
     public int getAnoPesquisa() {
@@ -167,10 +128,6 @@ public class GraficoControle {
         this.anoPesquisa = anoPesquisa;
     }
 
-    public List<Categoria> getCategorias() {
-        return categorias = categoriaService.listarTodos();
-    }
-
     public int getMesPesquisa() {
         return mesPesquisa;
     }
@@ -179,16 +136,71 @@ public class GraficoControle {
         this.mesPesquisa = mesPesquisa;
     }
 
-    public List<ReceitasCatoriaDTO> getReceitasCatoriaDTOs() {
-        return receitasCatoriaDTOs;
+    public void setReceitas(List<BigDecimal> receitas) {
+        this.receitas = receitas;
     }
 
-    public void setReceitasCatoriaDTOs(List<ReceitasCatoriaDTO> receitasCatoriaDTOs) {
-        this.receitasCatoriaDTOs = receitasCatoriaDTOs;
+    public void setDespesas(List<BigDecimal> despesas) {
+        this.despesas = despesas;
     }
 
-    public void setDepesasCatoriaDTOs(List<DespesasCatoriaDTO> depesasCatoriaDTOs) {
-        this.depesasCatoriaDTOs = depesasCatoriaDTOs;
+    public List<TipoDeDespesa> getTipoDeDespesas() {
+        return tipoDeDespesas;
     }
 
+    public void setTipoDeDespesas(List<TipoDeDespesa> tipoDeDespesas) {
+        this.tipoDeDespesas = tipoDeDespesas;
+    }
+
+    public List<TipoDeReceita> getTipoDeReceitas() {
+        return tipoDeReceitas;
+    }
+
+    public void setTipoDeReceitas(List<TipoDeReceita> tipoDeReceitas) {
+        this.tipoDeReceitas = tipoDeReceitas;
+    }
+
+    public void setListaReceita(List<Receita> listaReceita) {
+        this.listaReceita = listaReceita;
+    }
+
+    public List<ReceitasTipoDTO> getReceitasTipoDTOS() {
+        return receitasTipoDTOS;
+    }
+
+    public void setReceitasTipoDTOS(List<ReceitasTipoDTO> receitasTipoDTOS) {
+        this.receitasTipoDTOS = receitasTipoDTOS;
+    }
+
+    public ReceitaService getReceitaService() {
+        return receitaService;
+    }
+
+    public void setReceitaService(ReceitaService receitaService) {
+        this.receitaService = receitaService;
+    }
+
+    public DespesaService getDespesaService() {
+        return despesaService;
+    }
+
+    public void setDespesaService(DespesaService despesaService) {
+        this.despesaService = despesaService;
+    }
+
+    public TipoDeDespesaService getTipoDeDespesaService() {
+        return tipoDeDespesaService;
+    }
+
+    public void setTipoDeDespesaService(TipoDeDespesaService tipoDeDespesaService) {
+        this.tipoDeDespesaService = tipoDeDespesaService;
+    }
+
+    public TipoDeReceitaService getTipoDeReceitaService() {
+        return tipoDeReceitaService;
+    }
+
+    public void setTipoDeReceitaService(TipoDeReceitaService tipoDeReceitaService) {
+        this.tipoDeReceitaService = tipoDeReceitaService;
+    }
 }

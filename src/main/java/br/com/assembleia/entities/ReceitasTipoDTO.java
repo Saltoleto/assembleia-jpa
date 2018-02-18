@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  *
  * @author fernandosaltoleto
  */
-public class ReceitasCatoriaDTO {
+public class ReceitasTipoDTO {
 
     private String descricao;
     private BigDecimal valorReceita;

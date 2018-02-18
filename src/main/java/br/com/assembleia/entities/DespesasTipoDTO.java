@@ -6,10 +6,15 @@ import java.math.BigDecimal;
  *
  * @author fernandosaltoleto
  */
-public class DespesasCatoriaDTO {
+public class DespesasTipoDTO {
 
     private String descricao;
     private BigDecimal valorDespesa;
+
+    public DespesasTipoDTO(String descricao, BigDecimal valorDespesa) {
+        this.descricao = descricao;
+        this.valorDespesa = valorDespesa;
+    }
 
     public String getDescricao() {
         return descricao;

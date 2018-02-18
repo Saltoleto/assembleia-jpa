@@ -223,7 +223,7 @@ public class DashBoardControle {
             receitasPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
             despesasPeriodo = serviceDespesa.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
         } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
-            receitasPeriodo = serviceReceita.listarReceitasTipoMesAno(mesPesquisa, anoPesquisa);
+            receitasPeriodo = serviceReceita.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
             despesasPeriodo = serviceDespesa.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             receitasPeriodo = serviceReceita.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());

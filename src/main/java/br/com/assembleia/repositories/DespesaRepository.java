@@ -1,6 +1,7 @@
 package br.com.assembleia.repositories;
 
 import br.com.assembleia.entities.Despesa;
+import br.com.assembleia.entities.DespesasTipoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -15,13 +16,11 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
 
     List<Despesa> listarDespesasMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
-    List<Despesa> despesasPagarVisaoGeral(@Param("mes") Integer mes, @Param("ano") Integer ano);
-
     BigDecimal listarDespesasPagas();
 
     BigDecimal buscarDespesaGrafico(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
-    BigDecimal listarDespesasTipoMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("id") Long id);
+    List<DespesasTipoDTO> listarDespesasTipoMesAno(@Param("mes") Integer mes, @Param("ano") Integer ano);
 
     BigDecimal valorDespesasMesAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id);
 

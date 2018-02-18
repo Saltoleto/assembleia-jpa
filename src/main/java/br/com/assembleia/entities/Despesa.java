@@ -22,14 +22,10 @@ import java.util.Locale;
                 query = "Select r from Despesa r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Despesa.buscarDespesaGrafico",
                 query = "Select sum(r.valor) from Despesa r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano"),
-        @NamedQuery(name = "Despesa.listarDespesasTipoMesAno",
-                query = "Select sum(r.valor) from Despesa r Where r.tipoDeDespesa.id =:id and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Despesa.listarPorIgreja",
                 query = "SELECT r FROM Despesa r JOIN r.congregacao i WHERE i.id = :idIgreja"),
         @NamedQuery(name = "Despesa.listarDespesasPagas",
                 query = "SELECT sum(d.valor) FROM Despesa d where d.pago = true"),
-        @NamedQuery(name = "Despesa.despesasPagarVisaoGeral",
-                query = "SELECT sum(d.valor) FROM Despesa d Where extract(MONTH FROM d.data) = :mes and extract(YEAR FROM d.data) = :ano AND d.pago = false "),
         @NamedQuery(name = "Despesa.valorDespesasMesAnoCongregacao",
                 query = "Select SUM(r.valor) as total from Despesa r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja "),
         @NamedQuery(name = "Despesa.despesaParametroMeasAnoCongregacao",
@@ -48,6 +44,21 @@ import java.util.Locale;
                 query = "Select sum(r.valor) from Despesa r where r.pago = :pago ")
 
 })
+@NamedNativeQuery(
+        name = "Despesa.listarDespesasTipoMesAno",
+        query = "Select td.descricao,sum(d.valor) as valorDespesa from despesa d Join tipodedespesa td on d.tipodedespesa_id = td.id Where extract(MONTH FROM d.data) =:mes and extract(YEAR FROM d.data) =:ano group by d.tipodedespesa_id,td.descricao ",
+        resultSetMapping = "DespesasTipoDTO"
+)
+@SqlResultSetMapping(
+        name = "DespesasTipoDTO",
+        classes = @ConstructorResult(
+                targetClass = DespesasTipoDTO.class,
+                columns = {
+                        @ColumnResult(name = "descricao"),
+                        @ColumnResult(name = "valorDespesa")
+                }
+        )
+)
 public class Despesa implements Serializable, Comparable<Despesa> {
 
     private static final long serialVersionUID = 1L;

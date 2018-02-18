@@ -32,12 +32,16 @@ public class ReceitaService {
         return receitaRepository.valorReceitaPeriodo(mes, ano);
     }
 
+    public BigDecimal buscarReceitaGrafico(Integer mes, Integer ano){
+       return receitaRepository.buscarReceitaGrafico(mes,ano);
+    }
+
     public BigDecimal listarReceitasParametro(Boolean recebido) {
         return receitaRepository.listarReceitasParametro(recebido);
     }
 
-    public BigDecimal listarReceitasTipoMesAno(Integer mes, Integer ano) {
-        return receitaRepository.listarReceitasTipoMesAno(mes, ano);
+    public BigDecimal listarReceitasTipoMesAno(Long idTipoReceita,Integer mes, Integer ano) {
+        return receitaRepository.listarReceitasTipoMesAno(idTipoReceita,mes, ano);
     }
 
     public List<Receita> listarReceitasMesAno(Integer mes, Integer ano) {

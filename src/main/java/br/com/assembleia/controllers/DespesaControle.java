@@ -240,19 +240,6 @@ public class DespesaControle {
         return df.format(valorDespesaPeriodo !=null ? valorDespesaPeriodo : BigDecimal.ZERO);
     }
 
-    public List<Despesa> getDespesaPagarVisaoGeral() {
-
-        despesaPagarVisaoGeral = service.despesasPagarVisaoGeral(mesPesquisa, anoPesquisa);
-
-        Collections.sort(despesaPagarVisaoGeral, new Comparator<Despesa>() {
-            @Override
-            public int compare(Despesa o1, Despesa o2) {
-                return o2.getData().compareTo(o1.getData());
-            }
-        });
-
-        return despesaPagarVisaoGeral;
-    }
 
     public List<Fornecedor> getFornecedores() {
 

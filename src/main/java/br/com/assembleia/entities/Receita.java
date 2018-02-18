@@ -25,7 +25,7 @@ import java.util.Locale;
         @NamedQuery(name = "Receita.buscarReceitaGrafico",
                 query = "Select sum(r.valor) from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano"),
         @NamedQuery(name = "Receita.listarReceitasTipoMesAno",
-                query = "Select sum(r.valor) from Receita r JOIN r.tipoDeReceita tr Where  extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
+                query = "Select sum(r.valor) from Receita r JOIN r.tipoDeReceita tr Where tr.id =:idTipoReceita and  extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano "),
         @NamedQuery(name = "Receita.listarUltimasReceitasVisao",
                 query = "Select r from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano AND r.recebido = true"),
         @NamedQuery(name = "Receita.buscarReceitaMembroData",

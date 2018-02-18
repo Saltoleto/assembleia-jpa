@@ -96,7 +96,7 @@
                                     </b:column>
                                 </b:row>
                                 <b:row>
-                                    <hf:chart type="column" height="195" xaxisLabel="Meses" yaxisLabel="R$">
+                                    <hf:chart type="column" credits="false" height="195" xaxisLabel="Meses" yaxisLabel="R$">
                                         <hf:chartSerie name="Receitas"
                                                        value="#{dashBoardControle.resumoFinanceiroReceitasGrafico}"
                                                        var="point2"
@@ -133,7 +133,7 @@
                                     </b:column>
                                 </b:row>
                                 <b:row>
-                                    <hf:chart type="pie" height="235">
+                                    <hf:chart type="pie" credits="false" height="235">
                                         <hf:chartSerie name="Quantidade" value="#{dashBoardControle.listaDizimistas}"
                                                        var="point"
                                                        point="#{point.quantidade}" tickLabel="#{point.label}"
