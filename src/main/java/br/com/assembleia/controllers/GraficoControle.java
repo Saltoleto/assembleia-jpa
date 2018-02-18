@@ -93,31 +93,53 @@ public class GraficoControle {
         return listaReceita;
     }
 
-    public List<ReceitasTipoDTO> getCatoriaDTOs() {
-
-        receitasTipoDTOS = new ArrayList<ReceitasTipoDTO>();
-        tipoDeReceitas = new ArrayList<TipoDeReceita>();
-        tipoDeReceitas = tipoDeReceitaService.listarTodos();
-        for (TipoDeReceita categoria : tipoDeReceitas) {
-            ReceitasTipoDTO receitaCat = new ReceitasTipoDTO();
-            receitaCat.setDescricao(categoria.getDescricao());
-            receitaCat.setValorReceita(receitaService.listarReceitasTipoMesAno(categoria.getId(), mesPesquisa, anoPesquisa));
-            if (receitaCat.getValorReceita() != null) {
-                receitasTipoDTOS.add(receitaCat);
-            }
-
-        }
-        return receitasTipoDTOS;
-    }
 
     public List<DespesasTipoDTO> getListarDepesasTipoDto() {
         List<DespesasTipoDTO> despesasTipoDTOS = new ArrayList<>();
-        despesasTipoDTOS = despesaService.listarDespesasTipoMesAno(mesPesquisa, anoPesquisa);
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            despesasTipoDTOS = despesaService.listarDespesasTipoMesAnoCongregracao(AplicacaoControle.getInstance().getIdIgreja(), mesPesquisa, anoPesquisa);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            despesasTipoDTOS = despesaService.listarDespesasTipoMesAno(mesPesquisa, anoPesquisa);
+        } else {
+            despesasTipoDTOS = despesaService.listarDespesasTipoMesAnoCongregracao(AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(), mesPesquisa, anoPesquisa);
+        }
         return despesasTipoDTOS;
     }
 
-    public String listarDespesasCategoria(){
-        return "despesascategoria?faces-redirect=true";
+    public List<ReceitasTipoDTO> getListarReceitasTipoDto() {
+        List<ReceitasTipoDTO> receitasTipoDTO = new ArrayList<>();
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            receitasTipoDTO = receitaService.listarReceitaTipoMesAnoCongregracao(AplicacaoControle.getInstance().getIdIgreja(), mesPesquisa, anoPesquisa);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            receitasTipoDTO = receitaService.listarReceitaTipoMesAno(mesPesquisa, anoPesquisa);
+        } else {
+            receitasTipoDTO = receitaService.listarReceitaTipoMesAnoCongregracao(AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(), mesPesquisa, anoPesquisa);
+        }
+        return receitasTipoDTO;
+    }
+
+    public List<ReceitasTipoDTO> getListarReceitasMesAnoDto() {
+        List<ReceitasTipoDTO> receitasTipoDTO = new ArrayList<>();
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            receitasTipoDTO = receitaService.listarReceitaMesAnoCongregacao(AplicacaoControle.getInstance().getIdIgreja(), mesPesquisa, anoPesquisa);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            receitasTipoDTO = receitaService.listarReceitaMesAno(mesPesquisa, anoPesquisa);
+        } else {
+            receitasTipoDTO = receitaService.listarReceitaMesAnoCongregacao(AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(), mesPesquisa, anoPesquisa);
+        }
+        return receitasTipoDTO;
+    }
+
+    public String listarDespesasCategoria() {
+        return "despesastipo?faces-redirect=true";
+    }
+
+    public String listarReceitasDespesas() {
+        return "receitasdespesas?faces-redirect=true";
+    }
+
+    public String listarReceitasCategoria() {
+        return "receitastipo?faces-redirect=true";
     }
 
     public int getAnoPesquisa() {

@@ -26,15 +26,18 @@ public interface DespesaRepository extends JpaRepository<Despesa, Integer> {
 
     BigDecimal despesaParametroMeasAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id, @Param("pago") Boolean pago);
 
-    List<Despesa> despesasMesAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano,@Param("idIgreja") Long id);
+    List<Despesa> despesasMesAnoCongregacao(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("idIgreja") Long id);
 
     BigDecimal valorTotalDespesasCongregacao(@Param("idIgreja") Long id);
 
     BigDecimal valorTotalDespesas();
 
-    BigDecimal despesaParametroMeasAno(@Param("mes") Integer mes, @Param("ano") Integer ano,@Param("pago") Boolean pago);
+    BigDecimal despesaParametroMeasAno(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("pago") Boolean pago);
 
     BigDecimal listarDespesas();
 
     BigDecimal listarDespesasParametro(@Param("pago") Boolean pago);
+
+    List<DespesasTipoDTO> listarDespesasTipoMesAnoCongregracao(@Param("idIgreja") Long idIgreja, @Param("mes") Integer mes, @Param("ano") Integer ano);
+
 }

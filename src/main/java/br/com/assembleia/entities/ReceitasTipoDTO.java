@@ -8,8 +8,13 @@ import java.math.BigDecimal;
  */
 public class ReceitasTipoDTO {
 
-    private String descricao;
-    private BigDecimal valorReceita;
+    private String descricao="";
+    private BigDecimal valorReceita=BigDecimal.ZERO;
+
+    public ReceitasTipoDTO(String descricao, BigDecimal valorReceita) {
+        this.descricao = descricao;
+        this.valorReceita = valorReceita;
+    }
 
     public String getDescricao() {
         return descricao;

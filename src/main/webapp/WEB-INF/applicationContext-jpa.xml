@@ -33,8 +33,10 @@
         <security:intercept-url pattern="/view/evento/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
         <security:intercept-url pattern="/view/evento/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
 
-        <security:intercept-url pattern="/view/fornecedor/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO','TESOUREIRO')"/>
-        <security:intercept-url pattern="/view/fornecedor/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO','TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/fornecedor/lista.jsf"
+                                access="hasAnyRole('ADMIN','SECRETARIO','TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/fornecedor/form.jsf"
+                                access="hasAnyRole('ADMIN','SECRETARIO','TESOUREIRO')"/>
 
         <security:intercept-url pattern="/view/membro/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
         <security:intercept-url pattern="/view/membro/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO')"/>
@@ -45,24 +47,33 @@
         <security:intercept-url pattern="/view/sede/lista.jsf" access="hasAnyRole('ADMIN')"/>
         <security:intercept-url pattern="/view/sede/form.jsf" access="hasAnyRole('ADMIN')"/>
 
-        <security:intercept-url pattern="/view/tipodespesa/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
-        <security:intercept-url pattern="/view/tipodespesa/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/tipodespesa/lista.jsf"
+                                access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/tipodespesa/form.jsf"
+                                access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
 
-        <security:intercept-url pattern="/view/tiporeceita/lista.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
-        <security:intercept-url pattern="/view/tiporeceita/form.jsf" access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/tiporeceita/lista.jsf"
+                                access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
+        <security:intercept-url pattern="/view/tiporeceita/form.jsf"
+                                access="hasAnyRole('ADMIN','SECRETARIO', 'TESOUREIRO')"/>
 
         <security:intercept-url pattern="/view/usuario/lista.jsf" access="hasAnyRole('ADMIN')"/>
         <security:intercept-url pattern="/view/usuario/form.jsf" access="hasAnyRole('ADMIN')"/>
 
-        <security:intercept-url pattern="/view/relatorios/aniversariantes.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/fichacadastral.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/carteirinhamembrofeminina.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/carteirinhamembro.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/credencial.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/receitascategoria.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/receitasdespesas.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-        <security:intercept-url pattern="/view/relatorios/despesascategoria.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
-
+        <security:intercept-url pattern="/view/relatorios/aniversariantes.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/fichacadastral.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/carteirinhamembrofeminina.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/carteirinhamembro.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/credencial.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/receitastipo.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/despesastipo.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
 
 
         <security:intercept-url pattern="/index.jsf" access="hasAnyRole('ADMIN')"/>
@@ -78,7 +89,7 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <jpa:repositories base-package="br.com.assembleia.repositories" />
+    <jpa:repositories base-package="br.com.assembleia.repositories"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -107,26 +118,24 @@
         </property>
     </bean>
 
-
-   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+<!--
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"></property>
         <property name="url" value="${jdbc.url}"></property>
         <property name="username" value="${jdbc.username}"></property>
         <property name="password" value="${jdbc.password}"></property>
     </bean>
-
-<!--
+    -->
+    <!
 
     <bean class="java.net.URI" id="dbUrl">
         <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
     </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="url"      value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
     </bean>
--->
-
 
 </beans>

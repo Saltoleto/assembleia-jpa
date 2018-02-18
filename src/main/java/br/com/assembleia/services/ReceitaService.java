@@ -1,6 +1,7 @@
 package br.com.assembleia.services;
 
 import br.com.assembleia.entities.Receita;
+import br.com.assembleia.entities.ReceitasTipoDTO;
 import br.com.assembleia.repositories.ReceitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,22 @@ public class ReceitaService {
         return receitaRepository.listarReceitasMesAno(mes, ano);
     }
 
+    public List<Receita> listarReceitasMembroAnaliticoMesAno(Integer mes, Integer ano, Boolean recebido) {
+        return receitaRepository.listarReceitasMembroAnaliticoMesAno(mes, ano, recebido);
+    }
+
+    public List<Receita> listarReceitasMembroAnaliticoMesAnoIgreja(Integer mes, Integer ano, Long idIgreja, Boolean recebido) {
+        return receitaRepository.listarReceitasMembroAnaliticoMesAnoIgreja(mes, ano,idIgreja, recebido);
+    }
+
+    public BigDecimal receitasMembroParametroMeasAno(Integer mes, Integer ano, Boolean recebido) {
+        return receitaRepository.receitasMembroParametroMeasAno(mes, ano,recebido);
+    }
+
+    public BigDecimal receitasMembroParametroMeasAnoIgreja(Integer mes, Integer ano,Long idIgreja, Boolean recebido) {
+        return receitaRepository.receitasMembroParametroMeasAnoIgreja(mes, ano, idIgreja,recebido);
+    }
+
     public List<Receita> buscarReceitaMembroData(Long mes) {
         return receitaRepository.buscarReceitaMembroData(mes);
     }
@@ -79,4 +96,20 @@ public class ReceitaService {
     public BigDecimal listarReceitas(){
         return receitaRepository.listarReceitas();
     }
+
+    public List<ReceitasTipoDTO> listarReceitaTipoMesAno(Integer mes,Integer ano){
+        return receitaRepository.listarReceitaTipoMesAno(mes,ano);
+    }
+
+    public List<ReceitasTipoDTO> listarReceitaTipoMesAnoCongregracao(Long idIgreja,Integer mes,Integer ano){
+        return receitaRepository.listarReceitaTipoMesAnoCongregracao(idIgreja,mes,ano);
+    }
+
+    public List<ReceitasTipoDTO> listarReceitaMesAno(Integer mes,Integer ano){
+        return receitaRepository.listarReceitaMesAno(mes,ano);
+    }
+    public List<ReceitasTipoDTO> listarReceitaMesAnoCongregacao(Long idIgreja,Integer mes,Integer ano){
+        return receitaRepository.listarReceitaMesAnoCongregacao(idIgreja,mes,ano);
+    }
+
 }

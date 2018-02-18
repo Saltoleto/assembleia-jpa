@@ -2,77 +2,68 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                template="#{pageContext.request.contextPath}/WEB-INF/template3.xhtml">
-    <f:metadata>
-        <f:viewParam name="rel" value="#{relatoriosGerenciaisControle.str}"/>
-    </f:metadata>
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
 
-    <ui:define name="conteudo">  
- 
-        <p:panel > 
-          
-            <f:facet name="header"> 
-                <h:outputText value="Receitas por Membro Analítico" style="font-size: 30px!important; color: white;"/>
-  
-            </f:facet>  
-            <h:form id="form">    
-                <h:head>
-                    <link rel="shortcut icon" type="image/png" href="../../Resources/img/icone.png"/>
-                    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/Resources/css/visaoGeral.css"/>  
-                </h:head>
-                <p:dataTable   rowStyleClass="linhaSemBordaFluxoReceita"  id="tblReceitas" styleClass="custom2"   
-                               style=" width: 70em;border: none; border-color: white; margin-top: 5px;" widgetVar="tabela" rows="20"                                 
-                               value="#{relatorioControle.receitasMembroAnalitico}"  var="receita" emptyMessage="Não há receitas por membro..."> 
+    <ui:define name="content">
+        <h:form>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="Receitas/Membros Analítico"/>
+                <b:commandButton class="pull-right"  look="info" tooltip="#{msgs['btn.imprimir']}"  value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{relatorioControle.receitaMembroAnalitico()}"  />
+                </b:commandButton>
+            </b:formGroup>
 
-                      <f:facet name="header" >                        
-                          <h:commandButton value="Imprimir" onclick="PrimeFaces.monitorDownload(start, stop)"  styleClass="botaoImprimirPatrimonio" style="margin-right: 785px;">
-                              <p:fileDownload value="#{relatorioControle.receitaMembroAnalitico()}"  />  
-                          </h:commandButton>                         
-                        <h:panelGroup>
-                            <p:selectOneMenu id="estado" value="#{relatorioControle.mes}"  style="width: 150px;float: left">                                  
-                                <f:selectItems value="#{relatorioControle.listaMes}" var="mes" itemValue="#{mes}" itemLabel="#{mes.descricao}"/>
-                            </p:selectOneMenu>                            
-                        </h:panelGroup>                           
-                          <h:commandButton value="Listar" styleClass="botaoListar" style="float: left;padding: 3px 9px;margin-left: 4px; background: " action="#{relatorioControle.buscarReceitaMembroData()}"/>                         
-                        <br/>
-                        <h:outputText value="Será considerado somente as receitas pagas." style="margin-right: 700px;font-family: 'Open Sans', sans-serif; color: #444;font-size: 12px !important; float: left!important; " /> 
-                        <br/><br/>
-                        <h:outputText value="Total de Receitas: R$ #{relatorioControle.totalReceita}" style="margin-top: 15px;font-family: 'Open Sans', sans-serif; color: #444;font-size: 14px !important; float: left; " /> 
-                        <br/><br/><br/>     
-                        <p:growl id="growl2" sticky="false" life="3000"/>
-                    </f:facet> 
+            <b:panel collapsible="false">
 
-                    <p:column  filterStyle="display: none;" style=" border: none;background: white; " >  
-                        <f:facet name="header" >  
-                            <h:outputText value="Nome" style="font-size: 17px !important; float: left;" />  
-                        </f:facet> 
-                        <h:outputText value="#{receita.membro.nome}" style=" border-left: none!important;"/>  
-                    </p:column>                             
+                <div class="form-inline">
+                    <b:selectOneMenu  tooltip="#{msgs['label.mes']}" value="#{relatorioControle.mesAniversario}">
+                        <f:selectItem itemLabel="JANEIRO" itemValue="#{1}"/>
+                        <f:selectItem itemLabel="FEVEREIRO" itemValue="#{2}"/>
+                        <f:selectItem itemLabel="MARÇO" itemValue="#{3}"/>
+                        <f:selectItem itemLabel="ABRIL" itemValue="#{4}"/>
+                        <f:selectItem itemLabel="MAIO" itemValue="#{5}"/>
+                        <f:selectItem itemLabel="JUNHO" itemValue="#{6}"/>
+                        <f:selectItem itemLabel="JULHO" itemValue="#{7}"/>
+                        <f:selectItem itemLabel="AGOSTO" itemValue="#{8}"/>
+                        <f:selectItem itemLabel="SETEMBRO" itemValue="#{9}"/>
+                        <f:selectItem itemLabel="OUTUBRO" itemValue="#{10}"/>
+                        <f:selectItem itemLabel="NOVEMBRO" itemValue="#{11}"/>
+                        <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
+                    </b:selectOneMenu>
 
-                    <p:column  filterStyle="display: none;" style="border: none;background: white; " >  
-                        <f:facet name="header" >  
-                            <h:outputText value="Valor" style="font-size: 17px !important; float: left; " />  
-                        </f:facet> 
-                        <h:outputText value="R$ #{receita.valorFormatado}" style=" border: none!important;"/>  
-                    </p:column>  
+                    <b:inputText style="margin-left:10px"  value="#{relatorioControle.anoPesquisaAniversario}" placeholder="Ano" tooltip="#{msgs['label.ano']}"/>
 
-                    <p:column  filterStyle="display: none;" style="border: none;background: white;" >  
-                        <f:facet name="header" >  
-                            <h:outputText value="Data" style="font-size: 17px !important; float: left; " />  
-                        </f:facet> 
-                        <h:outputText value="#{receita.data}" style="border: none!important;">
+                    <b:commandButton style="margin-left:10px"   value="Listar" action="#{relatorioControle.listarMembroAnalitico()}" tooltip="#{msgs['label.listar']}"/>
+
+                </div>
+
+                    <b:dataTable
+                            scroll-x="false" fixedHeader="true"
+                            info="false" selectionMode="false"
+                            responsive="true"
+                            searching="false" paginated="false"
+                            customLangUrl="#{resource['js/pt-br.json']}"
+                            value="#{relatorioControle.receitasMembroAnalitico}"
+                            var="receita">
+
+                        <b:dataTableColumn orderable="false"  label="#{msgs['label.nome']}">
+                        <h:outputText value="#{receita.membro.nome}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn orderable="false"  label="#{msgs['label.valor']}">
+                        <h:outputText value="R$ #{receita.valorFormatado}"/>
+                        </b:dataTableColumn>
+
+                        <b:dataTableColumn orderable="false"  label="#{msgs['label.data']}">
+                        <h:outputText value="#{receita.data}">
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>  
-                    </p:column>  
+                        </h:outputText>
+                        </b:dataTableColumn>
 
-                </p:dataTable>
-            </h:form>
-            <p:dialog appendTo="@(body)" header="Aguarde...gerando o relatório..." modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">  
-                <p:graphicImage value="#{pageContext.request.contextPath}/Resources/img/ajaxloadingbar.gif"/> 
-            </p:dialog> 
-
-        </p:panel>
+                </b:dataTable>
+            </b:panel>
+        </h:form>
     </ui:define>
 </ui:composition>

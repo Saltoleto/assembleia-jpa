@@ -42,6 +42,10 @@ public class DespesaService {
         return despesaRepository.listarDespesasMesAno(mes, ano);
     }
 
+    public List<DespesasTipoDTO> listarDespesasTipoMesAnoCongregracao(Long idIgreja,Integer mes, Integer ano) {
+        return despesaRepository.listarDespesasTipoMesAnoCongregracao(idIgreja,mes, ano);
+    }
+
     public BigDecimal listarDespesasPagas() {
         return despesaRepository.listarDespesasPagas();
     }

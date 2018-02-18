@@ -3,7 +3,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
                 xmlns:hf="http://highfaces.org"
                 xmlns:b="http://bootsfaces.net/ui"
                 template="#{pageContext.request.contextPath}/templates/template.xhtml">
@@ -14,10 +13,6 @@
             <b:messages/>
             <b:formGroup style="border: none">
                 <h:outputText style="font-size: 26px" value="Receitas por Titpo"/>
-                <b:commandButton class="pull-right" look="info" tooltip="#{msgs['btn.imprimir']}"
-                                 value="#{msgs['btn.imprimir']}">
-                    <p:fileDownload value="#{relatorioControle.aniversariantes()}"/>
-                </b:commandButton>
             </b:formGroup>
             <b:panel collapsible="false" >
 
@@ -42,13 +37,13 @@
 
                     <b:inputText style="margin-left:10px" value="#{graficoControle.anoPesquisa}" placeholder="Ano"
                                  tooltip="#{msgs['label.ano']}"/>
-                    <b:commandButton id="btnGerar" value="Gerar" action="#{graficoControle.listarDespesasCategoria()}"/>
+                    <b:commandButton id="btnGerar" value="Gerar" action="#{graficoControle.listarReceitasCategoria()}"/>
 
 
                     <hf:chart type="pie" height="235"  credits="false">
-                        <hf:chartSerie name="valor" value="#{graficoControle.listarDepesasTipoDto}"
+                        <hf:chartSerie name="valor" value="#{graficoControle.listarReceitasTipoDto}"
                                        var="point"
-                                       point="#{point.valorDespesa}"  tickLabel="#{point.descricao}"
+                                       point="#{point.valorReceita}"  tickLabel="#{point.descricao}"
                                        dataLabel="&lt;b>{point.name}&lt;/b>: {point.percentage:.1f} % &lt;i>({point.y})&lt;/i>"/>
                     </hf:chart>
                 </div>

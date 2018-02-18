@@ -1,6 +1,7 @@
 package br.com.assembleia.controllers;
 
 import br.com.assembleia.entities.*;
+import br.com.assembleia.enums.EnumMes;
 import br.com.assembleia.enums.EnumMesInt;
 import br.com.assembleia.enums.EnumSexo;
 import br.com.assembleia.enums.EnumTipoCartao;
@@ -20,12 +21,12 @@ import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import java.io.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,7 +54,6 @@ public class RelatorioControle {
     private String str;
     private List<Membro> membros;
     private EnumMesInt mes;
-    private List<Receita> receitasMembroAnalitico;
     private BigDecimal totalReceita;
     private List<Membro> listaMembrosSelecionandos = new ArrayList<Membro>();
     private List<Membro> listaMembrosCartao = new ArrayList<Membro>();
@@ -64,6 +64,8 @@ public class RelatorioControle {
     private EnumSexo sexo;
     private EnumTipoCartao tipoCartao;
     private Cargo cargo;
+    private static final Locale BRASIL = new Locale("pt", "BR");
+    private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
 
     @Autowired
     private CargoService service;
@@ -189,25 +191,27 @@ public class RelatorioControle {
         listaCong = serviceCongregacao.listarTodos();
         str = "MembroAnalitico";
 
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("cep", congre.getCep());
-            parametros.put("bairro", congre.getBairro());
-            parametros.put("totalReceitas", getTotalReceita());
-            parametros.put("mesAno", mes.getDescricao().toUpperCase() + "/" + Calendar.getInstance().get(Calendar.YEAR));
+        parametros = preenhcerCongregacao(getCongregacao());
+        InputStream is = new ByteArrayInputStream(AplicacaoControle.getInstance().getUsuario().getCongregacao().getLogoIgreja());
+        parametros.put("logo", is);
+        parametros.put("totalReceitas", getTotalReceita());
+        parametros.put("mesAno", EnumMes.busca(mesAniversario).getDescricao().toUpperCase() + "/" + Calendar.getInstance().get(Calendar.YEAR));
 
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(getReceitasMembroAnalitico(), parametros, "/resources/report/MembroAnalitico.jasper", str);
+
+    }
+
+    private String getTotalReceita() {
+        BigDecimal total = BigDecimal.ZERO;
+        DecimalFormat df = new DecimalFormat("###,###,##0.00");
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            total = serviceReceita.receitasMembroParametroMeasAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getIdIgreja(),true);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            total= serviceReceita.receitasMembroParametroMeasAno(mesAniversario, anoPesquisaAniversario,true);
+        } else {
+            total= serviceReceita.receitasMembroParametroMeasAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(),true);
         }
-
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(receitasMembroAnalitico, parametros, "/report/MembroAnalitico.jasper", str);
-
+        return df.format(total);
     }
 
     public int getMesAniversario() {
@@ -243,6 +247,10 @@ public class RelatorioControle {
         return "cartao?faces-redirect=true";
     }
 
+    public String listarMembroAnalitico() {
+        return "membroanalitico?faces-redirect=true";
+    }
+
     public String getStr() {
         return str;
     }
@@ -269,12 +277,6 @@ public class RelatorioControle {
 
     public String buscarAniversariantes() {
         return "aniversariantes?faces-redirect=true";
-    }
-
-    public List<Receita> buscarReceitaMembroData() {
-        receitasMembroAnalitico = new ArrayList<Receita>();
-        receitasMembroAnalitico = serviceReceita.buscarReceitaMembroData(new Long(mes.getNumeroMes()));
-        return receitasMembroAnalitico;
     }
 
     public List<EnumMesInt> getListaMes() {
@@ -315,22 +317,19 @@ public class RelatorioControle {
     }
 
     public List<Receita> getReceitasMembroAnalitico() {
-        return receitasMembroAnalitico = buscarReceitaMembroData();
+        List<Receita> receitas = new ArrayList<>();
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getIdIgreja(), true);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAno(mesAniversario, anoPesquisaAniversario,true);
+        } else {
+            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(),true);
+        }
+        return receitas;
     }
 
-    public String getTotalReceita() {
-        receitasMembroAnalitico = buscarReceitaMembroData();
-        totalReceita = new BigDecimal(BigInteger.ZERO);
-        for (Receita receita : receitasMembroAnalitico) {
-            totalReceita = totalReceita.add(receita.getValor());
-        }
-        if (totalReceita != null) {
-            DecimalFormat df = new DecimalFormat("###,###,##0.00");
-            return teste = df.format(totalReceita);
-        } else {
-            return teste;
-        }
-    }
+
+
 
     public List<Membro> getListaCarteirinhaObreiros() {
         listaCarteirinhaObreiros = serviceMembroService.listarObreiros(EnumSexo.MASCULINO);
@@ -369,11 +368,11 @@ public class RelatorioControle {
     public List<Membro> getListaMembrosCartao() {
 
         if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
-            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo,this.cargo.getDescricao(),AplicacaoControle.getInstance().getIdIgreja());
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo, this.cargo.getDescricao(), AplicacaoControle.getInstance().getIdIgreja());
         } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
-            listaMembrosCartao = serviceMembroService.listarPorSexoCargo(this.sexo,this.cargo !=null ? this.cargo.getDescricao() : "");
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargo(this.sexo, this.cargo != null ? this.cargo.getDescricao() : "");
         } else {
-            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo,this.cargo.getDescricao(),AplicacaoControle.getInstance().getUsuario().getCongregacao().getId());
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo, this.cargo.getDescricao(), AplicacaoControle.getInstance().getUsuario().getCongregacao().getId());
         }
 
         return listaMembrosCartao;

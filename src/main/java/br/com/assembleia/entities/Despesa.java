@@ -44,11 +44,19 @@ import java.util.Locale;
                 query = "Select sum(r.valor) from Despesa r where r.pago = :pago ")
 
 })
-@NamedNativeQuery(
-        name = "Despesa.listarDespesasTipoMesAno",
-        query = "Select td.descricao,sum(d.valor) as valorDespesa from despesa d Join tipodedespesa td on d.tipodedespesa_id = td.id Where extract(MONTH FROM d.data) =:mes and extract(YEAR FROM d.data) =:ano group by d.tipodedespesa_id,td.descricao ",
-        resultSetMapping = "DespesasTipoDTO"
-)
+@NamedNativeQueries({
+
+        @NamedNativeQuery(
+                name = "Despesa.listarDespesasTipoMesAno",
+                query = "Select td.descricao,sum(d.valor) as valorDespesa from despesa d Join tipodedespesa td on d.tipodedespesa_id = td.id Where extract(MONTH FROM d.data) =:mes and extract(YEAR FROM d.data) =:ano group by d.tipodedespesa_id,td.descricao ",
+                resultSetMapping = "DespesasTipoDTO"),
+
+        @NamedNativeQuery(
+                name = "Despesa.listarDespesasTipoMesAnoCongregracao",
+                query = "Select td.descricao,sum(d.valor) as valorDespesa from despesa d Join tipodedespesa td on d.tipodedespesa_id = td.id Join Congregacao co on co.id = d.congregacao_id Where co.id =:idIgreja and extract(MONTH FROM d.data) =:mes and extract(YEAR FROM d.data) = group by d.tipodedespesa_id,td.descricao ",
+                resultSetMapping = "DespesasTipoDTO")
+
+})
 @SqlResultSetMapping(
         name = "DespesasTipoDTO",
         classes = @ConstructorResult(
@@ -59,6 +67,7 @@ import java.util.Locale;
                 }
         )
 )
+
 public class Despesa implements Serializable, Comparable<Despesa> {
 
     private static final long serialVersionUID = 1L;

@@ -43,8 +43,49 @@ import java.util.Locale;
         @NamedQuery(name = "Receita.receitasParametroMeasAno",
                 query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and r.recebido=:recebido "),
         @NamedQuery(name = "Receita.listarReceitas",
-                query = "Select sum(r.valor) from Receita r ")
+                query = "Select sum(r.valor) from Receita r "),
+        @NamedQuery(name = "Receita.listarReceitasMembroAnaliticoMesAno",
+                query = "Select r from Receita r Join r.membro m where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and r.recebido=:recebido "),
+        @NamedQuery(name = "Receita.listarReceitasMembroAnaliticoMesAnoIgreja",
+                query = "Select r from Receita r Join r.membro m Join r.congregacao c where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id=:IdIgreja and r.recebido=:recebido "),
+        @NamedQuery(name = "Receita.receitasMembroParametroMeasAno",
+                query = "Select SUM(r.valor) as total from Receita r Join r.membro Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and r.recebido=:recebido "),
+        @NamedQuery(name = "Receita.receitasMembroParametroMeasAnoIgreja",
+                query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Join r.membro Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.recebido=:recebido "),
 })
+@NamedNativeQueries({
+
+        @NamedNativeQuery(
+                name = "Receita.listarReceitaTipoMesAno",
+                query = "Select tr.descricao,sum(r.valor) as valorReceita from receita r Join tipodereceita tr on r.tipodereceita_id = tr.id Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano group by r.tipodereceita_id,tr.descricao  ",
+                resultSetMapping = "ReceitasTipoDTO"),
+
+        @NamedNativeQuery(
+                name = "Receita.listarReceitaTipoMesAnoCongregracao",
+                query = "Select tr.descricao,sum(r.valor) as valorReceita  from receita r Join tipodereceita tr on r.tipodereceita_id = tr.id Join Congregacao co on co.id = r.congregacao_id Where co.id =:idIgreja and extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano group by r.tipodereceita_id,tr.descricao ",
+                resultSetMapping = "ReceitasTipoDTO"),
+
+        @NamedNativeQuery(
+                name = "Receita.listarReceitaMesAno",
+                query = "Select 'Receitas',sum(r.valor) as valorReceita from Receita r Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano ",
+                resultSetMapping = "ReceitasTipoDTO"),
+
+        @NamedNativeQuery(
+                name = "Receita.listarReceitaMesAnoCongregacao",
+                query = "Select 'Receitas',sum(r.valor) as valorReceita from Receita r Join Congregacao co on co.id = r.congregacao_id Where co.id =:idIgreja extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano  ",
+                resultSetMapping = "ReceitasTipoDTO")
+
+        })
+@SqlResultSetMapping(
+        name = "ReceitasTipoDTO",
+        classes = @ConstructorResult(
+                targetClass = ReceitasTipoDTO.class,
+                columns = {
+                        @ColumnResult(name = "descricao"),
+                        @ColumnResult(name = "valorReceita")
+                }
+        )
+)
 public class Receita implements Serializable, Comparable<Receita> {
 
     private static final long serialVersionUID = 1L;

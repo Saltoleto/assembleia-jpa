@@ -3,7 +3,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
                 xmlns:hf="http://highfaces.org"
                 xmlns:b="http://bootsfaces.net/ui"
                 template="#{pageContext.request.contextPath}/templates/template.xhtml">
@@ -13,11 +12,7 @@
         <h:form>
             <b:messages/>
             <b:formGroup style="border: none">
-                <h:outputText style="font-size: 26px" value="Despesas por Titpo"/>
-                <b:commandButton class="pull-right" look="info" tooltip="#{msgs['btn.imprimir']}"
-                                 value="#{msgs['btn.imprimir']}">
-                    <p:fileDownload value="#{relatorioControle.aniversariantes()}"/>
-                </b:commandButton>
+                <h:outputText style="font-size: 26px" value="Despesas por Tipo"/>
             </b:formGroup>
             <b:panel collapsible="false" >
 
@@ -42,7 +37,8 @@
 
                     <b:inputText style="margin-left:10px" value="#{graficoControle.anoPesquisa}" placeholder="Ano"
                                  tooltip="#{msgs['label.ano']}"/>
-                    <b:commandButton id="btnGerar" value="Gerar" action="#{graficoControle.listarDespesasCategoria()}"/>
+
+                    <b:commandButton style="margin-left:5px" id="btnGerar" value="Gerar" action="#{graficoControle.listarDespesasCategoria()}"/>
 
 
                     <hf:chart type="pie" height="235"  credits="false">
