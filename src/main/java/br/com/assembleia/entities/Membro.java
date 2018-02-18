@@ -27,9 +27,13 @@ import java.util.List;
         @NamedQuery(name = "Membro.listarObreiros",
                 query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao != 'Membro' Order By m.nome "),
         @NamedQuery(name = "Membro.listarPorSexoCargo",
-                query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao = 'Membro' Order By m.nome "),
-        @NamedQuery(name = "Membro.aniversariantesRelatorio",
-                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) =:mes order by extract(DAY FROM m.dataNascimento) "),
+                query = "SELECT m FROM Membro m join m.cargo c Where m.sexo =:sexo AND c.descricao=:descricao Order By m.nome "),
+        @NamedQuery(name = "Membro.listarPorSexoCargoCongregacao",
+                query = "SELECT m FROM Membro m join m.cargo c JOIN m.congregacao i Where m.sexo =:sexo AND c.descricao=:descricao and i.id=:idIgreja Order By m.nome "),
+        @NamedQuery(name = "Membro.aniversariantesMesAnoRelatorio",
+                query = "SELECT m FROM Membro m Where extract(MONTH FROM m.dataNascimento) =:mes and extract(YEAR FROM m.dataNascimento) =:ano order by extract(DAY FROM m.dataNascimento) "),
+        @NamedQuery(name = "Membro.aniversariantesMesAnoIgrejaRelatorio",
+                query = "SELECT m FROM Membro m JOIN m.congregacao i Where i.id = :idIgreja and extract(MONTH FROM m.dataNascimento) =:mes and extract(YEAR FROM m.dataNascimento) =:ano order by extract(DAY FROM m.dataNascimento) "),
         @NamedQuery(name = "Membro.listarPorIgreja",
                 query = "SELECT m FROM Membro m JOIN m.congregacao i WHERE i.id = :idIgreja"),
         @NamedQuery(name = "Membro.totalMembrosAtivos",
@@ -48,7 +52,7 @@ import java.util.List;
 })
 @NamedNativeQueries({
         @NamedNativeQuery(name = "Membro.aniversariantesMesIgreja",
-                query = "SELECT m.* FROM Membro m join m.congregacao i Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) and i.id = :idIgreja LIMIT 5", resultClass = Membro.class),
+                query = "SELECT m.* FROM Membro m join congregacao i on m.congregacao_id = i.id Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) and i.id = :idIgreja LIMIT 5", resultClass = Membro.class),
         @NamedNativeQuery(name = "Membro.aniversariantesMes",
                 query = "SELECT m.* FROM Membro m Where extract(MONTH FROM m.dataNascimento) = extract(MONTH FROM now()) order by m.dataNascimento asc LIMIT 5", resultClass = Membro.class)
 })
@@ -112,6 +116,9 @@ public class Membro implements Serializable {
     private byte[] foto;
     @Transient
     private InputStream is;
+
+    @Transient
+    private InputStream logoIgreja;
 
     public Long getId() {
         return id;
@@ -363,6 +370,14 @@ public class Membro implements Serializable {
 
     public void setIs(InputStream is) {
         this.is = is;
+    }
+
+    public InputStream getLogoIgreja() {
+        return logoIgreja;
+    }
+
+    public void setLogoIgreja(InputStream logoIgreja) {
+        this.logoIgreja = logoIgreja;
     }
 
     public boolean isDizimista() {

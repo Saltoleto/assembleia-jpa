@@ -7,6 +7,17 @@ import br.com.assembleia.services.CargoService;
 import br.com.assembleia.services.CongregacaoService;
 import br.com.assembleia.services.MembroService;
 import br.com.assembleia.util.ReportsUtil;
+import net.sf.jasperreports.engine.JRException;
+import org.primefaces.model.StreamedContent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,16 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.sql.DataSource;
-import net.sf.jasperreports.engine.JRException;
-import org.primefaces.model.StreamedContent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @ManagedBean
 @SessionScoped
@@ -70,7 +71,7 @@ public class RelatoriosGerenciaisControle {
             parametros.put("bairro", congre.getBairro());
         }
 
-//        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(null, parametros, "/report/Aniversariantes.jasper", str);
+//        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(null, parametros, "/report/Aniversariantes.jasper", str);
         return file = (StreamedContent) report.gerarRelatorioPDF(parametros, "/report/FichaCadastralMembro.jasper", dataSource.getConnection(),str);
 
     }

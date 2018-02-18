@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{pageContext.request.contextPath}/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form>
+            <b:messages/>
+            <b:formGroup style="border: none">
+                <h:outputText style="font-size: 26px" value="Aniversariantes"/>
+                <b:commandButton class="pull-right"  look="info" tooltip="#{msgs['btn.imprimir']}"  value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{relatorioControle.aniversariantes()}"  />
+                </b:commandButton>
+            </b:formGroup>
+            <b:panel collapsible="false">
+
+                <div class="form-inline">
+                    <b:selectOneMenu  tooltip="#{msgs['label.mes']}" value="#{relatorioControle.mesAniversario}">
+                        <f:selectItem itemLabel="JANEIRO" itemValue="#{1}"/>
+                        <f:selectItem itemLabel="FEVEREIRO" itemValue="#{2}"/>
+                        <f:selectItem itemLabel="MARÇO" itemValue="#{3}"/>
+                        <f:selectItem itemLabel="ABRIL" itemValue="#{4}"/>
+                        <f:selectItem itemLabel="MAIO" itemValue="#{5}"/>
+                        <f:selectItem itemLabel="JUNHO" itemValue="#{6}"/>
+                        <f:selectItem itemLabel="JULHO" itemValue="#{7}"/>
+                        <f:selectItem itemLabel="AGOSTO" itemValue="#{8}"/>
+                        <f:selectItem itemLabel="SETEMBRO" itemValue="#{9}"/>
+                        <f:selectItem itemLabel="OUTUBRO" itemValue="#{10}"/>
+                        <f:selectItem itemLabel="NOVEMBRO" itemValue="#{11}"/>
+                        <f:selectItem itemLabel="DEZEMBRO" itemValue="#{12}"/>
+                    </b:selectOneMenu>
+
+                    <b:inputText style="margin-left:10px"  value="#{relatorioControle.anoPesquisaAniversario}" placeholder="Ano"
+                                 tooltip="#{msgs['label.ano']}"/>
+
+                    <b:commandButton style="margin-left:10px"   value="Listar" action="#{relatorioControle.listar()}" tooltip="#{msgs['label.listar']}"/>
+
+                </div>
+
+                <b:dataTable
+                        scroll-x="false" fixedHeader="true"
+                        info="false" selectionMode="false"
+                        responsive="true"
+                        searching="false" paginated="false"
+                        customLangUrl="#{resource['js/pt-br.json']}" value="#{relatorioControle.aniversariantesRelatorio}"
+                        var="membro" >
+
+                    <b:dataTableColumn orderable="false"  label="#{msgs['label.nome']}">
+                        <h:outputText value="#{membro.nome}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.celular']}">
+                        <h:outputText value="#{membro.celular}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.email']}">
+                        <h:outputText value="#{membro.email}"/>
+                    </b:dataTableColumn>
+
+                    <b:dataTableColumn orderable="false" label="#{msgs['label.data']}">
+                        <h:outputText value="#{membro.dataNascimento}">
+                            <f:convertDateTime pattern="dd/MM"/>
+                        </h:outputText>
+                    </b:dataTableColumn>
+
+                </b:dataTable>
+
+            </b:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

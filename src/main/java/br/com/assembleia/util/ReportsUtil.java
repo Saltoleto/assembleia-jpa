@@ -6,6 +6,16 @@ package br.com.assembleia.util;
 
 
 import br.com.assembleia.controllers.RelatoriosGerenciaisControle;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JExcelApiExporter;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,19 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JExcelApiExporter;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -82,14 +79,13 @@ public class ReportsUtil {
         return new DefaultStreamedContent(relatorio, null, nomeArquivo + ".pdf");
     }
 
-    public StreamedContent gerarRelatorioPDFcomDSTeste(List lista, Map parametros, String caminho, String nomeArquivo) throws IOException, JRException {
+    public StreamedContent gerarRelatorioPDFcomDS(List lista, Map parametros, String caminho, String nomeArquivo) throws IOException, JRException {
 
-        InputStream relatorio = null;
-        ByteArrayOutputStream Teste = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(lista);
         JasperPrint print = null;
         try {
-            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(caminho);
+            InputStream reportStream = getInputStream(caminho);
             if (lista  == null) {
                 print = JasperFillManager.fillReport(reportStream, parametros);
             }
@@ -102,14 +98,14 @@ public class ReportsUtil {
             }
             JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, Teste);
+            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
             exporter.exportReport();
-            relatorio = new ByteArrayInputStream(Teste.toByteArray());
         } catch (JRException ex) {
             Logger.getLogger(RelatoriosGerenciaisControle.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
-        return new DefaultStreamedContent(relatorio, null, nomeArquivo + ".pdf");
-
+        return new DefaultStreamedContent(new ByteArrayInputStream(baos.toByteArray()), null, nomeArquivo + ".pdf");
     }
 
     public void gerarRelatorioPDFcomDS(List lista, Map parametros, String caminho) throws IOException, JRException {
@@ -150,7 +146,11 @@ public class ReportsUtil {
         InputStream relatorio = null;
         ByteArrayOutputStream Teste = new ByteArrayOutputStream();
         try {
-            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(caminho);
+
+            InputStream reportStream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(caminho);
+            System.out.println("Caminho: " + caminho);
+            System.out.println("InputStream: " + reportStream);
+
             JasperPrint print = JasperFillManager.fillReport(reportStream, parametros, conn);
 
             JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
@@ -202,5 +202,9 @@ public class ReportsUtil {
         }
         return new DefaultStreamedContent(null);
 
+    }
+
+    private InputStream getInputStream(String caminho){
+       return ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(caminho);
     }
 }

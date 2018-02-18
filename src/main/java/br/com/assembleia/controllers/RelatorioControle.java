@@ -3,6 +3,7 @@ package br.com.assembleia.controllers;
 import br.com.assembleia.entities.*;
 import br.com.assembleia.enums.EnumMesInt;
 import br.com.assembleia.enums.EnumSexo;
+import br.com.assembleia.enums.EnumTipoCartao;
 import br.com.assembleia.services.*;
 import br.com.assembleia.util.ReportsUtil;
 import net.sf.jasperreports.engine.JRException;
@@ -30,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author fernandosaltoleto
  */
 @ManagedBean
@@ -40,9 +40,9 @@ public class RelatorioControle {
 
     FacesContext facesContext = FacesContext.getCurrentInstance();
     ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-    String teste = servletContext.getRealPath("/Resources/img/FichaCadastralMembroFinal.jpg");
-    String caminhoCarteiraMembro = servletContext.getRealPath("/Resources/img/cartaomasculino.jpg");
-    String caminhoCredencia = servletContext.getRealPath("/Resources/img/credencial.jpg");
+    String teste = servletContext.getRealPath("/resources/img/FichaCadastralMembroFinal.jpg");
+    String cartaoMembro = servletContext.getRealPath("/resources/img/cartaoMembro.jpg");
+    String credencial = servletContext.getRealPath("/resources/img/credencial.jpg");
     private StreamedContent imagemFicha;
     private File arquivo;
     private List<Relatorios> relatorios;
@@ -52,21 +52,23 @@ public class RelatorioControle {
     private DataSource dataSource;
     private String str;
     private List<Membro> membros;
-    private List<Patrimonio> patrimonios;
     private EnumMesInt mes;
     private List<Receita> receitasMembroAnalitico;
     private BigDecimal totalReceita;
-    private List<Membro> listaCarteirinhaMasculina = new ArrayList<Membro>();
-    private List<Membro> listaCarteirinhaMasculinaSelecionados = new ArrayList<Membro>();
+    private List<Membro> listaMembrosSelecionandos = new ArrayList<Membro>();
+    private List<Membro> listaMembrosCartao = new ArrayList<Membro>();
     private List<Membro> listaCarteirinhaObreiros = new ArrayList<Membro>();
     private List<Membro> listaCarteirinhaObreirosSelecionados = new ArrayList<Membro>();
-    private List<Membro> listaCarteirinhaFeminina = new ArrayList<Membro>();
-    private List<Membro> listaCarteirinhaFemininaSelecionados = new ArrayList<Membro>();
+    private int mesAniversario;
+    private int anoPesquisaAniversario;
+    private EnumSexo sexo;
+    private EnumTipoCartao tipoCartao;
+    private Cargo cargo;
 
     @Autowired
     private CargoService service;
     @Autowired
-    private MembroService serviceMembro;
+    private MembroService serviceMembroService;
     @Autowired
     private CongregacaoService serviceCongregacao;
     @Autowired
@@ -77,190 +79,108 @@ public class RelatorioControle {
     @PostConstruct
     private void init() {
         mes = EnumMesInt.busca(Calendar.getInstance().get(Calendar.MONTH));
+        mesAniversario = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        anoPesquisaAniversario = Calendar.getInstance().get(Calendar.YEAR);
     }
 
     public StreamedContent fichaCadastralMembro() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
-        Map parametros = new HashMap();
-        List<Congregacao> listaCong = new ArrayList<Congregacao>();
-        listaCong = serviceCongregacao.listarTodos();
         str = "FichaCadastralMembro";
+        return file = (StreamedContent) report.gerarRelatorioPDF(preenhcerCongregacao(getCongregacao()), "/resources/report/FichaCadastralMembro.jasper", dataSource.getConnection(), str);
+    }
 
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("cep", congre.getCep());
-            parametros.put("bairro", congre.getBairro());
-        }
-
-        return file = (StreamedContent) report.gerarRelatorioPDF(parametros, "/report/FichaCadastralMembro.jasper", dataSource.getConnection(), str);
-
+    public Map preenhcerCongregacao(Congregacao congre) {
+        Map parametros = new HashMap();
+        InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
+        parametros.put("nomeIgrena", congre.getNome());
+        parametros.put("endereco", congre.getEndereco());
+        parametros.put("telefone", congre.getTelefone());
+        parametros.put("cidade", congre.getCidade());
+        parametros.put("email", congre.getEmail());
+        parametros.put("logo", is);
+        parametros.put("cnpj", congre.getCnpj());
+        parametros.put("uf", congre.getEstado().getUf());
+        parametros.put("cep", congre.getCep());
+        parametros.put("bairro", congre.getBairro());
+        return parametros;
     }
 
     public StreamedContent aniversariantes() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
-        Map parametros = new HashMap();
-        List<Congregacao> listaCong = new ArrayList<Congregacao>();
-        listaCong = serviceCongregacao.listarTodos();
         str = "Aniversariantes";
-
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("bairro", congre.getBairro());
-            parametros.put("cep", congre.getCep());
-            parametros.put("mesExtenso", mes.getDescricao().toUpperCase());
-        }
-
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(membros, parametros, "/report/Aniversariantes.jasper", str);
+        Map map = preenhcerCongregacao(getCongregacao());
+        map.put("mesExtenso", EnumMesInt.busca(mesAniversario - 1).getDescricao().toUpperCase());
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(getAniversariantesRelatorio(), map, "/resources/report/Aniversariantes.jasper", str);
 
     }
 
-    public StreamedContent credencial() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
-        Map parametros = new HashMap();
-        List<Congregacao> listaCong = new ArrayList<Congregacao>();
-        listaCong = serviceCongregacao.listarTodos();
-        str = "Credencial";
-        List<Membro> membrosComFoto = new ArrayList<Membro>();
+    public List<Membro> getAniversariantesRelatorio() {
 
-        arquivo = new File(caminhoCredencia);
-        InputStream f = null;
-        try {
-            f = new FileInputStream(arquivo);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RelatorioControle.class.getName()).log(Level.SEVERE, null, ex);
+        List<Membro> aniversariantes = new ArrayList<>();
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            aniversariantes = serviceMembroService.aniversariantesMesAnoIgrejaRelatorio(AplicacaoControle.getInstance().getIdIgreja(), mesAniversario, anoPesquisaAniversario);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            aniversariantes = serviceMembroService.aniversariantesMesAnoRelatorio(mesAniversario, anoPesquisaAniversario);
+        } else {
+            aniversariantes = serviceMembroService.aniversariantesMesAnoIgrejaRelatorio(AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), mesAniversario, anoPesquisaAniversario);
         }
 
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome().toUpperCase());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("bairro", congre.getBairro());
-            parametros.put("cep", congre.getCep());
-            parametros.put("imagemCarteirinha", f);
-        }
-
-        for (Membro membro : listaCarteirinhaObreirosSelecionados) {
-            membro.setIs(new ByteArrayInputStream(membro.getFoto()));
-            membrosComFoto.add(membro);
-
-        }
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(membrosComFoto, parametros, "/report/credencial.jasper", str);
+        return aniversariantes;
     }
 
-    public StreamedContent carteirinhaMasculina() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
+    public StreamedContent printCartao() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
         Map parametros = new HashMap();
-        List<Congregacao> listaCong = new ArrayList<Congregacao>();
-        listaCong = serviceCongregacao.listarTodos();
-        str = "Carteirinha(masculina)";
-        List<Membro> membrosComFoto = new ArrayList<Membro>();
-
-        arquivo = new File(caminhoCarteiraMembro);
-        InputStream f = null;
-        try {
-            f = new FileInputStream(arquivo);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(RelatorioControle.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome().toUpperCase());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("bairro", congre.getBairro());
-            parametros.put("cep", congre.getCep());
-            parametros.put("imagemCarteirinha", f);
-        }
-
-        for (Membro membro : listaCarteirinhaMasculinaSelecionados) {
-            membro.setIs(new ByteArrayInputStream(membro.getFoto()));
-            membrosComFoto.add(membro);
-
-        }
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(membrosComFoto, parametros, "/report/cartaoMasculino.jasper", str);
-    }
-
-    public StreamedContent carteirinhaFeminina() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
-        Map parametros = new HashMap();
-        List<Congregacao> listaCong = new ArrayList<Congregacao>();
-        listaCong = serviceCongregacao.listarTodos();
-        str = "Carteirinha(feminina)";
-        List<Membro> membrosComFoto = new ArrayList<Membro>();
-        Path path = Paths.get(caminhoCarteiraMembro);
+        str = EnumTipoCartao.CARTAO.equals(tipoCartao) ? "Cartão de Membro" : "Credencial de Obreiro";
+        Path path = Paths.get(EnumTipoCartao.CARTAO.equals(tipoCartao) ? cartaoMembro : credencial);
         byte[] data = Files.readAllBytes(path);
         InputStream f = new ByteArrayInputStream(data);
 
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome().toUpperCase());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("bairro", congre.getBairro());
-            parametros.put("cep", congre.getCep());
-            parametros.put("imagemCarteirinha", f);
-        }
+        parametros.put("imagemCarteirinha", f);
 
-        for (Membro membro : listaCarteirinhaFemininaSelecionados) {
+        for (Membro membro : listaMembrosSelecionandos) {
             membro.setIs(new ByteArrayInputStream(membro.getFoto()));
-            membrosComFoto.add(membro);
-
+            membro.setLogoIgreja(new ByteArrayInputStream(membro.getCongregacao().getLogoIgreja()));
         }
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(membrosComFoto, parametros, "/report/carteirinhaFeminina.jasper", str);
+
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(listaMembrosSelecionandos, parametros, EnumTipoCartao.CARTAO.equals(tipoCartao) ? "/resources/report/cartaoMembro.jasper" : "/resources/report/credencial.jasper", str);
     }
 
-    public StreamedContent patrimonio() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
-        Map parametros = new HashMap();
-        List<Congregacao> listaCong = new ArrayList<Congregacao>();
-        listaCong = serviceCongregacao.listarTodos();
+    public void selectMembro(Membro membro) {
+        this.listaMembrosSelecionandos.add(membro);
+    }
+
+    public void deselectMembro(Membro membro) {
+        this.listaMembrosSelecionandos.remove(membro);
+    }
+
+
+    public StreamedContent printPatrimonio() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
         str = "Patrimonio";
-        patrimonios = new ArrayList<Patrimonio>();
-        patrimonios = servicePatrimonio.listarTodos();
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(getPatrimonios(), preenhcerCongregacao(getCongregacao()), "/resources/report/Patrimonio.jasper", str);
+    }
 
-        for (Congregacao congre : listaCong) {
-            InputStream is = new ByteArrayInputStream(congre.getLogoIgreja());
-            parametros.put("nomeIgrena", congre.getNome());
-            parametros.put("endereco", congre.getEndereco());
-            parametros.put("telefone", congre.getTelefone());
-            parametros.put("cidade", congre.getCidade());
-            parametros.put("email", congre.getEmail());
-            parametros.put("logo", is);
-            parametros.put("cnpj", congre.getCnpj());
-            parametros.put("uf", congre.getEstado().getUf());
-            parametros.put("cep", congre.getCep());
-            parametros.put("bairro", congre.getBairro());
+    private List<Patrimonio> getPatrimonios() {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            return servicePatrimonio.listarPorIgreja(AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            return servicePatrimonio.listarTodos();
+        } else {
+            return servicePatrimonio.listarPorIgreja(AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+    }
 
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(patrimonios, parametros, "/report/Patrimonio.jasper", str);
+    private Congregacao getCongregacao() {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            return AplicacaoControle.getInstance().getCongregacaoSelecionada();
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            return getSede();
+        } else {
+            return AplicacaoControle.getInstance().getUsuario().getCongregacao();
+        }
+    }
 
+    private Congregacao getSede() {
+        return serviceCongregacao.buscarSede();
     }
 
     public StreamedContent receitaMembroAnalitico() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
@@ -286,8 +206,41 @@ public class RelatorioControle {
 
         }
 
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(receitasMembroAnalitico, parametros, "/report/MembroAnalitico.jasper", str);
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(receitasMembroAnalitico, parametros, "/report/MembroAnalitico.jasper", str);
 
+    }
+
+    public int getMesAniversario() {
+        return mesAniversario;
+    }
+
+    public void setMesAniversario(int mesAniversario) {
+        this.mesAniversario = mesAniversario;
+    }
+
+    public int getAnoPesquisaAniversario() {
+        return anoPesquisaAniversario;
+    }
+
+    public void setAnoPesquisaAniversario(int anoPesquisaAniversario) {
+        this.anoPesquisaAniversario = anoPesquisaAniversario;
+    }
+
+    public List<EnumSexo> getListaSexo() {
+        return Arrays.asList(EnumSexo.values());
+    }
+
+    public List<EnumTipoCartao> getListaTiposCartao() {
+        return Arrays.asList(EnumTipoCartao.values());
+    }
+
+    public String listar() {
+        return "aniversariantes?faces-redirect=true";
+    }
+
+    public String listarCartao() {
+        this.listaMembrosSelecionandos.clear();
+        return "cartao?faces-redirect=true";
     }
 
     public String getStr() {
@@ -314,77 +267,8 @@ public class RelatorioControle {
         this.file = file;
     }
 
-    public List<Relatorios> getRelatorios() {
-        relatorios = new ArrayList<Relatorios>();
-        for (int i = 0; i < 1; i++) {
-            Relatorios rel = new Relatorios();
-            rel.setDescricaoLink("Ficha Cadastral de Membro");
-            rel.setLinkRelatorio("/relatorios/fichacadastral.jsf");
-            rel.setDescricaoRelatorio("Permite a geração de uma ficha para obter as informações para o cadastro do membro.");
-            relatorios.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Credencial de Obreiro");
-            rel.setLinkRelatorio("/relatorios/credencial.jsf");
-            rel.setDescricaoRelatorio("Permite a geração de credenciais de obreiros.");
-            relatorios.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Cartão de Membro(Feminino)");
-            rel.setLinkRelatorio("/relatorios/carteirinhamembrofeminina.jsf");
-            rel.setDescricaoRelatorio("Permite a geração de cartões de membros do sexo feminino.");
-            relatorios.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Cartão de Membro(Masculino)");
-            rel.setLinkRelatorio("/relatorios/carteirinhamembro.jsf");
-            rel.setDescricaoRelatorio("Permite a geração de cartões de membros do sexo masculino.");
-            relatorios.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Aniversariantes");
-            rel.setLinkRelatorio("/relatorios/aniversariantes.jsf");
-            rel.setDescricaoRelatorio("Exibe as informações dos Aniversariantes.");
-            relatorios.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Patrimônio");
-            rel.setLinkRelatorio("/relatorios/patrimonio.jsf");
-            rel.setDescricaoRelatorio("Exibe as informações do Patrimônio.");
-            relatorios.add(rel);
-        }
-
-        return relatorios;
-    }
-
-    public List<Relatorios> getRelatoriosFiananceiro() {
-        relatoriosFiananceiro = new ArrayList<Relatorios>();
-        for (int i = 0; i < 1; i++) {
-            Relatorios rel = new Relatorios();
-            rel.setDescricaoLink("Receitas por Membros Analítico");
-            rel.setLinkRelatorio("/relatorios/membroanalitico.jsf");
-            rel.setDescricaoRelatorio("Exibe as Receitas por Membros.");
-            relatoriosFiananceiro.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Receitas x Despesas");
-            rel.setLinkRelatorio("/relatorios/receitasdespesas.jsf");
-            rel.setDescricaoRelatorio("Gráfico comparativo entre Receitas e Despesas.");
-            relatoriosFiananceiro.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Receitas por TipoDeDespesa");
-            rel.setLinkRelatorio("/relatorios/receitascategoria.jsf");
-            rel.setDescricaoRelatorio("Gráfico de Receitas agrupadas por TipoDeDespesa.");
-            relatoriosFiananceiro.add(rel);
-            rel = new Relatorios();
-            rel.setDescricaoLink("Despesas por TipoDeDespesa");
-            rel.setLinkRelatorio("/relatorios/despesascategoria.jsf");
-            rel.setDescricaoRelatorio("Gráfico de Despesas agrupadas por TipoDeDespesa.");
-            relatoriosFiananceiro.add(rel);
-        }
-        return relatoriosFiananceiro;
-    }
-
     public String buscarAniversariantes() {
         return "aniversariantes?faces-redirect=true";
-    }
-
-    public String chamdaTelaVisao() {
-        return "/relatorios/aniversariantes?faces-redirect=true";
     }
 
     public List<Receita> buscarReceitaMembroData() {
@@ -393,22 +277,8 @@ public class RelatorioControle {
         return receitasMembroAnalitico;
     }
 
-    public List<Membro> listaMembros() {
-        membros = new ArrayList<Membro>();
-        return membros = serviceMembro.aniversariantesRelatorio(new Long(mes.getNumeroMes()));
-
-    }
-
-    public List<Patrimonio> getPatrimonios() {
-        return patrimonios;
-    }
-
     public List<EnumMesInt> getListaMes() {
         return Arrays.asList(EnumMesInt.values());
-    }
-
-    public List<Membro> getMembros() {
-        return membros = listaMembros();
     }
 
     public EnumMesInt getMes() {
@@ -463,7 +333,7 @@ public class RelatorioControle {
     }
 
     public List<Membro> getListaCarteirinhaObreiros() {
-        listaCarteirinhaObreiros = serviceMembro.listarObreiros(EnumSexo.MASCULINO);
+        listaCarteirinhaObreiros = serviceMembroService.listarObreiros(EnumSexo.MASCULINO);
         return listaCarteirinhaObreiros;
     }
 
@@ -471,47 +341,6 @@ public class RelatorioControle {
         return listaCarteirinhaObreirosSelecionados;
     }
 
-    public List<Membro> getListaCarteirinhaMasculina() {
-        listaCarteirinhaMasculina = serviceMembro.listarPorSexoCargo(EnumSexo.MASCULINO);
-        return listaCarteirinhaMasculina;
-    }
-
-    public List<Membro> getListaCarteirinhaFeminina() {
-        listaCarteirinhaFeminina = serviceMembro.listarPorSexoCargo(EnumSexo.FEMININO);
-        return listaCarteirinhaFeminina;
-    }
-
-    public List<Membro> getListaCarteirinhaFemininaSelecionados() {
-        return listaCarteirinhaFemininaSelecionados;
-    }
-
-    public void setListaCarteirinhaFemininaSelecionados(List<Membro> listaCarteirinhaFemininaSelecionados) {
-        this.listaCarteirinhaFemininaSelecionados = listaCarteirinhaFemininaSelecionados;
-    }
-
-    public void setTotalReceita(BigDecimal totalReceita) {
-        this.totalReceita = totalReceita;
-    }
-
-    public List<Membro> getListaCarteirinhaMasculinaSelecionados() {
-        return listaCarteirinhaMasculinaSelecionados;
-    }
-
-    public void setListaCarteirinhaMasculinaSelecionados(List<Membro> listaCarteirinhaMasculinaSelecionados) {
-        this.listaCarteirinhaMasculinaSelecionados = listaCarteirinhaMasculinaSelecionados;
-    }
-
-    public String getCaminhoCarteiraMembro() {
-        return caminhoCarteiraMembro;
-    }
-
-    public void setCaminhoCarteiraMembro(String caminhoCarteiraMembro) {
-        this.caminhoCarteiraMembro = caminhoCarteiraMembro;
-    }
-
-    public void setListaCarteirinhaMasculina(List<Membro> listaCarteirinhaMasculina) {
-        this.listaCarteirinhaMasculina = listaCarteirinhaMasculina;
-    }
 
     public void setListaCarteirinhaObreiros(List<Membro> listaCarteirinhaObreiros) {
         this.listaCarteirinhaObreiros = listaCarteirinhaObreiros;
@@ -521,4 +350,52 @@ public class RelatorioControle {
         this.listaCarteirinhaObreirosSelecionados = listaCarteirinhaObreirosSelecionados;
     }
 
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+
+    public EnumSexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(EnumSexo sexo) {
+        this.sexo = sexo;
+    }
+
+    public List<Membro> getListaMembrosCartao() {
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo,this.cargo.getDescricao(),AplicacaoControle.getInstance().getIdIgreja());
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargo(this.sexo,this.cargo !=null ? this.cargo.getDescricao() : "");
+        } else {
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo,this.cargo.getDescricao(),AplicacaoControle.getInstance().getUsuario().getCongregacao().getId());
+        }
+
+        return listaMembrosCartao;
+    }
+
+    public void setListaMembrosCartao(List<Membro> listaMembrosCartao) {
+        this.listaMembrosCartao = listaMembrosCartao;
+    }
+
+    public List<Membro> getListaMembrosSelecionandos() {
+        return listaMembrosSelecionandos;
+    }
+
+    public void setListaMembrosSelecionandos(List<Membro> listaMembrosSelecionandos) {
+        this.listaMembrosSelecionandos = listaMembrosSelecionandos;
+    }
+
+    public EnumTipoCartao getTipoCartao() {
+        return tipoCartao;
+    }
+
+    public void setTipoCartao(EnumTipoCartao tipoCartao) {
+        this.tipoCartao = tipoCartao;
+    }
 }

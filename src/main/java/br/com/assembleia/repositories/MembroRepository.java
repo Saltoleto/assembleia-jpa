@@ -23,9 +23,7 @@ public interface MembroRepository extends JpaRepository<Membro, Long> {
 
     List<Membro> listarObreiros(EnumSexo sexo);
 
-    List<Membro> listarPorSexoCargo(EnumSexo sexo);
-
-    List<Membro> aniversariantesRelatorio(Long mes);
+    List<Membro> listarPorSexoCargo(@Param("sexo") EnumSexo sexo,@Param("descricao") String descricao);
 
     List<Membro> listarPorIgreja(@Param("idIgreja") Long idIgreja);
 
@@ -42,4 +40,10 @@ public interface MembroRepository extends JpaRepository<Membro, Long> {
     List<Membro> listarPorAtividadeCongregacao(@Param("atividade") EnumAtividades atividade, @Param("idIgreja") Long idIgreja);
 
     List<Membro> aniversariantesMesIgreja(@Param("idIgreja") Long idIgreja);
+
+    List<Membro> aniversariantesMesAnoRelatorio(@Param("mes") int mes, @Param("ano") int ano);
+
+    List<Membro> aniversariantesMesAnoIgrejaRelatorio(@Param("idIgreja") Long idIgreja, @Param("mes") int mes, @Param("ano") int ano);
+
+    List<Membro> listarPorSexoCargoCongregacao(@Param("sexo") EnumSexo sexo, @Param("descricao") String descricao,@Param("idIgreja") Long idIgreja);
 }

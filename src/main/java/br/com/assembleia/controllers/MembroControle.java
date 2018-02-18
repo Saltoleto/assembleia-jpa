@@ -302,7 +302,7 @@ public class MembroControle {
 
         }
 
-        return fileReport = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(listaRelatorio, parametros, "/report/fichadadosmembro.jasper", str);
+        return fileReport = (StreamedContent) report.gerarRelatorioPDFcomDS(listaRelatorio, parametros, "/report/fichadadosmembro.jasper", str);
 
     }
 

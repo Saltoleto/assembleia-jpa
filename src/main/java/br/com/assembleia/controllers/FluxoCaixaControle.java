@@ -187,7 +187,7 @@ public class FluxoCaixaControle {
             parametros.put("vp", getValorPrevistoPeriodo());
         }
 
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDSTeste(listaFlusxoCaixa, parametros, "/report/fluxocaixa.jasper", str);
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(listaFlusxoCaixa, parametros, "/report/fluxocaixa.jasper", str);
 
     }
 

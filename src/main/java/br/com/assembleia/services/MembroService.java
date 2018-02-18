@@ -63,12 +63,20 @@ public class MembroService {
         return membroRepository.listarObreiros(sexo);
     }
 
-    public List<Membro> listarPorSexoCargo(EnumSexo sexo) {
-        return membroRepository.listarPorSexoCargo(sexo);
+    public List<Membro> listarPorSexoCargo(EnumSexo sexo, String descricao) {
+        return membroRepository.listarPorSexoCargo(sexo,descricao);
     }
 
-    public List<Membro> aniversariantesRelatorio(Long mes) {
-        return membroRepository.aniversariantesRelatorio(mes);
+    public List<Membro> listarPorSexoCargoCongregacao(EnumSexo sexo, String descricao, Long idIgreja) {
+        return membroRepository.listarPorSexoCargoCongregacao(sexo,descricao,idIgreja);
+    }
+
+    public List<Membro> aniversariantesMesAnoRelatorio(int mes, int ano) {
+        return membroRepository.aniversariantesMesAnoRelatorio(mes,ano);
+    }
+
+    public List<Membro> aniversariantesMesAnoIgrejaRelatorio(Long idIgreja, int mes, int ano){
+        return membroRepository.aniversariantesMesAnoIgrejaRelatorio(idIgreja,mes,ano);
     }
 
     public List<Membro> listarPorIgreja(Long idIgreja) {

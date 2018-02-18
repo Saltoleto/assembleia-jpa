@@ -86,11 +86,20 @@
             <artifactId>logback-classic</artifactId>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>3.7.6</version>
         </dependency>
+-->
+
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>5.6.0</version>
+        </dependency>
+
 
         <dependency>
             <groupId>net.bootsfaces</groupId>

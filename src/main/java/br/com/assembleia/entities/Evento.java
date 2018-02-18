@@ -19,10 +19,10 @@ import java.util.List;
                 resultClass = Evento.class),
 
         @NamedNativeQuery(name = "Evento.listarPorIgreja",
-                query = "SELECT d.* FROM Evento d JOIN d.congregacao i WHERE i.id = :idIgreja", resultClass = Evento.class),
+                query = "SELECT d.* FROM Evento d JOIN congregacao i WHERE i.id = :idIgreja", resultClass = Evento.class),
 
         @NamedNativeQuery(name = "Evento.proximosEventosIgreja",
-                query = "SELECT evento.* FROM Evento evento JOIN evento.congregacao congre Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja order by evento.datainicio LIMIT 5")
+                query = "SELECT evento.* FROM Evento evento JOIN congregacao congre on evento.congregacao_id = congre.id Where extract(MONTH FROM evento.dataInicio) =:mes and extract(YEAR FROM evento.dataInicio) =:ano and congre.id =:idIgreja order by evento.datainicio LIMIT 5", resultClass = Evento.class)
 })
 
 public class Evento implements Serializable, Comparable<Evento> {

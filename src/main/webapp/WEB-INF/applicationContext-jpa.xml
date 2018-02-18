@@ -54,6 +54,17 @@
         <security:intercept-url pattern="/view/usuario/lista.jsf" access="hasAnyRole('ADMIN')"/>
         <security:intercept-url pattern="/view/usuario/form.jsf" access="hasAnyRole('ADMIN')"/>
 
+        <security:intercept-url pattern="/view/relatorios/aniversariantes.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/fichacadastral.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/carteirinhamembrofeminina.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/carteirinhamembro.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/credencial.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/receitascategoria.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/receitasdespesas.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+        <security:intercept-url pattern="/view/relatorios/despesascategoria.jsf" access="hasAnyRole('ADMIN','TESOUREIRSECRETARIOO','')"/>
+
+
+
         <security:intercept-url pattern="/index.jsf" access="hasAnyRole('ADMIN')"/>
         <security:form-login login-page="/login.jsf" authentication-failure-url="/login.jsf?erro=true"/>
         <security:logout invalidate-session="true" logout-success-url="/login.jsf?logout" logout-url="/logout"/>
@@ -104,8 +115,8 @@
         <property name="password" value="${jdbc.password}"></property>
     </bean>
 
+<!--
 
-    <!--
     <bean class="java.net.URI" id="dbUrl">
         <constructor-arg value="#{systemEnvironment['DATABASE_URL']}"/>
     </bean>
@@ -114,8 +125,8 @@
         <property name="url"      value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
-    </ban>
+    </bean>
+-->
 
-    -->
 
 </beans>
