@@ -95,22 +95,6 @@
 					<textFieldExpression><![CDATA[($F{tipo} > 0) ? " Departamento" : " Membro/Departamento"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="125" y="27" width="99" height="15" forecolor="#3E3E3E" uuid="2d2c6716-c8e0-4136-8d91-411919595312">
-						<printWhenExpression><![CDATA[($F{tipo} > 0) ? "Tipo Despesas" : "Tipo Receitas"]]></printWhenExpression>
-					</reportElement>
-					<box>
-						<pen lineColor="#C8C6C6"/>
-						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#C8C6C6"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#C8C6C6"/>
-						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#C8C6C6"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#C8C6C6"/>
-					</box>
-					<textElement verticalAlignment="Middle">
-						<font isBold="true" isItalic="false"/>
-					</textElement>
-					<text><![CDATA[]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="493" y="27" width="62" height="15" forecolor="#3E3E3E" uuid="a0b63e09-8297-442c-b8d1-74a244fa838f"/>
 					<box>
 						<pen lineColor="#C8C6C6"/>
@@ -137,6 +121,13 @@
 						<font isBold="true" isItalic="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[($F{tipo} > 0) ? "Pago" : "Recebido"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="125" y="27" width="99" height="15" uuid="bac29000-41b2-4dcf-a63e-67972f7f55b5"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{tipo} > 0) ? "Tipo Despesas" : "Tipo Receitas"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
