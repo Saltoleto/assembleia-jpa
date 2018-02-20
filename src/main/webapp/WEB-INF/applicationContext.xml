@@ -21,6 +21,6 @@
 	</bean>
 
 	<import resource="applicationContext-jpa.xml"/>
-	<import resource="customer-bean.xml" />
+	<!--<import resource="customer-bean.xml" />-->
 
 </beans>
