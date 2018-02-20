@@ -5,7 +5,7 @@
 package br.com.assembleia.util;
 
 
-import br.com.assembleia.controllers.RelatoriosGerenciaisControle;
+import br.com.assembleia.controllers.RelatorioControle;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JExcelApiExporter;
@@ -74,7 +74,7 @@ public class ReportsUtil {
             exporter.exportReport();
             relatorio = new ByteArrayInputStream(Teste.toByteArray());
         } catch (JRException ex) {
-            Logger.getLogger(RelatoriosGerenciaisControle.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RelatorioControle.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new DefaultStreamedContent(relatorio, null, nomeArquivo + ".pdf");
     }
@@ -101,7 +101,7 @@ public class ReportsUtil {
             exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
             exporter.exportReport();
         } catch (JRException ex) {
-            Logger.getLogger(RelatoriosGerenciaisControle.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RelatorioControle.class.getName()).log(Level.SEVERE, null, ex);
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -159,7 +159,7 @@ public class ReportsUtil {
             exporter.exportReport();
             relatorio = new ByteArrayInputStream(Teste.toByteArray());
         } catch (JRException ex) {
-            Logger.getLogger(RelatoriosGerenciaisControle.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RelatorioControle.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new DefaultStreamedContent(relatorio, null, nomeArquivo + ".pdf");
     }
@@ -198,7 +198,7 @@ public class ReportsUtil {
             out.close();
             FacesContext.getCurrentInstance().responseComplete();
         } catch (JRException ex) {
-            Logger.getLogger(RelatoriosGerenciaisControle.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RelatorioControle.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new DefaultStreamedContent(null);
 

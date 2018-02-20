@@ -3,11 +3,7 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd">
-    
-	<bean id="relatoriosGerenciaisControle" class="br.com.assembleia.controllers.RelatoriosGerenciaisControle">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-        
+
          <bean id="relatorioControle" class="br.com.assembleia.controllers.RelatorioControle">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
