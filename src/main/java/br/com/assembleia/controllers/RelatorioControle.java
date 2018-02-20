@@ -205,11 +205,11 @@ public class RelatorioControle {
         BigDecimal total = BigDecimal.ZERO;
         DecimalFormat df = new DecimalFormat("###,###,##0.00");
         if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
-            total = serviceReceita.receitasMembroParametroMeasAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getIdIgreja(),true);
+            total = serviceReceita.receitasMembroParametroMeasAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getIdIgreja(), true);
         } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
-            total= serviceReceita.receitasMembroParametroMeasAno(mesAniversario, anoPesquisaAniversario,true);
+            total = serviceReceita.receitasMembroParametroMeasAno(mesAniversario, anoPesquisaAniversario, true);
         } else {
-            total= serviceReceita.receitasMembroParametroMeasAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(),true);
+            total = serviceReceita.receitasMembroParametroMeasAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(), true);
         }
         return df.format(total);
     }
@@ -321,14 +321,12 @@ public class RelatorioControle {
         if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             receitas = serviceReceita.listarReceitasMembroAnaliticoMesAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getIdIgreja(), true);
         } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
-            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAno(mesAniversario, anoPesquisaAniversario,true);
+            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAno(mesAniversario, anoPesquisaAniversario, true);
         } else {
-            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(),true);
+            receitas = serviceReceita.listarReceitasMembroAnaliticoMesAnoIgreja(mesAniversario, anoPesquisaAniversario, AplicacaoControle.getInstance().getUsuario().getCongregacao().getId(), true);
         }
         return receitas;
     }
-
-
 
 
     public List<Membro> getListaCarteirinhaObreiros() {
@@ -368,11 +366,11 @@ public class RelatorioControle {
     public List<Membro> getListaMembrosCartao() {
 
         if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
-            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo, this.cargo.getDescricao(), AplicacaoControle.getInstance().getIdIgreja());
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(sexo, cargo != null ? cargo.getDescricao() : "", AplicacaoControle.getInstance().getIdIgreja());
         } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
-            listaMembrosCartao = serviceMembroService.listarPorSexoCargo(this.sexo, this.cargo != null ? this.cargo.getDescricao() : "");
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargo(sexo, cargo != null ? cargo.getDescricao() : "");
         } else {
-            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(this.sexo, this.cargo.getDescricao(), AplicacaoControle.getInstance().getUsuario().getCongregacao().getId());
+            listaMembrosCartao = serviceMembroService.listarPorSexoCargoCongregacao(sexo, cargo != null ? cargo.getDescricao() : "", AplicacaoControle.getInstance().getUsuario().getCongregacao().getId());
         }
 
         return listaMembrosCartao;

@@ -2,6 +2,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:b="http://bootsfaces.net/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="#{pageContext.request.contextPath}/templates/template.xhtml">
 
@@ -10,6 +11,9 @@
             <b:messages/>
             <b:formGroup style="border: none">
                 <h:outputText style="font-size: 26px" value="#{msgs['titulo.fluxo.caixa']}"/>
+                <b:commandButton class="pull-right"  look="info" tooltip="#{msgs['btn.imprimir']}"  value="#{msgs['btn.imprimir']}">
+                    <p:fileDownload value="#{fluxoCaixaControle.imprimir()}"  />
+                </b:commandButton>
             </b:formGroup>
 
             <b:panel collapsible="false">

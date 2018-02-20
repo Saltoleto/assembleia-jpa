@@ -78,6 +78,7 @@ public class FluxoCaixaControle {
 
         List<Receita> listReceita = new ArrayList<Receita>();
         List<Despesa> listDespesa = new ArrayList<Despesa>();
+
         if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             listReceita = receitaService.listarReceitasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
             listDespesa = despesaService.despesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
@@ -140,10 +141,10 @@ public class FluxoCaixaControle {
 
     public String getSaldoAtual() {
 
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             totalReceitasRecebidas = receitaService.receitasParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
             totalDespesasPagas = despesaService.despesaParametroMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja(), Boolean.TRUE);
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             totalReceitasRecebidas = receitaService.receitasParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.TRUE);
             totalDespesasPagas = despesaService.despesaParametroMeasAno(mesPesquisa, anoPesquisa, Boolean.TRUE);
         } else {
@@ -187,22 +188,23 @@ public class FluxoCaixaControle {
             parametros.put("vp", getValorPrevistoPeriodo());
         }
 
-        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(listaFlusxoCaixa, parametros, "/report/fluxocaixa.jasper", str);
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(listaFlusxoCaixa, parametros, "/resources/report/fluxocaixa.jasper", str);
 
     }
 
     public String getValorPrevistoPeriodo() {
 
-        if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() != null) {
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
             receitasPeriodo = receitaService.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
             despesasPeriodo = despesaService.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgreja());
-        } else if (AplicacaoControle.getInstance().adminSede() && AplicacaoControle.getInstance().getIdIgreja() == null) {
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
             receitasPeriodo = receitaService.valorReceitaPeriodo(mesPesquisa, anoPesquisa);
             despesasPeriodo = despesaService.valorDespesaPeriodo(mesPesquisa, anoPesquisa);
         } else {
             receitasPeriodo = receitaService.receitasRecebidasMeasAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
             despesasPeriodo = despesaService.valorDespesasMesAnoCongregacao(mesPesquisa, anoPesquisa, AplicacaoControle.getInstance().getIdIgrejaPorUsuario());
         }
+
         if (receitasPeriodo == null) {
             receitasPeriodo = new BigDecimal(BigInteger.ZERO);
         }

@@ -53,7 +53,7 @@ import java.util.Locale;
 
         @NamedNativeQuery(
                 name = "Despesa.listarDespesasTipoMesAnoCongregracao",
-                query = "Select td.descricao,sum(d.valor) as valorDespesa from despesa d Join tipodedespesa td on d.tipodedespesa_id = td.id Join Congregacao co on co.id = d.congregacao_id Where co.id =:idIgreja and extract(MONTH FROM d.data) =:mes and extract(YEAR FROM d.data) = group by d.tipodedespesa_id,td.descricao ",
+                query = "Select td.descricao,sum(d.valor) as valorDespesa from despesa d Join tipodedespesa td on d.tipodedespesa_id = td.id Join Congregacao co on co.id = d.congregacao_id Where co.id =:idIgreja and extract(MONTH FROM d.data) =:mes and extract(YEAR FROM d.data) =:ano group by d.tipodedespesa_id,td.descricao ",
                 resultSetMapping = "DespesasTipoDTO")
 
 })
