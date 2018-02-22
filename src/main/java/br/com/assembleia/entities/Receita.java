@@ -114,6 +114,7 @@ public class Receita implements Serializable, Comparable<Receita> {
     private static final Locale BRASIL = new Locale("pt", "BR");
     private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
+    @Transient
     private String valorFormatadoRelatorio;
 
     public Long getId() {
