@@ -320,7 +320,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Saldo previsto no período:R$ "+$P{vp}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Saldo previsto no período: "+$P{vp}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
