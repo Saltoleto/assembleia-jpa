@@ -112,4 +112,12 @@ public class ReceitaService {
         return receitaRepository.listarReceitaMesAnoCongregacao(idIgreja,mes,ano);
     }
 
+    public List<Receita> listarMembroTipoIgrejaMesAno(String tipo,Long idIgreja, Integer mes, Integer ano){
+        return receitaRepository.listarMembroTipoIgrejaMesAno(tipo,idIgreja,mes,ano);
+    }
+
+
+    public List<Receita> listarMembroTipoMesAno(String tipo,Integer mes, Integer ano){
+        return receitaRepository.listarMembroTipoMesAno(tipo,mes,ano);
+    }
 }

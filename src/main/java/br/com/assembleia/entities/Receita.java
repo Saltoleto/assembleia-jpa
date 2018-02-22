@@ -52,6 +52,10 @@ import java.util.Locale;
                 query = "Select SUM(r.valor) as total from Receita r Join r.membro Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and r.recebido=:recebido "),
         @NamedQuery(name = "Receita.receitasMembroParametroMeasAnoIgreja",
                 query = "Select SUM(r.valor) as total from Receita r JOIN r.congregacao c Join r.membro Where extract(MONTH FROM r.data) =:mes and extract(YEAR FROM r.data) =:ano and c.id =:idIgreja and r.recebido=:recebido "),
+        @NamedQuery(name = "Receita.listarMembroTipoIgrejaMesAno",
+                query = "Select r from Receita r join r.membro m join r.tipoDeReceita tr join r.congregacao c where tr.descricao=:tipo and c.id=:idIgreja and extract(MONTH from r.data)=:mes and extract(YEAR from r.data)=:ano order by m.nome "),
+        @NamedQuery(name = "Receita.listarMembroTipoMesAno",
+                query = "Select r from Receita r join r.membro m join r.tipoDeReceita tr where tr.descricao =:tipo and extract(MONTH from r.data)=:mes and extract(YEAR from r.data)=:ano order by m.nome "),
 })
 @NamedNativeQueries({
 
@@ -110,6 +114,7 @@ public class Receita implements Serializable, Comparable<Receita> {
     private static final Locale BRASIL = new Locale("pt", "BR");
     private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
+    private String valorFormatadoRelatorio;
 
     public Long getId() {
         return id;
@@ -140,6 +145,10 @@ public class Receita implements Serializable, Comparable<Receita> {
     }
 
     public String getValorFormatado() {
+        return df.format(valor);
+    }
+
+    public String getValorFormatadoRelatorio() {
         return df.format(valor);
     }
 

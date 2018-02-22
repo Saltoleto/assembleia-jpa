@@ -66,6 +66,8 @@ public class RelatorioControle {
     private Cargo cargo;
     private static final Locale BRASIL = new Locale("pt", "BR");
     private static final DecimalFormatSymbols REAL = new DecimalFormatSymbols(BRASIL);
+    private DecimalFormat df = new DecimalFormat("¤ ###,###,##0.00", REAL);
+    private TipoDeReceita tipoDeReceita;
 
     @Autowired
     private CargoService service;
@@ -114,6 +116,16 @@ public class RelatorioControle {
 
     }
 
+    public StreamedContent printReceitasMembro() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
+        str = "ReceitasMembro";
+        Map map = preenhcerCongregacao(getCongregacao());
+        map.put("mesExtenso", EnumMesInt.busca(mesAniversario - 1).getDescricao().toUpperCase());
+        map.put("total",df.format(getReceitasMembroRelatorio().stream().map(Receita::getValor).reduce(BigDecimal.ZERO, BigDecimal::add)));
+
+        return file = (StreamedContent) report.gerarRelatorioPDFcomDS(getReceitasMembroRelatorio(), map, "/resources/report/receitaMembro.jasper", str);
+
+    }
+
     public List<Membro> getAniversariantesRelatorio() {
 
         List<Membro> aniversariantes = new ArrayList<>();
@@ -127,6 +139,21 @@ public class RelatorioControle {
         }
 
         return aniversariantes;
+    }
+
+    public List<Receita> getReceitasMembroRelatorio() {
+
+        List<Receita> receitas = new ArrayList<>();
+
+        if (AplicacaoControle.getInstance().adminSedeSelecionouIgreja()) {
+            receitas = serviceReceita.listarMembroTipoIgrejaMesAno(tipoDeReceita !=null ? tipoDeReceita.getDescricao():"",AplicacaoControle.getInstance().getIdIgreja(), mesAniversario, anoPesquisaAniversario);
+        } else if (AplicacaoControle.getInstance().adminSedeNaoSelecionouIgreja()) {
+            receitas = serviceReceita.listarMembroTipoMesAno(tipoDeReceita !=null ? tipoDeReceita.getDescricao():"",mesAniversario, anoPesquisaAniversario);
+        } else {
+            receitas = serviceReceita.listarMembroTipoIgrejaMesAno(tipoDeReceita !=null ?tipoDeReceita.getDescricao() : "",AplicacaoControle.getInstance().getIdIgrejaPorUsuario(), mesAniversario, anoPesquisaAniversario);
+        }
+
+        return receitas;
     }
 
     public StreamedContent printCartao() throws SQLException, IOException, JRException, ClassNotFoundException, Throwable {
@@ -242,13 +269,18 @@ public class RelatorioControle {
         return "aniversariantes?faces-redirect=true";
     }
 
+
+    public String listarReceitasMembro() {
+        return "receitasmembro?faces-redirect=true";
+    }
+
     public String listarCartao() {
         this.listaMembrosSelecionandos.clear();
         return "cartao?faces-redirect=true";
     }
 
     public String listarMembroAnalitico() {
-        return "membroanalitico?faces-redirect=true";
+        return "receitasmembro?faces-redirect=true";
     }
 
     public String getStr() {
@@ -394,5 +426,13 @@ public class RelatorioControle {
 
     public void setTipoCartao(EnumTipoCartao tipoCartao) {
         this.tipoCartao = tipoCartao;
+    }
+
+    public TipoDeReceita getTipoDeReceita() {
+        return tipoDeReceita;
+    }
+
+    public void setTipoDeReceita(TipoDeReceita tipoDeReceita) {
+        this.tipoDeReceita = tipoDeReceita;
     }
 }

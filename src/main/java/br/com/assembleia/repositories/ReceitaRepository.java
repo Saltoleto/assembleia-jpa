@@ -55,5 +55,9 @@ public interface ReceitaRepository extends JpaRepository<Receita, Integer> {
     BigDecimal receitasMembroParametroMeasAno(@Param("mes") Integer mes, @Param("ano") Integer ano, @Param("recebido") Boolean recebido);
 
     BigDecimal receitasMembroParametroMeasAnoIgreja(@Param("mes") Integer mes, @Param("ano") Integer ano,@Param("IdIgreja") Long idIgreja,@Param("recebido") Boolean recebido);
+
+    List<Receita> listarMembroTipoIgrejaMesAno(@Param("tipo") String tipo,@Param("idIgreja") Long idIgreja, @Param("mes") Integer mes, @Param("ano") Integer ano);
+
+    List<Receita> listarMembroTipoMesAno(@Param("tipo") String tipo, @Param("mes") Integer mes, @Param("ano") Integer ano);
 }
 

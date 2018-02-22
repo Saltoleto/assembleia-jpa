@@ -74,6 +74,8 @@
                                 access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
         <security:intercept-url pattern="/view/relatorios/despesastipo.jsf"
                                 access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
+        <security:intercept-url pattern="/view/relatorios/receitasmembro.jsf"
+                                access="hasAnyRole('ADMIN','TESOUREIRO','SECRETARIO')"/>
 
 
         <security:intercept-url pattern="/index.jsf" access="hasAnyRole('ADMIN')"/>
@@ -137,5 +139,7 @@
         <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
         <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
     </bean>
+
+
 
 </beans>
